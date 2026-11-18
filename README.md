@@ -2,25 +2,22 @@
 
 A customizable, mobile-first Luau UI framework for Roblox experiences, with responsive components, themes, and capability-aware media support.
 
-Framework UI Luau mobile-first untuk Roblox experience berizin. Desain mengutamakan touch, komposisi, token dan lifecycle yang jelas. English readers can start with the English handoff sections linked from the documentation index.
+Feybrume is in development. The current source includes the runtime foundation for service lookup, resource cleanup, signals, cancellable tasks, and state. The interface and theme engine are still in design.
 
-**Fase 0 · 18 November 2026** — riset dan desain. Katalog mendefinisikan **159 tipe komponen** dan **40 tema**, termasuk empat signature. Batas native/optional untuk font, media, auth dan gateway ditetapkan per kemampuan. Runtime berfungsi yang telah diuji pada Studio/perangkat: **0**. Font yang terverifikasi render di Feybrume: **0/1.000**. Ada tiga sampel upstream untuk audit awal metadata/lisensi.
+## Run the core tests
 
-- [Mulai dari indeks dokumen](docs/index.md)
-- [Matriks library dan bukti](docs/research.md)
-- [Kontrak API dan modul](docs/architecture.md)
-- [Inventaris 159 komponen](design/components.json) dan [40 tema](design/themes.json)
-- [Auth × 17 gateway](docs/auth.md) dengan 11 adapter yang direncanakan
-- [QA, risiko, backlog](docs/qa-and-backlog.md), [hasil design checks](evidence/phase0-checks.json) dan [manifest](phase0-manifest.json)
+Install the [Luau CLI](https://github.com/luau-lang/luau/releases) and run these commands from the repository root.
 
-## Verifikasi desain secara lokal
-
-Python 3.10+, dari folder repo:
-
-```bash
-python3 tooling/verify_phase0.py
+```sh
+luau tests/core.luau
+luau-analyze src tests
 ```
 
-Opsi `--spec /path/to/Feybrume_Master_Prompt_v5_Research_Edition.md` memeriksa checksum dokumen asal dan kesesuaian label/palette. Verifier memeriksa registry, kontras solid, skor desain, link lokal dan file hashes. Uji Studio/PC/HP, publish asset, live auth dan bundle menunggu fase pemiliknya. Project belum menetapkan lisensi distribusi ulang kode. Aset pihak ketiga hanya direferensikan.
+See the [core guide](docs/core.md) for Studio setup, API examples, and runtime limits.
 
-[FASE 0 SELESAI — ketik LANJUT]
+## Documentation
+
+- [Documentation index](docs/index.md)
+- [Architecture](docs/architecture.md)
+- [Component inventory](design/components.json) and [theme registry](design/themes.json)
+- [Changelog](CHANGELOG.md)

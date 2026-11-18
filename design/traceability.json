@@ -3654,5 +3654,215 @@
     "status": "NOT_IMPLEMENTED",
     "issue": "R-12",
     "earliestPhase": 14
+  },
+  {
+    "featureId": "core.runtime",
+    "publicAPI": "Runtime.Create / Refresh / Dispose",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Runtime.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.services",
+    "publicAPI": "Services:TryGet / Invalidate",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Services.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.janitor",
+    "publicAPI": "Janitor:Give / Fork / Destroy",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Janitor.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.signal",
+    "publicAPI": "Signal:Connect / Wait / Destroy",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Signal.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.promise",
+    "publicAPI": "Promise.Spawn / Await / Cancel",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Promise.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.diagnostics",
+    "publicAPI": "Logger:Push / List / Subscribe",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Logger.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.errors",
+    "publicAPI": "Result.Ok / Err / Map",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Result.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.clock",
+    "publicAPI": "Clock:After",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Clock.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.throttle",
+    "publicAPI": "Throttle.Wrap / Call / Cancel",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Throttle.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "CORE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.schema",
+    "publicAPI": "Schema:Normalize / NormalizePatch",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Schema.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "STATE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.store",
+    "publicAPI": "Store:Set / Batch / Observe",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Store.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "STATE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.computed",
+    "publicAPI": "Computed:Define / Invalidate",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Computed.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "STATE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.flags",
+    "publicAPI": "Flags:Bind / Export",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Flags.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "STATE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
+  },
+  {
+    "featureId": "core.serializer",
+    "publicAPI": "Serializer:Encode / Decode / Migrate",
+    "sourceEvidence": "evidence/phase1-checks.json",
+    "implementationFile": "src/core/Serializer.luau",
+    "runtimeRequirement": "Luau and an injected host or Roblox",
+    "fallback": "Explicit Result error or unknown capability",
+    "testCase": "STATE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747 with an injected host"
+    ],
+    "status": "PASS",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 1
   }
 ]

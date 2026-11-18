@@ -1,0 +1,431 @@
+local Core = require("../src")
+local FakeHost = require("./FakeHost")
+local count = 0
+
+local function equal(actual, expected)
+    assert(actual == expected, string.format("Expected %s, received %s", tostring(expected), tostring(actual)))
+end
+
+local function success(result)
+    assert(result.ok, result.error and result.error.code)
+    return result.value
+end
+
+local function failure(result, code)
+    equal(result.ok, false)
+    equal(result.error.code, code)
+end
+
+local function test(name, callback)
+    local ok, err = pcall(callback)
+    if not ok then error(name .. ": " .. tostring(err), 0) end
+    count += 1
+    print("PASS " .. name)
+end
+
+local function start(callback)
+    local thread = coroutine.create(callback)
+    local ok, err = coroutine.resume(thread)
+    assert(ok, tostring(err))
+    return thread
+end
+
+test("services cache misses and retry after invalidation", function()
+    local host = FakeHost.new()
+    local runtime = Core.Runtime.Create(host)
+    equal(host.lookups.RunService, 1)
+    failure(runtime.Services:TryGet("HapticService"), "SERVICE_UNAVAILABLE")
+    host.registered.HapticService = {}
+    failure(runtime.Services:TryGet("HapticService"), "SERVICE_UNAVAILABLE")
+    equal(host.lookups.HapticService, 1)
+    runtime.Services:Invalidate("HapticService")
+    equal(runtime.Services:Get("HapticService"), host.registered.HapticService)
+    runtime:Dispose()
+    failure(runtime.Services:TryGet("RunService"), "DISPOSED")
+end)
+
+test("capability changes only fire on transition", function()
+    local host = FakeHost.new()
+    local available = false
+    local runtime = Core.Runtime.Create(host, { probes = {
+        ["sample.ready"] = function() return available end,
+        ["sample.failed"] = function() error("secret") end,
+    } })
+    local snapshot = runtime:GetCapabilities()
+    equal(snapshot["host.client"].state, "available")
+    equal(snapshot["host.server"].state, "unavailable")
+    equal(snapshot["sample.failed"].state, "unknown")
+    equal(runtime.Diagnostics:List()[1].error.code, "CAPABILITY_PROBE_FAILED")
+    local changes = 0
+    runtime.CapabilityChanged:Connect(function(record)
+        if record.id == "sample.ready" then changes += 1 end
+    end)
+    success(runtime:Refresh("sample.ready"))
+    available = true
+    success(runtime:Refresh("sample.ready"))
+    equal(changes, 1)
+    equal(snapshot["sample.ready"].state, "unavailable")
+    equal(runtime:GetCapabilities()["sample.ready"].state, "available")
+    runtime:Dispose()
+    failure(runtime:Refresh("sample.ready"), "DISPOSED")
+end)
+
+test("scope cleanup is reverse order, exactly once and isolated", function()
+    local trace, failed = {}, 0
+    local root = Core.Janitor.new(function() failed += 1 end)
+    root:Give(function() table.insert(trace, "first") end)
+    local child = root:Fork()
+    child:Give(function() table.insert(trace, "child") end)
+    root:Give(function()
+        table.insert(trace, "last")
+        child:Give(function() table.insert(trace, "late") end)
+        root:Destroy()
+        error("cleanup failed")
+    end)
+    equal(root:GetCounts().resources, 3)
+    equal(root:GetCounts().scopes, 1)
+    root:Destroy()
+    root:Destroy()
+    equal(table.concat(trace, ","), "last,late,child,first")
+    equal(failed, 1)
+    equal(root:GetCounts().resources, 0)
+    equal(root:GetCounts().scopes, 0)
+    root:Fork():Give(function() failed += 1 end)
+    equal(failed, 2)
+end)
+
+test("removing a key or closing a child detaches it from the parent", function()
+    local root = Core.Janitor.new()
+    local child = root:Fork()
+    local disposed = 0
+    child:Give(function() disposed += 1 end, nil, "resource")
+    equal(child:Remove("resource"), true)
+    equal(child:Remove("resource"), false)
+    child:Destroy()
+    equal(root:GetCounts().scopes, 0)
+    root:Destroy()
+    equal(disposed, 1)
+end)
+
+test("signal dispatch handles once, disconnect, recursion and errors", function()
+    local failed, called = 0, 0
+    local signal = Core.Signal.new(nil, function() failed += 1 end)
+    local second
+    local once = signal:Once(function()
+        called += 1
+        second:Disconnect()
+        signal:Fire()
+    end)
+    second = signal:Connect(function() error("should not run") end)
+    signal:Connect(function() error("listener error") end)
+    signal:Fire()
+    equal(called, 1)
+    equal(failed, 2)
+    equal(once.Connected, false)
+    local mutable = pcall(function() once.Connected = true end)
+    equal(mutable, false)
+    signal:Destroy()
+end)
+
+test("signal wait preserves nil arguments and clears timers", function()
+    local host = FakeHost.new()
+    local signal = Core.Signal.new(Core.Clock.new(host.scheduler))
+    local result
+    start(function() result = signal:Wait(5) end)
+    signal:Fire("first", nil, "last")
+    local args = success(result)
+    equal(args.n, 3)
+    equal(args[1], "first")
+    equal(args[3], "last")
+    equal(host.pending(), 0)
+    start(function() result = signal:Wait(1) end)
+    host.advance(1)
+    failure(result, "TIMEOUT")
+    start(function() result = signal:Wait(3) end)
+    signal:Destroy()
+    failure(result, "CANCELLED")
+    equal(host.pending(), 0)
+end)
+
+test("promise cancellation propagates and discards a late result", function()
+    local host = FakeHost.new()
+    local runtime = Core.Runtime.Create(host)
+    local baseline = runtime.Scope:GetCounts().resources
+    local gate = Core.Signal.new(runtime.Clock)
+    local child, outcome, completed = nil, nil, 0
+    local parent = runtime:Spawn(function(token)
+        child = runtime:Spawn(function() completed += 100 end, token)
+        gate:Wait()
+        completed += 1
+        return "late result"
+    end)
+    start(function() outcome = parent:Await() end)
+    host.advance(0)
+    equal(completed, 100)
+    equal(parent:Cancel(), true)
+    equal(parent:Cancel(), false)
+    failure(outcome, "CANCELLED")
+    gate:Fire()
+    equal(completed, 101)
+    failure(parent:Await(), "CANCELLED")
+    equal(success(child:Await()), nil)
+
+    local neverStarted = runtime:Spawn(function(token)
+        runtime:Spawn(function() completed += 1000 end, token)
+        gate:Wait()
+    end)
+    local scoped = runtime:Spawn(function() completed += 10 end)
+    runtime:Dispose()
+    failure(neverStarted:Await(), "CANCELLED")
+    failure(scoped:Await(), "CANCELLED")
+    equal(runtime.Scope:GetCounts().resources, 0)
+    assert(baseline > 0)
+    equal(host.pending(), 0)
+    gate:Destroy()
+end)
+
+test("pending descendants are cancelled with their parent", function()
+    local host = FakeHost.new()
+    local runtime = Core.Runtime.Create(host)
+    local gate = Core.Signal.new(runtime.Clock)
+    local child, calls = nil, 0
+    local parent = runtime:Spawn(function(token)
+        child = runtime:Spawn(function(childToken)
+            childToken:OnCancelled(function() calls += 1 end)
+            gate:Wait()
+            return "late"
+        end, token)
+        gate:Wait()
+    end)
+    host.advance(0)
+    parent:Cancel()
+    failure(child:Await(), "CANCELLED")
+    equal(calls, 1)
+    gate:Fire()
+    equal(runtime.Scope:GetCounts().resources, 3)
+    runtime:Dispose()
+end)
+
+test("promise await timeout leaves the task pending", function()
+    local host = FakeHost.new()
+    local clock = Core.Clock.new(host.scheduler)
+    local gate = Core.Signal.new(clock)
+    local job = Core.Promise.Spawn(clock, function()
+        gate:Wait()
+        return false
+    end)
+    local timed, observed
+    start(function() timed = job:Await(2) end)
+    host.advance(2)
+    failure(timed, "TIMEOUT")
+    job:OnSettled(function(result) observed = success(result) end)
+    gate:Fire()
+    equal(observed, false)
+    equal(success(job:Await()), false)
+    equal(host.pending(), 0)
+end)
+
+test("diagnostic ring redacts before storing and sending to subscribers", function()
+    local logger = Core.Logger.new(2)
+    local received
+    logger:Subscribe(function(entry) received = entry end)
+    logger:Push("some private string")
+    logger:Push({ code = "TIMEOUT", context = { revision = 2, secret = "private" }, developerDetail = "private" })
+    equal(received.error.context.revision, 2)
+    equal(received.error.context.secret, nil)
+    equal(received.error.developerDetail, nil)
+    logger:Push(Core.Error.Create("CANCELLED"))
+    equal(logger:List()[1].error.code, "TIMEOUT")
+    equal(logger:List()[2].error.code, "CANCELLED")
+    logger:Destroy()
+end)
+
+test("schema defaults, nested normalization and patch rejection", function()
+    local schema = Core.Schema.new({ type = "object", fields = {
+        active = { type = "boolean", default = false },
+        points = { type = "array", items = { type = "integer", min = 0 }, required = true },
+    } })
+    local input = { points = { 1, 2 } }
+    local value = success(schema:Normalize(input))
+    input.points[1] = 99
+    equal(value.points[1], 1)
+    equal(value.active, false)
+    equal(success(schema:NormalizePatch(value, { active = true })).active, true)
+    failure(schema:NormalizePatch(value, { points = { -1 } }), "INVALID_VALUE")
+    failure(schema:Normalize({ points = {}, unknown = 1 }), "INVALID_VALUE")
+    local cyclic = {}
+    cyclic.self = cyclic
+    failure(Core.Schema.Copy(cyclic), "INVALID_VALUE")
+    failure(Core.Schema.Copy(0 / 0), "INVALID_VALUE")
+end)
+
+test("store rolls back failed writes, yielded callbacks and thrown errors", function()
+    local store = Core.Store.new({ value = 1 })
+    failure(store:Batch(function(tx)
+        tx:Set("value", 2)
+        tx:Set("bad", math.huge)
+    end), "INVALID_VALUE")
+    failure(store:Batch(function(tx)
+        tx:Set("value", 2)
+        coroutine.yield()
+    end), "CALLBACK_YIELDED")
+    failure(store:Batch(function(tx)
+        tx:Set("value", 2)
+        error("raw")
+    end), "CALLBACK_FAILED")
+    equal(store:Get("value"), 1)
+    local _, revision = store:Snapshot()
+    equal(revision, 0)
+    store:Destroy()
+end)
+
+test("observers see one revision per batch and writes are queued", function()
+    local store = Core.Store.new()
+    local events = {}
+    store:Observe({ "a" }, function(_, event)
+        equal(event.source, "user")
+        local queued = success(store:Set("b", 2))
+        equal(queued.queued, true)
+    end)
+    store:Observe(nil, function(snapshot, event)
+        table.insert(events, event.revision)
+        equal(store:Get("b"), snapshot.b)
+    end)
+    equal(success(store:Batch(function(tx)
+        tx:Set("a", 1)
+        tx:Set("b", 1)
+    end, "user")), 1)
+    equal(store:Get("b"), 2)
+    equal(table.concat(events, ","), "1,2")
+    equal(success(store:Set("b", 2)), 2)
+    store:Destroy()
+end)
+
+test("computed values are atomic, topological and cycle checked", function()
+    local store = Core.Store.new({ base = 2 })
+    local computed = Core.Computed.new(store)
+    local runs = 0
+    success(computed:Define("double", { "base" }, function(values)
+        runs += 1
+        if values.base == 5 then error("refuse") end
+        return values.base * 2
+    end))
+    success(computed:Define("total", { "double" }, function(values) return values.double + 1 end))
+    success(store:Set("base", 3))
+    equal(store:Get("total"), 7)
+    success(store:Set("unrelated", true))
+    equal(runs, 2)
+    failure(store:Set("base", 5), "CALLBACK_FAILED")
+    equal(store:Get("base"), 3)
+    equal(store:Get("total"), 7)
+    failure(store:Set("total", 42), "INVALID_ARGUMENT")
+    success(computed:Define("one", { "two" }, function() return 1 end))
+    failure(computed:Define("two", { "one" }, function() return 2 end), "COMPUTED_CYCLE")
+    success(computed:Invalidate("double"))
+    store:Destroy()
+    failure(computed:Invalidate("double"), "DISPOSED")
+end)
+
+test("flags use namespaces, shared schema identity and explicit persistence", function()
+    local store = Core.Store.new()
+    local flags = Core.Flags.new(store)
+    local schema = Core.Schema.new({ type = "boolean", default = false })
+    local settings = { schema = schema, shared = true, persist = true }
+    local first = success(flags:Bind("page", "open", settings))
+    local second = success(flags:Bind("page", "open", settings))
+    failure(flags:Bind("page", "open", { schema = schema }), "DUPLICATE_FLAG")
+    local other = success(flags:Bind("other", "open", { schema = schema }))
+    success(second:Set(true))
+    equal(success(first:Get()), true)
+    equal(success(other:Get()), false)
+    failure(first:Set("true"), "INVALID_VALUE")
+    equal(flags:Export("page").open, true)
+    equal(flags:Export("other").open, nil)
+    first:Unbind()
+    failure(first:Get(), "DISPOSED")
+    equal(flags:Find("page", "open").count, 1)
+    second:Unbind()
+    equal(flags:Find("page", "open"), nil)
+end)
+
+test("serializer is stable, bounds output and sanitizes migrations", function()
+    local serializer = Core.Serializer.new({ version = 2, migrations = {
+        function(data)
+            equal(data.api_key, nil)
+            return { visible = data.enabled, password = "private" }
+        end,
+    }, decodeJSON = function(text)
+        assert(text == "fixture")
+        return { version = 1, data = { enabled = false, api_key = "private" } }
+    end })
+    local encoded = success(serializer:Encode({ z = { 1, 2 }, a = 'a"b\n', secret = "private" }))
+    equal(encoded, '{"data":{"a":"a\\"b\\n","z":[1,2]},"version":2}')
+    equal(success(serializer:Decode("fixture")).visible, false)
+    equal(success(serializer:Decode("fixture")).password, nil)
+    failure(serializer:Migrate({ version = 3, data = {} }), "UNSUPPORTED_VERSION")
+    failure(Core.Serializer.new({ maxBytes = 10 }):Encode({ too = "long" }), "SERIALIZATION_FAILED")
+end)
+
+test("debounce and throttle honor scope disposal and trailing values", function()
+    local host = FakeHost.new()
+    local clock = Core.Clock.new(host.scheduler)
+    local scope = Core.Janitor.new()
+    local calls = {}
+    local function record(value) table.insert(calls, value) end
+    local debounce = Core.Throttle.Wrap(clock, record, { mode = "debounce", seconds = 2, scope = scope })
+    debounce:Call("skip")
+    host.advance(1)
+    debounce:Call("debounce")
+    host.advance(1)
+    equal(#calls, 0)
+    host.advance(1)
+    equal(calls[1], "debounce")
+    local throttle = Core.Throttle.Wrap(clock, record, { seconds = 1, scope = scope })
+    throttle:Call("leading")
+    throttle:Call("skip")
+    throttle:Call("trailing")
+    host.advance(1)
+    equal(table.concat(calls, ","), "debounce,leading,trailing")
+    debounce:Call("skip on dispose")
+    scope:Destroy()
+    equal(host.pending(), 0)
+    failure(debounce:Call("skip"), "DISPOSED")
+    failure(throttle:Flush(), "DISPOSED")
+end)
+
+test("explicit cleanup repeatedly returns owned counts to baseline", function()
+    local host = FakeHost.new()
+    local runtime = Core.Runtime.Create(host)
+    local initial = runtime.Scope:GetCounts().resources
+    for _ = 1, 70 do
+        local store = runtime:CreateStore()
+        local task = runtime:Spawn(function() return true end)
+        host.advance(0)
+        equal(success(task:Await()), true)
+        store:Destroy()
+    end
+    equal(runtime.Scope:GetCounts().resources, initial)
+    equal(host.pending(), 0)
+    runtime:Dispose()
+    equal(runtime.Scope:GetCounts().resources, 0)
+end)
+
+test("waits from synchronous callbacks are rejected without scheduling a timer", function()
+    local host = FakeHost.new()
+    local signal = Core.Signal.new(Core.Clock.new(host.scheduler))
+    local outcome
+    signal:Once(function() outcome = signal:Wait(10) end)
+    signal:Fire()
+    failure(outcome, "INVALID_ARGUMENT")
+    equal(host.pending(), 0)
+end)
+
+test("redaction does not invoke properties on thrown objects", function()
+    local input = setmetatable({}, {
+        __index = function() error("unexpected property lookup") end,
+    })
+    local result = Core.Result.CallSync(function() error(input) end)
+    failure(result, "CALLBACK_FAILED")
+end)
+
+print(string.format("%d core tests passed", count))

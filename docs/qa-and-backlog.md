@@ -1,6 +1,6 @@
 # QA, risiko, dan backlog fase
 
-**Status desain 0**. Definisi: PASS untuk bukti yang benar-benar dilaksanakan; PASS_WITH_LIMITATION untuk bukti yang lebih sempit dari target; IMPLEMENTED_UNTESTED untuk fitur sudah ada tanpa bukti test yang dibutuhkan; BLOCKED jika prerequisite di luar scope tidak terpenuhi; FAIL untuk tes dijalankan dan gagal; NOT_IMPLEMENTED untuk runtime belum ditulis. Belum ada fitur runtime yang berstatus IMPLEMENTED_UNTESTED karena fase ini baru desain. Bukti design lint menggunakan [tooling/verify_phase0.py](../tooling/verify_phase0.py). Scorecard per entri untuk QA otomatis ada di [traceability](../design/traceability.json).
+**Status pengujian.** PASS untuk bukti yang benar-benar dilaksanakan; PASS_WITH_LIMITATION untuk bukti yang lebih sempit dari target; IMPLEMENTED_UNTESTED untuk fitur sudah ada tanpa bukti test yang dibutuhkan; BLOCKED jika prerequisite di luar scope tidak terpenuhi; FAIL untuk tes dijalankan dan gagal; NOT_IMPLEMENTED untuk runtime belum ditulis. Core lulus uji Luau CLI dengan host palsu. Integrasi Roblox Studio dan perangkat tercatat sebagai IMPLEMENTED_UNTESTED. [Tes core](../evidence/phase1-checks.json). Bukti design lint menggunakan [tooling/verify_phase0.py](../tooling/verify_phase0.py). Scorecard per entri untuk QA otomatis ada di [traceability](../design/traceability.json).
 
 | Area | Bobot rilis | Acceptance dan bukti yang diperlukan |
 |---|---:|---|
@@ -27,7 +27,7 @@ Tidak ada skor rilis final karena semua kategori runtime belum diuji. Referensi 
 
 | ID | Risiko / limit | Dampak dan mitigasi/exit |
 |---|---|---|
-| R-01 | Studio/native runtime belum dipakai pada fase desain | Seluruh QA runtime pending, tidak ada screenshot/perf result. Fase 1 butuh harness. Fase 13 memerlukan PC dan perangkat mobile nyata. |
+| R-01 | Studio/native runtime belum dipakai pada fase desain | Harness CLI memakai host palsu. Pengukuran dan smoke test pada Studio serta perangkat desktop dan mobile masih diperlukan. |
 | R-02 | Native font count/permission dan 1.000 atlas keluarga | Overhead glyph GUI/texture, notice + RFN review dan uploads; pilot 10 di fase 8, bedakan sumber kandidat dan verifikasi. Goal 1.000 BLOCKED saat ini. |
 | R-03 | Moderasi/permission media dan biaya/kuota upload | Per-asset availability manifest, explicit denied, poster/silent fallback, asset owner grant dan place test. |
 | R-04 | YouTube inline, URL CDN/path lokal, handoff/QR | Native direct unsupported sesuai kelas; build transform asset berizin atau policy-vetted host handoff, fallback teks/poster. |
@@ -48,8 +48,8 @@ Bug runtime observed: tidak ada test runtime yang memungkinkan observasi; status
 
 | Fase | Kontrak implementasi | Exit gate |
 |---:|---|---|
-| 0 | Riset/arsitektur/registry, manifest, QA dan backlog. | Design checks terukur; status runtime tetap faktual; tunggu LANJUT. |
-| 1 | Services/capabilities, scope, Signal/Result/Schema, Promise cancellation, Store/Computed/Flags, errors/logger/harness. | Test scope exactly-once, failure and reentrancy; no resource leak on disposal. |
+| 0 | Riset/arsitektur/registry, manifest, QA dan backlog. | Verifikasi katalog, kontras warna solid, dan sumber riset. |
+| 1 | Services/capabilities, scope, Signal/Result/Schema, Promise cancellation, Store/Computed/Flags, errors/logger/harness. | Tes CLI untuk cleanup sekali, kegagalan, pemanggilan ulang, dan hitungan resource. Smoke test Roblox belum dijalankan. |
 | 2 | Resolver dan state tokens, 40 presets, contrast, native typography/fallback, motion/accessibility. | Theme golden data dan actual GUI visual smoke. |
 | 3 | Window/root/overlay/context/menu/input/focus, layout, multi-window/nav, docking/snap, slots/sheets. | MOB baseline, keyboard/focus restore dan hide/reopen. |
 | 4 | Foundation components, handle/state bindings, labels/actions/toggles. | Set/Get/Reset, show/lock/serialize/destroy, callback source. |
@@ -68,4 +68,4 @@ Scope source trace: §§00–04 architecture/module contracts plus truth registr
 
 ## English handoff
 
-Phase 0 has design verification only. Runtime acceptance requires Studio and real devices, permissioned assets, sandbox services, and measured results. The backlog names phase exit gates. The risk register records the resolved GitHub repository creation issue and the remaining upstream dependencies.
+Phase 0 records design verification and Phase 1 records CLI core tests. Roblox acceptance requires Studio and real devices, permissioned assets, sandbox services, and measured results. The backlog names phase exit gates. The risk register records the resolved GitHub repository creation issue and the remaining upstream dependencies.

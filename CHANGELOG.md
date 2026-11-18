@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-core
+
+- Add the runtime host adapter, capability probes, and cached service lookup.
+- Add cleanup scopes, signals, cancellable tasks, and bounded diagnostics.
+- Add transactional state, computed values, flags, schemas, and versioned serialization.
+- Add a Rojo project and a deterministic Luau CLI test suite.
+
 ## Phase 0 · 2026-11-18 (MYT)
 
 - Establishes documented API, ownership, phased integration plan and distribution contracts.

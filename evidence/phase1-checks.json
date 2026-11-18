@@ -1,0 +1,55 @@
+{
+  "phase": 1,
+  "version": "0.1.0-core",
+  "testedAt": "2026-11-18",
+  "environment": {
+    "toolchain": "Official Luau CLI 0.747",
+    "system": "Linux",
+    "arch": "x86_64",
+    "host": "tests/FakeHost.luau"
+  },
+  "results": [
+    {
+      "command": "luau tests/core.luau",
+      "status": "PASS",
+      "passed": 20,
+      "cases": [
+        "services cache misses and retry after invalidation",
+        "capability changes only fire on transition",
+        "scope cleanup is reverse order, exactly once and isolated",
+        "removing a key or closing a child detaches it from the parent",
+        "signal dispatch handles once, disconnect, recursion and errors",
+        "signal wait preserves nil arguments and clears timers",
+        "promise cancellation propagates and discards a late result",
+        "pending descendants are cancelled with their parent",
+        "promise await timeout leaves the task pending",
+        "diagnostic ring redacts before storing and sending to subscribers",
+        "schema defaults, nested normalization and patch rejection",
+        "store rolls back failed writes, yielded callbacks and thrown errors",
+        "observers see one revision per batch and writes are queued",
+        "computed values are atomic, topological and cycle checked",
+        "flags use namespaces, shared schema identity and explicit persistence",
+        "serializer is stable, bounds output and sanitizes migrations",
+        "debounce and throttle honor scope disposal and trailing values",
+        "explicit cleanup repeatedly returns owned counts to baseline",
+        "waits from synchronous callbacks are rejected without scheduling a timer",
+        "redaction does not invoke properties on thrown objects"
+      ]
+    },
+    {
+      "command": "luau-analyze src tests",
+      "status": "PASS",
+      "diagnostics": 0
+    },
+    {
+      "command": "luau-compile --null src tests",
+      "status": "PASS"
+    }
+  ],
+  "roblox": {
+    "studio": "IMPLEMENTED_UNTESTED",
+    "desktopClient": "IMPLEMENTED_UNTESTED",
+    "mobileClient": "IMPLEMENTED_UNTESTED",
+    "smokeTest": "docs/core.md"
+  }
+}

@@ -1,16 +1,16 @@
 # Kontrak modul dan dependensi
 
-Setiap modul di bawah adalah desain yang direncanakan. Import path sesuai `src/<group>/<module>.luau`. Core dilarang mengimpor engine, UI atau vendor. Engine dan backend berkomunikasi melalui registri/facade yang diinjeksi pada composition root; contoh `engine/Media` dan `media/SourceResolver` dipisah antara lifecycle UI dan klasifikasi sumber. Desain API publik ada di [Architecture](architecture.md). Signature di sini mendeskripsikan bentuk kontrak, untuk diterjemahkan ke `--!strict` sebelum implementasi.
+Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core.md). Bagian setelah core menjelaskan rancangan modul berikutnya. Import path sesuai `src/<group>/<module>.luau`. Core dilarang mengimpor engine, UI atau vendor. Engine dan backend berkomunikasi melalui registri/facade yang diinjeksi pada composition root; contoh `engine/Media` dan `media/SourceResolver` dipisah antara lifecycle UI dan klasifikasi sumber. Desain API publik ada di [Architecture](architecture.md).
 
 ## core (fase 1)
 
 | Modul | Kontrak | Dependensi / invariant |
 |---|---|---|
-| Runtime | `Create(host, options)`, `GetCapabilities()`, `Refresh(id)`, `Dispose()` | Services, Clock, Signal, Logger; injected host; capability berubah event. `auto` pilih Studio/native saat tepat, host tambahan hanya explicit contract. |
+| Runtime | `Create(host, options)`, `GetCapabilities()`, `Refresh(id)`, `Dispose()` | Services, Clock, Signal, Logger; injected host; capability berubah event. Roblox memakai host bawaan. CLI memakai host injeksi. |
 | Services | `Get(name)`, `TryGet(name)` | Host; cache sukses/failure transient dengan invalidasi. Players, TweenService, UserInputService, GuiService, RunService, HttpService, TextService, ContentProvider, SoundService, ContextActionService, HapticService jika ada. |
 | Signal | `Connect`, `Once`, `Wait(timeout?)`, `DisconnectAll`, internal emit | Clock, scoped connection; disconnect saat emit deterministik dan once de-register sebelum callback. |
 | Janitor | `Give(resource, cleanup?)`, `Remove(key)`, `Fork`, `Destroy`, `GetCounts` | Resource scope; cleanup terbalik, laporkan kegagalan per-resource, tutup resource yang masuk setelah destroy. |
-| Promise | `Spawn(work,token)`, `Cancel`, `Await`, `OnSettled` | Clock, Signal, Result, Janitor; sekali terminal, generation guards. |
+| Promise | `Promise.Spawn(clock, work, parentToken?)` atau `Runtime:Spawn(work, parentToken?)`, `Cancel`, `Await`, `OnSettled` | Clock, Signal, Result, Janitor; sekali terminal, generation guards. |
 | Result | `Ok(value)`, `Err(error)`, `Map` | Error type; no implicit success on nil. |
 | Error | `Create(code,metadata)`, `Redact`, `Is` | Registry error codes, localizable public message. |
 | Logger | `Push`, `List`, `Subscribe`, `Export` | Error, Signal; bounded ring, opt-in sink, redacted before publish. |

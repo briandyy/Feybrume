@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "project": "Feybrume",
+  "phase": 1,
+  "version": "0.1.0-core",
+  "date": "2026-11-18",
+  "timezone": "Asia/Kuala_Lumpur",
+  "previous": "phase0-manifest.json",
+  "specification": {
+    "filename": "Feybrume_Master_Prompt_v5_Research_Edition.md",
+    "sha256": "2b19d39a1175f933221b34caa9b22465e51bd2582bc84a669e5fa3b261964448"
+  },
+  "api": {
+    "runtimeEntry": "src/init.luau",
+    "documentation": "docs/core.md",
+    "added": [
+      "Clock",
+      "Computed",
+      "Error",
+      "Flags",
+      "Janitor",
+      "Logger",
+      "Promise",
+      "Result",
+      "Runtime",
+      "Schema",
+      "Serializer",
+      "Services",
+      "Signal",
+      "Store",
+      "Throttle"
+    ],
+    "breakingChanges": []
+  },
+  "runtimeBuild": {
+    "entry": "src/init.luau",
+    "studioMapping": "default.project.json",
+    "status": "PASS_WITH_LIMITATION",
+    "testedIn": "Luau CLI with injected host",
+    "robloxStudio": "IMPLEMENTED_UNTESTED",
+    "robloxMobile": "IMPLEMENTED_UNTESTED",
+    "releaseBundle": {
+      "path": "dist/Feybrume.lua",
+      "status": "NOT_IMPLEMENTED"
+    }
+  },
+  "evidence": {
+    "report": "evidence/phase1-checks.json",
+    "testsPassed": 20,
+    "traceability": "design/traceability.json",
+    "limitations": "docs/core.md"
+  },
+  "files": [
+    {
+      "path": ".luaurc",
+      "bytes": 44,
+      "sha256": "9e4f714d626d0c5b66ab44265273449e46e581e1076e6d1f4852b1d138613937"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 948,
+      "sha256": "285a1a733dc0547924093645093d36716eee565cfef370d820f977caf8c0cc1f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 861,
+      "sha256": "076037213b96197556acd86cc6545a01e0989e56879b77e84d2d89aa635167bd"
+    },
+    {
+      "path": "default.project.json",
+      "bytes": 198,
+      "sha256": "a23b3204c2f8619137b58b7980a5c2e410228273fd584c5b46bd0340c4842792"
+    },
+    {
+      "path": "design/auth-compatibility.json",
+      "bytes": 9563,
+      "sha256": "a1d365fc0c5f926a870ded0afeea15795e13fa3f24e4fc0e180623f2b394fc25"
+    },
+    {
+      "path": "design/components.json",
+      "bytes": 95426,
+      "sha256": "23a75dd60cb75e549a18fb24b60152e8f0da6b767d49b21d90b6afc0de0241c4"
+    },
+    {
+      "path": "design/themes.json",
+      "bytes": 82729,
+      "sha256": "aae922e914a00e00fe9d41ad66d6710659d94733b7e60de3dd705fdb05846ada"
+    },
+    {
+      "path": "design/traceability.json",
+      "bytes": 126963,
+      "sha256": "3da00a59c0905e66d8a6afda57f016438f3120197679fb4b6c8e30c485b858a5"
+    },
+    {
+      "path": "docs/architecture.md",
+      "bytes": 11342,
+      "sha256": "47c6e521b31ba6aa0899092050df8069838949495bd62fd22b87ddc6d0d96bcf"
+    },
+    {
+      "path": "docs/auth.md",
+      "bytes": 13917,
+      "sha256": "ba20001e1bbfecc38e7b134acb3a0644c77537cda999fbf459d84d6c9db334f7"
+    },
+    {
+      "path": "docs/core.md",
+      "bytes": 6658,
+      "sha256": "8cbb8ca67565b492dbd00ee3c0afcde39bf45885215ad44738360bf2f8ec344f"
+    },
+    {
+      "path": "docs/design-system.md",
+      "bytes": 4058,
+      "sha256": "fcbc244b2b2419bac3348240b454dca9d4da7498ff9ea98e1eba74776158680d"
+    },
+    {
+      "path": "docs/index.md",
+      "bytes": 1576,
+      "sha256": "7d038de5fad363373371e4e2d36a5c878bce881b6caf036edb8a44f6bb7580df"
+    },
+    {
+      "path": "docs/media.md",
+      "bytes": 9464,
+      "sha256": "fa917259de6f7e8cb295392f746649382be03bde58b0913695bd5bac81025eb4"
+    },
+    {
+      "path": "docs/mobile.md",
+      "bytes": 7239,
+      "sha256": "f8b798fc28703d5cb6a5243a4abec54a315da6393e8fb9abdb0a1e74e267797f"
+    },
+    {
+      "path": "docs/module-contracts.md",
+      "bytes": 12500,
+      "sha256": "f88fd8c8a5f67599926068dbf5108cdcaca427ecb7b75741063a1bfc1488cd0d"
+    },
+    {
+      "path": "docs/qa-and-backlog.md",
+      "bytes": 11186,
+      "sha256": "0f2f0039d4264ccd6fc680c889771a019c85c2856b885a64d9f793efc84ecb08"
+    },
+    {
+      "path": "docs/release-doc-map.md",
+      "bytes": 4259,
+      "sha256": "d32069d779d85adf4a5222e63b3ebd969d4256b38fb6ca05c380dbd57c38c84a"
+    },
+    {
+      "path": "docs/research.md",
+      "bytes": 9387,
+      "sha256": "fa623d6569cc137ad4dbc841176f7f8f7130b4d566ad8caf1b27868ff128d26e"
+    },
+    {
+      "path": "docs/typography.md",
+      "bytes": 8224,
+      "sha256": "42ca61317cdcc66a9c936409914cbdf2c4300bfad4744310244f5b03327d18e2"
+    },
+    {
+      "path": "evidence/font-license-samples.json",
+      "bytes": 2247,
+      "sha256": "f9f61c342e1736a1c35aeb3e77e3b25eedec27303c6fd4f02c2b451d8f857f22"
+    },
+    {
+      "path": "evidence/phase0-checks.json",
+      "bytes": 1081,
+      "sha256": "7079c8bde06d7cf37d6f4e5fd4c051cd8eefc4fc6edcc9a6e05c378367d07c00"
+    },
+    {
+      "path": "evidence/phase1-checks.json",
+      "bytes": 2127,
+      "sha256": "32c446e7a081b90de3f68c8b4461261109796234335f52bd5e948ff85c196987"
+    },
+    {
+      "path": "phase0-manifest.json",
+      "bytes": 4419,
+      "sha256": "5a67814f085f6c3e4654ba0be642942c1d67a03fb1920bd783ebc98c411af8a6"
+    },
+    {
+      "path": "src/core/Clock.luau",
+      "bytes": 1176,
+      "sha256": "a821653af1a1713e8915bf4cead0412e9cd1ea566495cb75a654b6f10bcd033d"
+    },
+    {
+      "path": "src/core/Computed.luau",
+      "bytes": 4331,
+      "sha256": "c5fecfebb06b9566b57d705133e07f6aa2d14eef9728d5adf7d369e78883b95f"
+    },
+    {
+      "path": "src/core/Error.luau",
+      "bytes": 2049,
+      "sha256": "efccfcc25535c37a583dd85e57c3adf691cb458aeb5bcc84d249766aeef08c6d"
+    },
+    {
+      "path": "src/core/Flags.luau",
+      "bytes": 3598,
+      "sha256": "e855048783dd830adad19c13714022c84fefffe0f5fd2ce1f0b4020af21ad787"
+    },
+    {
+      "path": "src/core/Janitor.luau",
+      "bytes": 3670,
+      "sha256": "b8198ed4bb35eddd06d442ac72851444a237e685150f9d9867f77cf98df2c638"
+    },
+    {
+      "path": "src/core/Logger.luau",
+      "bytes": 1738,
+      "sha256": "f97648cb0f03bbd21d580bfb328fe65468f86f0f8c4d0c3af154d08576772926"
+    },
+    {
+      "path": "src/core/Promise.luau",
+      "bytes": 3103,
+      "sha256": "07d1e57f2f8e2093404fa43b3a34d64ddec47e0670b37a9c9a78ef0ad0b60423"
+    },
+    {
+      "path": "src/core/Result.luau",
+      "bytes": 1538,
+      "sha256": "21292cbf1f91c4806f37f8d37328a7a6dcf90d8b797c877c87a7305cb7b52bc5"
+    },
+    {
+      "path": "src/core/Runtime.luau",
+      "bytes": 4945,
+      "sha256": "6f595444028ab9c7feab42c920e829b3dbcc86fe7c2e71f2db3691f4183ff8c5"
+    },
+    {
+      "path": "src/core/Schema.luau",
+      "bytes": 5106,
+      "sha256": "2e48904849b5199b29cc805e1a5cb17ea3c6e0e2c7115239a1e566cc5279cdbe"
+    },
+    {
+      "path": "src/core/Serializer.luau",
+      "bytes": 5029,
+      "sha256": "dd4fcda583cf055c19f822467fa4e24d05e8960e0dbefbb27b70e538e2659b87"
+    },
+    {
+      "path": "src/core/Services.luau",
+      "bytes": 1269,
+      "sha256": "e7a930a9ef71e6fd0d326a912df52c4dcf3196f3f7a939d04f3c00526b81d415"
+    },
+    {
+      "path": "src/core/Signal.luau",
+      "bytes": 3494,
+      "sha256": "546afce900c480186347e0e9aa04d913828c3508f66156c0dc248d98fcd16194"
+    },
+    {
+      "path": "src/core/Store.luau",
+      "bytes": 5269,
+      "sha256": "1ec20022157e0794abd5db3df82cf753cd9d6873afe12e2c28547e834d92e5ef"
+    },
+    {
+      "path": "src/core/Throttle.luau",
+      "bytes": 2660,
+      "sha256": "7e97124e0be84b6323f2913f83a7c367a90f8ec142cf2944391693d8f1da6136"
+    },
+    {
+      "path": "src/init.luau",
+      "bytes": 689,
+      "sha256": "f89062499f0b6ed6394816fe26b43a337d8e82094f452aacc9cf9019223398d8"
+    },
+    {
+      "path": "tests/FakeHost.luau",
+      "bytes": 1986,
+      "sha256": "a9208cd0a3a73389a3ee1ff75645fb2900ddb373ab4426e62f845e7053dbf61a"
+    },
+    {
+      "path": "tests/core.luau",
+      "bytes": 15904,
+      "sha256": "f3d790a4887e5ffdbc47cd3604d84c06b4c2f58f7190a29c79269124ce47ab8e"
+    },
+    {
+      "path": "tooling/verify_phase0.py",
+      "bytes": 11426,
+      "sha256": "7eefbcad80b1858ec65e8a3a974dca96490445a1de56c6bd197f6cb6f5ed99b9"
+    }
+  ]
+}

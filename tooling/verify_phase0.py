@@ -106,8 +106,15 @@ def evidence_checks(components, themes):
            "Theme traceability is incomplete")
     for entry in entries:
         verify((ROOT / entry["sourceEvidence"]).is_file(), f"Missing evidence: {entry['featureId']}")
-        verify(entry["implementationFile"] is None and not entry["testedEnvironments"] and
-               entry["status"] in ("NOT_IMPLEMENTED", "BLOCKED"), f"Unfounded runtime evidence: {entry['featureId']}")
+        if entry["featureId"].startswith("core."):
+            path = entry["implementationFile"]
+            verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
+                   and entry["status"] == "PASS" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
+                   f"Missing core evidence: {entry['featureId']}")
+        else:
+            verify(entry["implementationFile"] is None and not entry["testedEnvironments"] and
+                   entry["status"] in ("NOT_IMPLEMENTED", "BLOCKED"),
+                   f"Unfounded runtime evidence: {entry['featureId']}")
 
     auth = read_json("design/auth-compatibility.json")
     providers = {item["id"] for item in auth["providers"]}
@@ -170,12 +177,12 @@ def check_spec(spec, manifest, components, themes):
     verify(actual == expected_palettes, "Theme labels/order/base colors differ from spec")
 
 
-def check_hashes(manifest):
+def check_hashes(manifest, manifest_path):
     expected = {row["path"]: row for row in manifest["files"]}
     actual = {file.relative_to(ROOT).as_posix() for file in ROOT.rglob("*")
               if file.is_file() and ".git" not in file.relative_to(ROOT).parts
               and "__pycache__" not in file.relative_to(ROOT).parts
-              and file.name != "phase0-manifest.json"}
+              and file != manifest_path}
     verify(expected.keys() == actual, "Untracked or missing phase artifacts")
     for path, row in expected.items():
         file = ROOT / path
@@ -187,12 +194,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", type=Path, help="Compare the original spec bytes and catalog contents")
     args = parser.parse_args()
-    manifest = read_json("phase0-manifest.json")
+    candidates = (file for file in ROOT.glob("phase*-manifest.json")
+                  if re.fullmatch(r"phase[0-9]+-manifest\.json", file.name))
+    manifest_path = max(candidates, key=lambda file: int(file.name[5:].split("-", 1)[0]))
+    manifest = read_json(manifest_path.name)
     components = read_json("design/components.json")
     themes = read_json("design/themes.json")
     report = {**catalog_checks(components, themes), **evidence_checks(components, themes)}
     report["checkedLocalLinks"] = local_links()
-    report["checkedArtifactHashes"] = check_hashes(manifest)
+    report["checkedArtifactHashes"] = check_hashes(manifest, manifest_path)
     if args.spec:
         check_spec(args.spec, manifest, components, themes)
     print(json.dumps({"status": "PASS", "matchedOriginalSpec": bool(args.spec), **report}, indent=2))
