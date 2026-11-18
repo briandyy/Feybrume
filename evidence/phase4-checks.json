@@ -1,7 +1,7 @@
 {
   "phase": 4,
-  "version": "0.4.3-foundation",
-  "date": "2026-11-18",
+  "version": "0.4.4-foundation",
+  "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
   "checks": {
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 36,
+        "passed": 39,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -70,6 +70,9 @@
           "short touch layouts use a rail or bottom bar and keep their layout after input changes",
           "floating windows reach each playable edge and can always move back",
           "oversized launch requests fit and center below the Roblox top bar with room to drag",
+          "opening positions use fitted window sizes, allow coordinates, and default to center",
+          "a floating window enters the top bar only if its full width fits the free lane",
+          "a centered brand avoids action buttons, and chrome props merge safely",
           "resize stops before a floating window loses its travel in a short viewport",
           "resize grip adapts to phone, tablet, and desktop while preserving content width",
           "a condensed tab launcher identifies the active page by title",
@@ -112,7 +115,7 @@
         ]
       }
     },
-    "passed": 81,
+    "passed": 84,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -125,9 +128,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.3.rbxlx",
-        "sha256": "f6ddfa4ed86ec1ed2f00da6a4b0d927b37cbe4ae820fdd51c9b624a5a4e295e3",
-        "bytes": 362063,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.4.rbxlx",
+        "sha256": "27fe1b2acf3215451c5897ae0c3907ac30e581f62328d020e769ba6a404bb130",
+        "bytes": 373085,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -151,10 +154,10 @@
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
   ],
   "review": {
-    "previousPublishedPreview": "0.4.2",
-    "previousPlaceVersion": 7,
-    "ownerObservation": "On Android the shell sat underneath the Roblox top bar and filled the viewport height.",
-    "followup": "Restore native safe insets for the shell and fit floating geometry before centering.",
+    "previousPublishedPreview": "0.4.3",
+    "previousPlaceVersion": 8,
+    "ownerObservation": "The Android layout was accepted. The owner requested configurable opening positions, title branding and clean desktop chrome.",
+    "followup": "Opening anchors, configurable branding, icon controls, and conditional top-bar travel.",
     "desktopAndMobileRetest": "IMPLEMENTED_UNTESTED"
   }
 }

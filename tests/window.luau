@@ -6,6 +6,7 @@ local Window = require("../src/ui/Window")
 local ReopenStyle = require("../src/ui/ReopenStyle")
 local Factory = require("../src/engine/Factory")
 local Viewport = require("../src/engine/Viewport")
+local WindowProps = require("../src/ui/WindowProps")
 
 local count = 0
 local limits = { minWidth = 280, minHeight = 220, maxWidth = 1200, maxHeight = 900 }
@@ -250,6 +251,66 @@ test("oversized launch requests fit and center below the Roblox top bar with roo
     equal(explicit.y, 4)
     local maximized = Layout.Window(requested, screen, profile, "fullscreen", limits, false)
     equal(maximized.height, screen.height)
+end)
+
+test("opening positions use fitted window sizes, allow coordinates, and default to center", function()
+    local area = Layout.Rect(0, 0, 820, 400)
+    local profile = Layout.Profile(area.width, area.height, "touch")
+    local cases = {
+        { "top-left", 0, 0 }, { "top", 1, 0 }, { "top-right", 2, 0 },
+        { "left", 0, 1 }, { "center", 1, 1 }, { "right", 2, 1 },
+        { "bottom-left", 0, 2 }, { "bottom", 1, 2 }, { "bottom-right", 2, 2 },
+    }
+    for _, case in ipairs(cases) do
+        local requested = Layout.OpenFloating({ width = 440, height = 280 }, area, limits, WindowProps.Position(case[1]))
+        local rect = Layout.Window(requested, area, profile, "floating", limits, false)
+        equal(rect.x, case[2] * 190)
+        equal(rect.y, case[3] * 60)
+    end
+    equal(WindowProps.Position(nil), "center")
+    local named = Layout.OpenFloating({ width = 440, height = 280 }, area, limits, WindowProps.Position({ x = 70, y = 28 }))
+    equal(named.x, 70)
+    equal(named.y, 28)
+    local legacy = Layout.OpenFloating({ width = 440, height = 280, x = 52 }, area, limits, "bottom-right")
+    equal(legacy.x, 52)
+    equal(legacy.y, 120)
+    equal(pcall(WindowProps.Position, "bogus"), false)
+    equal(pcall(WindowProps.Position, { x = 20, y = math.huge }), false)
+end)
+
+test("a floating window enters the top bar only if its full width fits the free lane", function()
+    local area = Layout.Rect(0, 0, 820, 326)
+    local lane = Layout.Rect(220, -57, 580, 57)
+    local profile = Layout.Profile(area.width, area.height, "touch")
+    local right = Layout.Window(Layout.Rect(360, -200, 440, 245), area, profile, "floating", limits, false, lane)
+    equal(right.y, -57)
+    equal(right.height, 245)
+    local left = Layout.Window(Layout.Rect(219, -200, 440, 245), area, profile, "floating", limits, false, lane)
+    equal(left.y, 0)
+    local overhang = Layout.Window(Layout.Rect(380, -57, 440, 245), area, profile, "floating", limits, false, lane)
+    equal(overhang.y, 0)
+    equal(Layout.Window(right, area, profile, "fullscreen", limits, false, lane).y, 0)
+    equal(Layout.FloatingArea(area, lane, right).height, 383)
+end)
+
+test("a centered brand avoids action buttons, and chrome props merge safely", function()
+    local left, width = Layout.HeaderTitle(20, 312, 210, "center", 160)
+    equal(left, 130)
+    equal(width, 160)
+    local right, narrowed = Layout.HeaderTitle(20, 150, 210, "center", 210)
+    equal(right, 20)
+    equal(narrowed, 130)
+    local props = WindowProps.FromOptions({
+        title = "", titleLogo = 123, titleLogoPosition = "after", titleAlign = "right",
+        chromeButtons = { hide = { text = "Minimize", background = "#222244" } },
+    })
+    equal(props.titleLogo, "rbxassetid://123")
+    local edited = WindowProps.Merge(props, { chromeButtons = { hide = { icon = 456 } } })
+    equal(edited.chromeButtons.hide.icon, "rbxassetid://456")
+    equal(edited.chromeButtons.hide.text, "Minimize")
+    equal(props.chromeButtons.hide.icon, nil)
+    equal(WindowProps.Merge(edited, { chromeButtons = { hide = false } }).chromeButtons.hide, nil)
+    equal(pcall(WindowProps.Merge, props, { chromeButtons = { missing = { text = "X" } } }), false)
 end)
 
 test("resize stops before a floating window loses its travel in a short viewport", function()

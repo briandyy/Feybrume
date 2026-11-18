@@ -1,5 +1,6 @@
 local Container = require(if script then script.Parent.Container else "./Container")
 local Components = require(if script then script.Parent.Components else "./Components")
+local Color = require(if script then script.Parent.Parent.engine.Color else "../engine/Color")
 local Factory = require(if script then script.Parent.Parent.engine.Factory else "../engine/Factory")
 local Layout = require(if script then script.Parent.Parent.engine.Layout else "../engine/Layout")
 local Input = require(if script then script.Parent.Parent.engine.Input else "../engine/Input")
@@ -19,12 +20,41 @@ local function positive(value, default)
     return value
 end
 
+local shapes = {
+    max = { { 3, 3, 10, 1 }, { 3, 12, 10, 1 }, { 3, 4, 1, 8 }, { 12, 4, 1, 8 } },
+    restore = { { 6, 2, 8, 1 }, { 13, 3, 1, 8 }, { 2, 5, 9, 1 }, { 2, 13, 9, 1 }, { 2, 6, 1, 7 }, { 10, 6, 1, 7 } },
+    hide = { { 3, 7, 10, 2 } },
+}
+local defaultChrome = table.freeze({})
+
+local function chromeMark(parent, name)
+    local mark = Factory.Frame(parent, name, {
+        AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), ZIndex = 2,
+    })
+    local strokes = {}
+    for i, line in ipairs(shapes[name]) do
+        strokes[i] = Factory.Frame(mark, tostring(i), {
+            Position = UDim2.fromScale(line[1] / 16, line[2] / 16),
+            Size = UDim2.fromScale(line[3] / 16, line[4] / 16), BackgroundTransparency = 0,
+        })
+    end
+    return { node = mark, lines = strokes }
+end
+
+local function nativeImage(parent, name)
+    return Factory.Create("ImageLabel", parent, {
+        Name = name, BackgroundTransparency = 1, Active = false, Selectable = false,
+        ScaleType = Enum.ScaleType.Fit, Visible = false, ZIndex = 2,
+    })
+end
+
 function Window.new(workspace, options)
     assert(options.id == nil or (type(options.id) == "string" and #options.id > 0), "Expected a window ID")
     assert(navigation[options.navigation or "auto"], "Unknown navigation placement")
     assert(placements[options.placement or "floating"], "Unknown window placement")
     assert(options.theme == nil or workspace.Themes:Get(options.theme), "Unknown window theme")
     local props = WindowProps.FromOptions(options)
+    local initialPosition = WindowProps.Position(options.initialPosition)
     local initialBounds = WindowProps.Bounds({ width = 590, height = 420 },
         { x = options.x, y = options.y, width = options.width, height = options.height })
     local limits = {
@@ -39,7 +69,7 @@ function Window.new(workspace, options)
     local scope = workspace._scope:Fork()
     local self = setmetatable({
         _workspace = workspace, _scope = scope, _options = table.clone(options), _limits = limits,
-        _initialBounds = initialBounds, _props = props, _placement = options.placement or "floating",
+        _initialBounds = initialBounds, _initialPosition = initialPosition, _props = props, _placement = options.placement or "floating",
         _navigation = options.navigation or "auto", _themeId = options.theme,
         _tabs = {}, _open = true, _canDrag = options.movable ~= false, _canResize = options.resizable ~= false,
         _side = workspace._settings.side, _bubbleStyle = bubble,
@@ -54,6 +84,7 @@ function Window.new(workspace, options)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
     local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
+    self._titleLogo = nativeImage(body, "TitleLogo")
     self._heading = Factory.Label(body, props.title, props.titleSize)
     self._heading.Font = Enum.Font.SourceSansBold
     self._subtitle = Factory.Label(body, props.subtitle, 13)
@@ -63,13 +94,27 @@ function Window.new(workspace, options)
         StatusBar = newFrame(body, "StatusBar", { ClipsDescendants = true }),
     }
     self._grip = newFrame(body, "DragHandle")
-    self._hide = newButton(body, "Hide")
-    self._max = newButton(body, "Max")
+    self._hide = newButton(body, "")
+    self._hide.Name = "Hide"
+    self._max = newButton(body, "")
+    self._max.Name = "Maximize"
+    self._marks = {
+        max = chromeMark(self._max, "max"), restore = chromeMark(self._max, "restore"),
+        hide = chromeMark(self._hide, "hide"),
+    }
+    self._buttonImages = {
+        [self._max] = nativeImage(self._max, "Icon"), [self._hide] = nativeImage(self._hide, "Icon"),
+    }
+    for _, icon in pairs(self._buttonImages) do
+        icon.AnchorPoint, icon.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
+        scope:Give(icon:GetPropertyChangedSignal("IsLoaded"):Connect(function() self:_reflow() end))
+    end
     self._nav = newFrame(body, "Navigation")
     self._tabScroll = Factory.Scroll(self._nav, "TabList")
     self._tabScroll.Size = UDim2.fromScale(1, 1)
     self._more = newButton(self._nav, "More")
     self._more.Name = "TabLauncher"
+    self._more.Font = Enum.Font.SourceSans
     self._more.ZIndex = 2
     self._pages = newFrame(body, "Pages", { ClipsDescendants = true })
     self._resize = newButton(body, "")
@@ -140,9 +185,34 @@ function Window:_styleChrome()
     local workspace = self._workspace
     local theme, profile, selected = self:_theme(), workspace._profile, workspace._guiService.SelectedObject
     for _, button in ipairs(self._chrome) do
-        Factory.StyleButton(button, theme, profile, { focused = selected == button },
-            if profile.compactChrome or button == self._resize then "ghost" else "soft",
-            workspace._settings.fontScale)
+        local focused = selected == button
+        local image = self._buttonImages[button]
+        Factory.StyleButton(button, theme, profile, { focused = focused },
+            if button == self._resize then "ghost" else "soft", workspace._settings.fontScale)
+        if image or button == self._resize or profile.compactChrome then
+            button.Edge.Enabled = focused
+            button.Shape.CornerRadius = UDim.new(0, math.min(theme.radius, 8))
+        end
+        if image then
+            local name = if button == self._hide then "hide" elseif self._placement == "floating" then "max" else "restore"
+            local appearance = self._props.chromeButtons[name] or defaultChrome
+            local size = appearance.iconSize or 16
+            image.Image = appearance.icon or ""
+            image.Visible = image.Image ~= "" and image.IsLoaded
+            image.Size = UDim2.fromOffset(size, size)
+            image.ImageColor3 = if appearance.iconColor then Factory.Hex(appearance.iconColor) else Color3.new(1, 1, 1)
+            button.Text = if image.Visible then "" else appearance.text or ""
+            local background = appearance.background or theme.tokens.raised
+            button.BackgroundColor3 = Factory.Hex(background)
+            button.TextColor3 = Factory.Hex(Color.EnsureContrast(theme.tokens.onSurface, background, 4.5))
+            button.TextSize = math.round(14 * workspace._settings.fontScale)
+            local mark = self._marks[name]
+            mark.node.Visible = not image.Visible and button.Text == ""
+            mark.node.Size = UDim2.fromOffset(size, size)
+            local color = if appearance.iconColor then Factory.Hex(appearance.iconColor) else button.TextColor3
+            for _, line in ipairs(mark.lines) do line.BackgroundColor3 = color end
+            if button == self._max then self._marks[if name == "max" then "restore" else "max"].node.Visible = false end
+        end
     end
     for _, tab in ipairs(self._tabs) do
         local button = tab._button
@@ -156,12 +226,43 @@ function Window:_styleChrome()
             button.TextSize = math.round(14 * workspace._settings.fontScale)
         end
     end
-    if profile.compactChrome then
-        for _, button in ipairs(self._chrome) do
-            button.Edge.Enabled = selected == button
-            button.TextSize = math.round(14 * workspace._settings.fontScale)
-        end
-    end
+end
+
+function Window:_floatingRequest()
+    return self._requested or Layout.OpenFloating(self._initialBounds, self._workspace._windowArea,
+        self._limits, self._initialPosition)
+end
+
+function Window:_layoutTitle(startX, endX, width, bar, titleH, subtitleH, gap)
+    local workspace, props = self._workspace, self._props
+    local alignment = props.titleAlign
+    if alignment == "auto" then alignment = if workspace._profile.compactChrome then "center" else "left" end
+    local font = if props.titleFont then Enum.Font.SourceSansBold else self._heading.Font
+    local textW = math.max(
+        if props.title == "" then 0 else workspace._measureText(props.title, self._heading.TextSize, font) + 6,
+        if props.subtitle == "" then 0 else workspace._measureText(props.subtitle, self._subtitle.TextSize, self._subtitle.Font) + 6
+    )
+    local logo = self._titleLogo
+    local logoSize = if props.titleLogo then math.min(props.titleLogoSize, bar, math.max(0, endX - startX)) else 0
+    local logoSpace = if logoSize > 0 and textW > 0 then logoSize + gap else logoSize
+    local wanted = if logoSize == 0 then math.max(0, endX - startX) else textW + logoSpace
+    local x, groupW = Layout.HeaderTitle(startX, endX, width / 2, alignment, wanted)
+    logoSize = math.min(logoSize, groupW)
+    local textWidth = math.max(0, groupW - logoSpace)
+    local before = props.titleLogoPosition == "before"
+    local textX = if before then x + logoSpace else x
+    local textAlignment = if logoSize > 0 or alignment == "left" then Enum.TextXAlignment.Left
+        elseif alignment == "center" then Enum.TextXAlignment.Center else Enum.TextXAlignment.Right
+    local y = (bar - titleH - subtitleH) / 2
+    self._heading.Visible = props.title ~= "" and textWidth > 0
+    self._subtitle.Visible = props.subtitle ~= "" and textWidth > 0
+    self._heading.TextXAlignment = textAlignment
+    self._subtitle.TextXAlignment = self._heading.TextXAlignment
+    Factory.Rect(self._heading, textX, math.max(0, y), textWidth, titleH)
+    Factory.Rect(self._subtitle, textX, math.max(0, y) + titleH, textWidth, subtitleH)
+    logo.Image = props.titleLogo or ""
+    logo.Visible = logoSize > 0
+    Factory.Rect(logo, if before then x else x + groupW - logoSize, (bar - logoSize) / 2, logoSize, logoSize)
 end
 
 function Window:_reflow()
@@ -172,13 +273,10 @@ function Window:_reflow()
         self._shell.Visible = false
         return
     end
-    if not self._requested then
-        self._requested = Layout.OpenFloating(self._initialBounds, workspace._windowArea, self._limits)
-    end
     local fillCompact = profile.narrow and self._options.fillCompact == true
     local floating = self._placement == "floating" and not fillCompact
-    local rect = Layout.Window(self._requested, if floating then workspace._windowArea else area, profile,
-        self._placement, self._limits, fillCompact)
+    local rect = Layout.Window(self:_floatingRequest(), if floating then workspace._windowArea else area, profile,
+        self._placement, self._limits, fillCompact, workspace._topbarLane)
     self._rect = rect
     self._shell.Visible = self._open
     if not self._open then return end
@@ -203,15 +301,15 @@ function Window:_reflow()
     local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
     local subtitleH = if props.subtitle == "" then 0 else self._subtitle.TextSize + 3
-    local titleH = self._heading.TextSize + 4
-    local bar = math.min(h, math.max(target, titleH + subtitleH, props.topbarHeight - 2 * pad) + 2 * pad)
-    self._max.Text = if self._placement == "floating" then "Max" else "Restore"
+    local titleH = if props.title == "" then 0 else self._heading.TextSize + 4
+    local logoH = if props.titleLogo then props.titleLogoSize else 0
+    local bar = math.min(h, math.max(target, titleH + subtitleH, logoH, props.topbarHeight - 2 * pad) + 2 * pad)
     for _, line in ipairs(self._resizeLines) do line.BackgroundColor3 = self._heading.TextColor3 end
     self:_styleChrome()
-    local minimumWidth = target + (if profile.compactChrome then 2 else 14)
+    local minimumWidth = target
     local hideW = math.min(w, workspace:_buttonWidth(self._hide, minimumWidth))
     local maxW = workspace:_buttonWidth(self._max, minimumWidth)
-    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
+    local maxVisible = w >= math.max(220, hideW + maxW + gap + 4 * pad + 60)
     local buttonY = math.max(0, (bar - target) / 2)
     Factory.Rect(self._hide, math.max(0, w - pad - hideW), buttonY, hideW, target)
     Factory.Rect(self._max, w - pad - hideW - maxW - gap, buttonY, maxW, target)
@@ -226,19 +324,16 @@ function Window:_reflow()
     end
     local headingWidth = math.max(0, w - 3 * pad - standardButtons)
     local leading, trailing = Layout.HeaderAdornmentWidths(headingWidth, props.topbarLeadingWidth, props.topbarTrailingWidth)
-    local titleX = pad + (if leading > 0 then leading + gap else 0)
-    local titleWidth = headingWidth - (titleX - pad) - (if trailing > 0 then trailing + gap else 0)
-    local titleY = math.max(0, (bar - titleH - subtitleH) / 2)
-    Factory.Rect(self._heading, titleX, titleY, titleWidth, titleH)
-    Factory.Rect(self._subtitle, titleX, titleY + titleH, titleWidth, subtitleH)
-    self._subtitle.Visible = subtitleH > 0
+    local titleStart = pad + (if leading > 0 then leading + gap else math.min(5, pad))
+    local titleEnd = pad + headingWidth - (if trailing > 0 then trailing + gap else 0)
+    self:_layoutTitle(titleStart, titleEnd, w, bar, titleH, subtitleH, gap)
     local slotHeight = math.max(0, bar - 2 * pad)
     local leftSlot, rightSlot = self._layoutSlots.TopbarLeading, self._layoutSlots.TopbarTrailing
     Factory.Rect(leftSlot, pad, pad, leading, slotHeight)
     Factory.Rect(rightSlot, pad + headingWidth - trailing, pad, trailing, slotHeight)
     leftSlot.Visible, rightSlot.Visible = leading > 0, trailing > 0
-    local gripX = if leading > 0 then titleX else 0
-    Factory.Rect(self._grip, gripX, 0, titleX + titleWidth - gripX, bar)
+    local gripX = if leading > 0 then titleStart else 0
+    Factory.Rect(self._grip, gripX, 0, titleEnd - gripX, bar)
     self._grip.Visible = self._canDrag and not fillCompact
 
     local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
@@ -328,14 +423,15 @@ function Window:_bindGestures()
             drag = function(dx, dy)
                 local origin, area = workspace._origin, workspace._windowArea
                 if wasDocked and not changed then
-                    local requested = Layout.Window(self._requested, area, workspace._profile, "floating", self._limits, false)
+                    local requested = Layout.Window(self:_floatingRequest(), area, workspace._profile, "floating", self._limits, false)
                     local fraction = math.clamp(((position.X - origin.X) - before.x) / math.max(1, before.width), 0, 1)
                     before = Layout.Rect(position.X - origin.X - requested.width * fraction,
                         position.Y - origin.Y - workspace:_target(self:_theme()) / 2, requested.width, requested.height)
                     self._placement = "floating"
                 end
                 changed = true
-                self._requested = Layout.Clamp(Layout.Rect(before.x + dx, before.y + dy, before.width, before.height), area)
+                self._requested = Layout.Window(Layout.Rect(before.x + dx, before.y + dy, before.width, before.height),
+                    area, workspace._profile, "floating", self._limits, false, workspace._topbarLane)
                 self:_reflow()
             end,
             finish = function(pointer)
@@ -353,7 +449,8 @@ function Window:_bindGestures()
         local rect = self._rect
         return { drag = function(dx, dy)
             local area = workspace._windowArea
-            self._requested = Layout.Resize(rect, area, dx, dy, Layout.FloatingLimits(area, self._limits))
+            local travel = Layout.FloatingArea(area, workspace._topbarLane, rect)
+            self._requested = Layout.Resize(rect, travel, dx, dy, Layout.FloatingLimits(area, self._limits))
             self:_reflow()
         end, finish = function() workspace:_placeBubbles() end }
     end)
@@ -402,6 +499,7 @@ function Window:Tab(options)
     inset.PaddingRight = UDim.new(0, 8)
     Factory.List(page, 8)
     local button = scope:Give(Factory.Button(self._tabScroll, options.title or options.id))
+    button.Font = Enum.Font.SourceSans
     local tab
     local context = {
         workspace = self._workspace, owner = self,

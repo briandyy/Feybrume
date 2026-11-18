@@ -32,7 +32,29 @@ section:Add(message)
 | `tab:Section(options)` | Create a section. Use `section:Add(guiObject, slot?)`, `GetSlot(name)`, `Grid({ columns, minWidth, rowHeight, gap })`, and `HStack(options)`. A grid reduces its column count as the viewport narrows. |
 | `window:OpenContextMenu(items, options)` | Open a scoped menu. Items provide `label` and a callback. `BindContextMenu(target, items, options)` connects right-click and touch hold to the same menu and returns an unbind function. Provide a separate clickable action for keyboard access. |
 
-Drag the title bar to move a floating window to any edge of the usable viewport. The panel stops below the Roblox top bar and within device safe insets. An oversized floating window opens centered with room to drag. Drag the bottom-right corner icon to resize. Set `movable = false` or `resizable = false` to disable the gestures. Use `fillCompact = true` for a full-window layout at narrow widths. Set `dockable = true` for mouse drag-to-dock or `touchDock = true` for touch. Use Max/Restore or `Dock("floating")` to restore the floating request.
+Drag the title bar to move a floating window to any edge of the usable viewport. The panel can move to the upper device-safe edge when its full width fits beside the Roblox controls. Otherwise it stops below the top bar. An oversized floating window opens centered with room to drag. Drag the bottom-right corner icon to resize. Set `movable = false` or `resizable = false` to disable the gestures. Use `fillCompact = true` for a full-window layout at narrow widths. Set `dockable = true` for mouse drag-to-dock or `touchDock = true` for touch. Use Max/Restore or `Dock("floating")` to restore the floating request.
+
+Set `initialPosition` when creating a window. Choose `top-left`, `top`, `top-right`, `left`, `center`, `right`, `bottom-left`, `bottom`, or `bottom-right`. The default is `center`. For a custom origin, use `initialPosition = { x = 64, y = 48 }` in viewport pixels. Existing `x` and `y` take precedence on their respective axes. Dragging or resizing takes over from the initial placement.
+
+```luau
+local window = workspace:Window({
+    title = "My tools",
+    initialPosition = "top-right",
+    titleLogo = 123456789,
+    titleLogoPosition = "before",
+    titleAlign = "center",
+    chromeButtons = {
+        max = { icon = 987654321, iconSize = 18, background = "#232641" },
+        restore = { text = "Restore" },
+        hide = { text = "Minimize" },
+    },
+})
+```
+
+Use your own Roblox image asset IDs. Set `title = ""` for a logo-only header. Use `titleLogoPosition = "after"` for text followed by a logo. `titleLogoSize` sets the logo size. The default `titleAlign = "auto"` centers the header text on short touch layouts and aligns it left elsewhere. Existing top-bar slots can host arbitrary Roblox GUI objects.
+
+`chromeButtons` supports `max`, `restore`, and `hide` overrides with `text`, `icon`, `iconSize`, `background`, and `iconColor`. When an image loads, it takes precedence over the text. The text or built-in glyph remains available while the image loads. Update these properties with `window:SetProps()`. Set a control override to `false` to reset it to the theme defaults.
+
 
 Tabs and sections expose Leading, Main, Trailing, Footer, Background and Overlay slots. A window provides window-sized Background and Overlay slots plus the active page's other slots. Use native GuiObjects for content. Passing ownership to a section lets its scope remove that content on teardown. `section:Destroy()` releases the section and any nested grids or child sections.
 

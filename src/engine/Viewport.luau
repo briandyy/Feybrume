@@ -13,14 +13,24 @@ local function available(root, input)
     return Layout.KeyboardArea(Layout.Rect(0, 0, size.X, size.Y), keyboardBounds(input, root.AbsolutePosition))
 end
 
-function Viewport.Read(root, input, breakpoints)
-    local size = root.AbsoluteSize
-    local area = available(root, input)
+function Viewport.Read(input, gui, breakpoints)
+    local core = gui:GetInsetArea(Enum.ScreenInsets.CoreUISafeInsets)
+    local device = gui:GetInsetArea(Enum.ScreenInsets.DeviceSafeInsets)
+    local free = gui:GetInsetArea(Enum.ScreenInsets.TopbarSafeInsets)
+    local origin = core.Min
+    local keyboard = keyboardBounds(input, origin)
+    local safe = Layout.Rect(0, 0, core.Width, core.Height)
+    local area = Layout.KeyboardArea(safe, keyboard)
+    local lane
+    if free.Width > 0 and free.Height > 0 and free.Min.Y <= device.Min.Y and free.Max.Y >= origin.Y then
+        lane = Layout.Rect(free.Min.X - origin.X, device.Min.Y - origin.Y, free.Width, origin.Y - device.Min.Y)
+    end
+    local root = Layout.Rect(origin.X - device.Min.X, origin.Y - device.Min.Y, core.Width, core.Height)
     local preferred = input.PreferredInput
     local kind = if preferred == Enum.PreferredInput.Touch then "touch"
         elseif preferred == Enum.PreferredInput.Gamepad then "gamepad" else "pointer"
-    return Layout.Inset(area, 8),
-        Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), root.AbsolutePosition, area
+    return Layout.Inset(area, 8), Layout.Profile(core.Width, core.Height, kind, breakpoints, input.TouchEnabled),
+        origin, area, root, lane
 end
 
 function Viewport.LauncherAreas(visible, device, originX, originY)

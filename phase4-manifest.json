@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 4,
-  "version": "0.4.3-foundation",
-  "date": "2026-11-18",
+  "version": "0.4.4-foundation",
+  "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase3-manifest.json",
   "specification": {
@@ -40,13 +40,17 @@
       "Control:SetStyle / SetThemeOverride / SetFont / SetIcon / SetDescription / SetTooltip",
       "Control:Show / Hide / Enable / Disable / Lock / Unlock / Focus / Blur",
       "Control:SetOrder / MoveUp / MoveDown / MoveTo / GetInstance / GetSlot / Destroy",
-      "Control:OnChanged / OnInteract / OnFocus / OnBlur / OnValidate / OnError / OnMounted / OnDestroyed"
+      "Control:OnChanged / OnInteract / OnFocus / OnBlur / OnValidate / OnError / OnMounted / OnDestroyed",
+      "Window({ initialPosition, titleLogo, titleLogoSize, titleLogoPosition, titleAlign, chromeButtons })"
     ],
     "breakingChanges": [],
     "defaultChanges": [
       "Floating windows reach the playable safe edges and leave travel when oversized.",
       "Set dockable = true to snap during a mouse drag, and touchDock = true for touch.",
-      "Set fillCompact = true to fill narrow screens automatically."
+      "Set fillCompact = true to fill narrow screens automatically.",
+      "The opening position defaults to center. Override with initialPosition, x or y.",
+      "Max, Restore and Hide default to themed icon buttons.",
+      "A floating panel can enter an unobstructed top-bar lane if the whole window fits beside Roblox controls."
     ]
   },
   "documentation": [
@@ -58,9 +62,9 @@
   "runtimeBuild": {
     "status": "PASS_WITH_LIMITATION",
     "preview": {
-      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.3.rbxlx",
-      "sha256": "f6ddfa4ed86ec1ed2f00da6a4b0d927b37cbe4ae820fdd51c9b624a5a4e295e3",
-      "bytes": 362063,
+      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.4.rbxlx",
+      "sha256": "27fe1b2acf3215451c5897ae0c3907ac30e581f62328d020e769ba6a404bb130",
+      "bytes": 373085,
       "moduleScripts": 41,
       "localScripts": 1,
       "serverScripts": 0,
@@ -77,8 +81,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4992,
-      "sha256": "3bb9d0e857e091debe538737d808654d811622429f0bd3b9025e7f06426ea43f"
+      "bytes": 5380,
+      "sha256": "ec613825ccbccb570c90f1691bb5608f34a2e7f932b6c60fda3039653b1674a2"
     },
     {
       "path": "README.id.md",
@@ -127,13 +131,13 @@
     },
     {
       "path": "docs/auth.md",
-      "bytes": 10398,
-      "sha256": "f5f95f26c9043248b895826d8cc5eef9fa902742f792c19f4cf3b7f1bd4615e2"
+      "bytes": 10759,
+      "sha256": "1f219f1bf003ec138b156df04161fff2870e05555ad715123d8c9c29e71aaf57"
     },
     {
       "path": "docs/components.md",
       "bytes": 7582,
-      "sha256": "287378cf474c5daf99876bdef98f64fdf49aed629209dcad3e564a952fff800e"
+      "sha256": "70bb01762846057dc1d9bd109fa14c454f49883bfc069605dcec497be425fc27"
     },
     {
       "path": "docs/core.md",
@@ -172,8 +176,8 @@
     },
     {
       "path": "docs/id/window.md",
-      "bytes": 4081,
-      "sha256": "872b97411c2ac2dea719bfaa8356df06259942a42945fea1643678d92fda42d7"
+      "bytes": 4839,
+      "sha256": "0a15e383f2cff4a5c43cb0e3645a9b9ec1b4d9fcea35e00b8563ae4107a295de"
     },
     {
       "path": "docs/index.md",
@@ -217,8 +221,8 @@
     },
     {
       "path": "docs/window.md",
-      "bytes": 12612,
-      "sha256": "6162f0e1cfb6dbcd5a9d51bf51035c97d91dd7e630e705aea08f5797a6fb5289"
+      "bytes": 14172,
+      "sha256": "e0ed92f7dec719c314e8862826629db5c99d600a304bc2e9a8ae02f54f462ea1"
     },
     {
       "path": "docs/zh-CN/core.md",
@@ -272,8 +276,8 @@
     },
     {
       "path": "evidence/phase4-checks.json",
-      "bytes": 9008,
-      "sha256": "5ac1ab9df9bacb29f601ea453cd021d219f1d54f11305a24cd254cffee07a56b"
+      "bytes": 9321,
+      "sha256": "a2223ae902b95aaca20374b8df32574ed6e93c133cbcc2598ca7911afe8ebdde"
     },
     {
       "path": "examples/foundation-preview.client.luau",
@@ -432,8 +436,8 @@
     },
     {
       "path": "src/engine/Layout.luau",
-      "bytes": 11783,
-      "sha256": "09533eab765ddc9ab6b7a70c9643c72691d1ca6ae091f2b1e72e9d347cff5bdb"
+      "bytes": 13483,
+      "sha256": "d5a6524445bafd4d6f149e460356bb3ba961f82b445078f9921f0095ee31e146"
     },
     {
       "path": "src/engine/Motion.luau",
@@ -472,8 +476,8 @@
     },
     {
       "path": "src/engine/Viewport.luau",
-      "bytes": 3888,
-      "sha256": "d8ad4434205ba082eb1a9c3c0be4961e747275ef879039504b2938c212a41f3b"
+      "bytes": 4566,
+      "sha256": "826518f838beaf198d7b676c27193dd368e2c746f15223f5cf62e2fb21d9239c"
     },
     {
       "path": "src/init.luau",
@@ -517,18 +521,18 @@
     },
     {
       "path": "src/ui/Window.luau",
-      "bytes": 34067,
-      "sha256": "15177bad01bf26a0815af2fac88f19b6457ff2c805680645983427ebd84e7e1c"
+      "bytes": 39724,
+      "sha256": "0bc53ed226a997c0e66c2d80d27309f3be994a0336349a6604b394d262b12580"
     },
     {
       "path": "src/ui/WindowProps.luau",
-      "bytes": 2296,
-      "sha256": "753fb30a84b4b3a0dd2376a171df8c30f210a6f183375a7fbb42fb777fe28b0e"
+      "bytes": 5046,
+      "sha256": "7933ce3748e8c77df436098fefd10d4d9f96a559eab9b0629d4e101c43e33a28"
     },
     {
       "path": "src/ui/Workspace.luau",
-      "bytes": 26720,
-      "sha256": "660a0a243551f7362c842ea4e41d85108d6f43426c5c6a8f6f6267f438ae6a95"
+      "bytes": 26957,
+      "sha256": "8ed010ad0e5a283f2f16639673bb9be6aafe1e8ea3a27817d5fad8281890d33d"
     },
     {
       "path": "tests/FakeHost.luau",
@@ -552,8 +556,8 @@
     },
     {
       "path": "tests/window.luau",
-      "bytes": 26328,
-      "sha256": "7492674c9b9c9900bef6a5a1637620432b09895b6deff538a2cbd42ad03de8c1"
+      "bytes": 29583,
+      "sha256": "dd53c60dfed7fa51f6edbe3e8186ba053ec071b843ef8b0cb90dcd6b47d202b8"
     },
     {
       "path": "tooling/generate_themes.py",

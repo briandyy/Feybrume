@@ -39,6 +39,10 @@ Providers implement Init, GetCapabilities, Validate, Refresh, GetEntitlements, G
 
 Provider-managed routing intersects supported networks, project settings and host policy. Expose fallback selection, cooldowns and rotation only when supported. The first-party route design covers `POST /v1/auth/validate`, `POST /v1/auth/refresh`, `POST /v1/auth/logout`, `POST /v1/checkpoints` and `GET /v1/checkpoints/{id}`. Authenticate against server sessions and allowlist upstream hosts. Webhook contracts require vendor evidence. Feybrume has no deployed auth endpoint.
 
+## Key prompt placement
+
+The Phase 10 key prompt will reuse the window placement contract. A script author can choose a center default, any of the nine viewport anchors, or explicit `{ x, y }` coordinates. Fit the prompt inside the device safe area before applying the anchor. Keep the keyboard and Roblox controls clear. [Window placement options](window.md)
+
 ## Provider registry
 
 | Adapter | Evidence | Integration status |

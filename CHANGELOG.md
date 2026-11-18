@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.4-foundation
+
+- Add nine opening anchors and custom coordinates. Keep center as the default.
+- Add icon-only Max, Restore, and Hide buttons with configurable text, images, and fills. Add title logo order and title alignment.
+- Keep resize chrome borderless at rest and use Source Sans for tab labels.
+- Allow floating panels into the free top-bar area when their full width fits.
+
 ## 0.4.3-foundation
 
 - Keep the whole window below the Roblox top bar and inside the playable viewport.

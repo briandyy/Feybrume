@@ -69,15 +69,38 @@ function Layout.FloatingLimits(area, limits)
     }
 end
 
-function Layout.OpenFloating(bounds, area, limits)
+local panelAnchors = table.freeze({
+    ["top-left"] = { 0, 0 }, top = { 0.5, 0 }, ["top-right"] = { 1, 0 },
+    left = { 0, 0.5 }, center = { 0.5, 0.5 }, right = { 1, 0.5 },
+    ["bottom-left"] = { 0, 1 }, bottom = { 0.5, 1 }, ["bottom-right"] = { 1, 1 },
+})
+
+function Layout.IsPanelAnchor(value)
+    return type(value) == "string" and panelAnchors[value] ~= nil
+end
+
+function Layout.PanelPosition(area, width, height, position)
+    if type(position) == "table" then return position.x, position.y end
+    local anchor = panelAnchors[position or "center"]
+    return area.x + (area.width - width) * anchor[1], area.y + (area.height - height) * anchor[2]
+end
+
+function Layout.OpenFloating(bounds, area, limits, position)
     local fitted = Layout.FloatingLimits(area, limits)
     local size = Layout.Clamp(Layout.Rect(area.x, area.y, bounds.width, bounds.height), area,
         fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
-    local centered = Layout.Center(area, size.width, size.height)
-    return Layout.Rect(bounds.x or centered.x, bounds.y or centered.y, bounds.width, bounds.height)
+    local x, y = Layout.PanelPosition(area, size.width, size.height, position)
+    return Layout.Rect(bounds.x or x, bounds.y or y, bounds.width, bounds.height)
 end
 
-function Layout.Window(rect, area, profile, placement, limits, fillCompact)
+function Layout.FloatingArea(area, lane, rect)
+    if lane and lane.y < area.y and rect.x >= lane.x and rect.x + rect.width <= lane.x + lane.width then
+        return Layout.Rect(area.x, lane.y, area.width, area.height + area.y - lane.y)
+    end
+    return area
+end
+
+function Layout.Window(rect, area, profile, placement, limits, fillCompact, topbarLane)
     if placement == "fullscreen" or (profile.narrow and fillCompact) then return table.clone(area) end
     if placement == "left" or placement == "right" then
         if area.width < limits.minWidth * 2 + 8 then return table.clone(area) end
@@ -86,7 +109,10 @@ function Layout.Window(rect, area, profile, placement, limits, fillCompact)
         return Layout.Rect(x, area.y, half, area.height)
     end
     local fitted = Layout.FloatingLimits(area, limits)
-    return Layout.Clamp(rect, area, fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
+    local fit = Layout.Clamp(rect, area, fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
+    local travel = Layout.FloatingArea(area, topbarLane, fit)
+    fit.y = math.clamp(rect.y, travel.y, travel.y + travel.height - fit.height)
+    return fit
 end
 
 function Layout.Resize(rect, area, dx, dy, limits)
@@ -142,6 +168,20 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
         end
     end
     return best
+end
+
+function Layout.HeaderTitle(startX, endX, midpoint, alignment, wanted)
+    local width = math.max(0, endX - startX)
+    if alignment == "center" then
+        local centered = math.min(midpoint - startX, endX - midpoint)
+        if centered >= math.min(28, width / 2) then
+            width = math.min(wanted, centered * 2)
+            return midpoint - width / 2, width
+        end
+        return startX + math.max(0, (width - wanted) / 2), math.min(width, wanted)
+    end
+    local fitted = math.min(width, wanted)
+    return if alignment == "right" then endX - fitted else startX, fitted
 end
 
 function Layout.HeaderAdornmentWidths(width, requestedLeading, requestedTrailing)
