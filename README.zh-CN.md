@@ -1,19 +1,44 @@
 # Feybrume
 
-[English](README.md) · [Bahasa Indonesia](README.id.md) · [简体中文](README.zh-CN.md)
+[English](README.md) · [Bahasa Indonesia](README.id.md)
 
-面向 Roblox 体验的 Luau 界面框架，支持自定义样式，优先考虑触屏操作。
+Feybrume 为 Roblox 游戏提供可拖动的窗口。窗口可以停靠在屏幕边缘，包含多个标签页，隐藏后可通过浮动按钮重新打开。标签页可直接添加 Roblox GUI 对象。
 
-当前源码包含运行时核心和主题引擎，提供 40 套预设、分层样式覆盖、对比度控制、Roblox 原生字体回退和减少动态效果设置。Studio 示例包括主题以及带停靠、标签页和底部面板的响应式窗口。
+## 运行示例
 
-## 试用
+安装 [Rojo](https://rojo.space/)，然后在仓库根目录运行以下命令。
 
-- [在 Roblox Studio 中安装运行时核心](docs/zh-CN/core.md)
-- [运行主题预览或创建主题](docs/zh-CN/design-system.md)
-- [试用窗口、停靠与移动端布局](docs/zh-CN/window.md)
-- [查看文档目录](docs/zh-CN/index.md)
+```sh
+rojo build window-preview.project.json -o Feybrume.rbxlx
+```
 
-安装 [Luau CLI](https://github.com/luau-lang/luau/releases)，然后在仓库根目录运行以下命令。
+用 Roblox Studio 打开 `Feybrume.rbxlx`，按 **F5**。试试停靠窗口、打开弹出面板，或在 Device Emulator 中选择手机布局。
+
+## 在自己的游戏中使用
+
+通过 Rojo 将 `Feybrume` 模块同步到 `ReplicatedStorage`。把下面的示例放入 `StarterPlayerScripts` 下的 `LocalScript`。[安装指南](docs/zh-CN/core.md)
+
+```luau
+local Fey = require(game:GetService("ReplicatedStorage"):WaitForChild("Feybrume"))
+
+local window = Fey:Window({ id = "tools", title = "Game tools", theme = "cosmic" })
+local home = window:Tab({ id = "home", title = "Home" })
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0, 40)
+label.Text = "准备就绪"
+home:Add(label)
+```
+
+[窗口指南](docs/zh-CN/window.md) · [主题](docs/zh-CN/design-system.md) · [文档](docs/zh-CN/index.md)
+
+## 预览状态
+
+`main` 分支的源码构建 **v0.3.4**。项目维护者在 Android 上单独测试了 Roblox 中的 **v0.3.5** 预览，确认浮动按钮可到达屏幕左右边缘、避开跳跃按钮，并显示 CDN 示例图片。下一阶段将添加基础控件及状态绑定。[设备测试记录](docs/qa-and-backlog.md#window-preview-checks)
+
+## 本地检查
+
+使用 [Luau CLI](https://github.com/luau-lang/luau/releases) 运行检查。
 
 ```sh
 luau tests/core.luau
@@ -22,4 +47,4 @@ luau tests/window.luau
 luau-analyze src tests examples
 ```
 
-[更新日志](CHANGELOG.md) · [测试记录](evidence/phase3-checks.json)
+[更新日志](CHANGELOG.md) · [第三阶段构建记录](phase3-manifest.json)

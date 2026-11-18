@@ -260,5 +260,52 @@
         "YouTube metadata and permitted handoff"
       ]
     }
-  }
+  },
+  "ownerWindowPreviewRetests": [
+    {
+      "preview": "0.3.4-window",
+      "testedBy": "Project owner",
+      "results": [
+        {
+          "target": "Studio Controller Emulator",
+          "check": "Controller navigation",
+          "status": "PASS_WITH_LIMITATION",
+          "observation": "Owner reported controller navigation working."
+        },
+        {
+          "target": "Android",
+          "check": "Visual layout",
+          "status": "PASS_WITH_LIMITATION",
+          "observation": "Owner reported no visual glitches."
+        }
+      ]
+    },
+    {
+      "preview": "0.3.5-window",
+      "testedBy": "Project owner",
+      "target": "Android Roblox client, published test place",
+      "results": [
+        {
+          "check": "Bubble screen edges",
+          "status": "PASS",
+          "observation": "Bubble reached the physical left and right sides."
+        },
+        {
+          "check": "Jump clearance",
+          "status": "PASS",
+          "observation": "Bubble moved out of the Jump area on drop."
+        },
+        {
+          "check": "Sample CDN logo",
+          "status": "PASS",
+          "observation": "PNG fetched and rocket drawn in the bubble."
+        },
+        {
+          "check": "Unregistered image URL",
+          "status": "PASS",
+          "observation": "Preview reported URL not registered."
+        }
+      ]
+    }
+  ]
 }

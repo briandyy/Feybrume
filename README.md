@@ -1,19 +1,44 @@
 # Feybrume
 
-[English](README.md) · [Bahasa Indonesia](README.id.md) · [简体中文](README.zh-CN.md)
+[Bahasa Indonesia](README.id.md) · [简体中文](README.zh-CN.md)
 
-A customizable, mobile-first Luau UI framework for Roblox experiences.
+Feybrume adds draggable windows to Roblox experiences. A window can dock to an edge, hold tabs, and reopen from a floating button. Tabs accept Roblox GUI instances directly.
 
-The source provides a runtime core and a theme engine with 40 presets, scoped style overrides, contrast controls, native font fallback, and reduced motion. The Studio previews cover themes and a responsive window engine with docking, tabs and bottom sheets.
+## Run the demo
 
-## Try it
+With [Rojo](https://rojo.space/) installed, build the window demo from the repository root.
 
-- [Install the core in Roblox Studio](docs/core.md)
-- [Run the theme preview or create a theme](docs/design-system.md)
-- [Try windows, docking and mobile layouts](docs/window.md)
-- [Browse the documentation](docs/index.md)
+```sh
+rojo build window-preview.project.json -o Feybrume.rbxlx
+```
 
-Install the [Luau CLI](https://github.com/luau-lang/luau/releases) to run the tests from the repository root.
+Open `Feybrume.rbxlx` in Roblox Studio and press **F5**. Try docking a window, opening a sheet, or switching to a phone profile in Device Emulator.
+
+## Add a window to your game
+
+Sync the project with Rojo to install `Feybrume` in `ReplicatedStorage`. Put this in a `LocalScript` under `StarterPlayerScripts`. [Studio setup](docs/core.md)
+
+```luau
+local Fey = require(game:GetService("ReplicatedStorage"):WaitForChild("Feybrume"))
+
+local window = Fey:Window({ id = "tools", title = "Game tools", theme = "cosmic" })
+local home = window:Tab({ id = "home", title = "Home" })
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0, 40)
+label.Text = "Ready to play"
+home:Add(label)
+```
+
+[Window API and examples](docs/window.md) · [Themes](docs/design-system.md) · [Documentation](docs/index.md)
+
+## Preview status
+
+The source on `main` builds **v0.3.4**. A separate **v0.3.5** Roblox preview passed owner testing for left and right bubble placement, Jump button clearance, and rendering the sample CDN logo on Android. The next phase adds basic controls and state bindings. [Device test notes](docs/qa-and-backlog.md#window-preview-checks)
+
+## Develop locally
+
+Run the checks with the [Luau CLI](https://github.com/luau-lang/luau/releases).
 
 ```sh
 luau tests/core.luau
@@ -22,4 +47,4 @@ luau tests/window.luau
 luau-analyze src tests examples
 ```
 
-See the [changelog](CHANGELOG.md) and [test evidence](evidence/phase3-checks.json).
+[Changelog](CHANGELOG.md) · [Phase 3 build record](phase3-manifest.json)

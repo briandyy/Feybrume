@@ -89,18 +89,18 @@
     },
     {
       "path": "README.id.md",
-      "bytes": 1072,
-      "sha256": "839bf2ac833ccd54fe9799bcd6f0fa0ce5819d136cacd318693c6d7a8a6b3c70"
+      "bytes": 1942,
+      "sha256": "af2ff22e97469733e265b9baf310e234321b6ebe3fbe64e82ae79b4045ce1d8e"
     },
     {
       "path": "README.md",
-      "bytes": 975,
-      "sha256": "1946d5d0371e26e3277898acc6bb1ef5d0d843f470a3c69b37c18fd950a29ad2"
+      "bytes": 1875,
+      "sha256": "49dc4a085b5a347558c3b1e71048cdc25b1a731d1cc2dbab344f08f3d6cffe3c"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 1011,
-      "sha256": "d65439fb4c0168ea9fd2374bcc0c06213c484d1c4d3bde0ab5ed85290cac23a7"
+      "bytes": 1909,
+      "sha256": "06c35ee3c850581438412863deaea75e0eb3e3e177d009d54efc424b22b9b811"
     },
     {
       "path": "default.project.json",
@@ -174,8 +174,8 @@
     },
     {
       "path": "docs/index.md",
-      "bytes": 1226,
-      "sha256": "71b4aa6c1943239455f7670f07480056988a0012c7c892465458099a0b8385db"
+      "bytes": 1169,
+      "sha256": "0876e1f0349d01602d7013641dbe0e34aaa85eac5173a1f029c934e9df7c7e7b"
     },
     {
       "path": "docs/media.md",
@@ -194,8 +194,8 @@
     },
     {
       "path": "docs/qa-and-backlog.md",
-      "bytes": 9774,
-      "sha256": "d02278ad34880bae1d346a76df958f58ecdf394f5f60a02bb2add34cb73208d4"
+      "bytes": 9113,
+      "sha256": "f274c1d5837802e9e8608084e153c83dd8b1b1c485fb6a35929c0d7e0295b95f"
     },
     {
       "path": "docs/release-doc-map.md",
@@ -264,8 +264,8 @@
     },
     {
       "path": "evidence/phase3-checks.json",
-      "bytes": 11068,
-      "sha256": "fa4f063fd2542a1b7240c81536ccc5b07d1bd53d2579d83a0b6b6ae5ac9d6f0a"
+      "bytes": 12448,
+      "sha256": "9755d20a343ca0a74e070f6fc0c782125dbdfacddb1a771328648eeb089fc6eb"
     },
     {
       "path": "examples/theme-preview.client.luau",

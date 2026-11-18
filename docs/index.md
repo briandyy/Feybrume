@@ -1,16 +1,22 @@
 # Feybrume documentation
 
-[English](index.md) · [Bahasa Indonesia](id/index.md) · [简体中文](zh-CN/index.md)
+[Bahasa Indonesia](id/index.md) · [简体中文](zh-CN/index.md)
 
-| Topic | Pages |
-|---|---|
-| Runtime and Studio setup | [Core guide](core.md) |
-| Themes and style resolution | [Design system](design-system.md), [40 presets](../design/themes.json) |
-| Window and mobile preview | [Window and workspace guide](window.md) |
-| Implementation contracts | [Architecture](architecture.md), [Module contracts](module-contracts.md), [Component inventory](../design/components.json) |
-| Fonts and media | [Typography and icons](typography.md), [Media and audio](media.md) |
-| Mobile | [Touch profiles and test scenarios](mobile.md) |
-| Auth | [Authentication and gateways](auth.md), [Provider and gateway matrix](../design/auth-compatibility.json) |
-| Research | [Library references](research.md), [Font license samples](../evidence/font-license-samples.json) |
-| QA and release | [QA and roadmap](qa-and-backlog.md), [Release documentation map](release-doc-map.md), [Traceability](../design/traceability.json) |
-| Build records | [Design](../phase0-manifest.json), [Core](../phase1-manifest.json), [Theme engine](../phase2-manifest.json), [Window engine](../phase3-manifest.json) |
+## Use Feybrume
+
+- [Install the modules in Studio](core.md)
+- [Build a window with tabs, sheets, and touch controls](window.md)
+- [Choose a theme or write your own](design-system.md)
+- [Check the latest device results and roadmap](qa-and-backlog.md#window-preview-checks)
+
+## Reference
+
+- [Architecture](architecture.md) and [module contracts](module-contracts.md)
+- [Theme presets](../design/themes.json) and [touch layout guidance](mobile.md)
+- Planned APIs for [components](../design/components.json), [fonts and icons](typography.md), [media and audio](media.md), and [authentication](auth.md)
+- [Provider research](../design/auth-compatibility.json), [library references](research.md), and [font license samples](../evidence/font-license-samples.json)
+
+## Changes and tests
+
+- [Changelog](../CHANGELOG.md), [release documentation map](release-doc-map.md), and [test traceability](../design/traceability.json)
+- Build records for [design](../phase0-manifest.json), [core](../phase1-manifest.json), [themes](../phase2-manifest.json), and [windows](../phase3-manifest.json)

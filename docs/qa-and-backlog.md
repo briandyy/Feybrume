@@ -1,6 +1,22 @@
-# QA, risks, and roadmap
+# QA and roadmap
 
-PASS records executed checks. PASS_WITH_LIMITATION indicates narrower evidence than the target. IMPLEMENTED_UNTESTED indicates working source awaiting the named environment. BLOCKED records a missing prerequisite. FAIL records a failed check. NOT_IMPLEMENTED identifies planned work. Phase 1 core and Phase 2 theme tests run in Luau CLI with an injected host. The desktop Phase 2 preview passed a user retest. The v0.3.0 window preview rendered in desktop Studio and the iPhone XR emulator. The v0.3.1 desktop Studio retest confirmed full Resize and Restore labels and clean Output with plugins disabled. [Core evidence](../evidence/phase1-checks.json) · [Theme evidence](../evidence/phase2-checks.json) · [Window evidence](../evidence/phase3-checks.json) · [Traceability](../design/traceability.json)
+Start with the [window demo](window.md) to reproduce a device issue. Include the preview version, device, input method, and the steps that trigger it. [Core tests](../evidence/phase1-checks.json) · [Theme tests](../evidence/phase2-checks.json) · [Traceability](../design/traceability.json)
+
+## Window preview checks
+
+The published v0.3.5 preview passed the Android checks that prompted the launcher patch. The repo's build record covers v0.3.4. [Detailed test record](../evidence/phase3-checks.json)
+
+| Check | What was observed | Follow-up |
+|---|---|---|
+| Tabs and outlines | The owner reported no layout glitches in v0.3.4 on Android. | Include portrait and landscape in future layout checks. |
+| Gamepad | The owner reported that controller navigation worked in the v0.3.4 Studio Controller Emulator. | Verify physical controller behavior separately. |
+| Bubble placement | On v0.3.5 Android, the bubble reached both edges and moved clear of Jump when dropped over it. | Check on phones with other screen cutouts and touch layouts. |
+| CDN logo | The sample PNG rendered inside the v0.3.5 bubble on Android. The preview refused an unregistered URL. | Cover other approved sources and failed downloads in the media phase. |
+| Window appearance | CLI tests passed for property updates, restored bounds, and header layout on the v0.3.4 source. | Exercise the live appearance controls in Studio. |
+| Keyboard and overlays | CLI fixtures cover focus and layout. | Check that rotation and the Android keyboard leave the focused field and dismissal controls reachable. |
+| Studio warning | The Resize and Restore labels rendered in full in v0.3.1. A RoundedCorner8 warning disappeared with plugins disabled. | Check larger text settings. The specific plugin was not identified. |
+
+## Release acceptance
 
 | Area | Release weight | Acceptance evidence |
 |---|---:|---|
@@ -43,21 +59,6 @@ Release scores require evidence for every category. The library research links i
 | R-14 | Project license pending | Record an owner-approved license before redistributing code or bundled assets. |
 
 The runtime baseline uses a native ModuleScript, canonical schema names, a 48-unit preset touch target and separate IDs for theme geometry. Pelinda is planned as a Panda compatibility layer. Device bugs require real-device reproduction.
-
-## Current preview checks
-
-| ID | Status | Scope and impact |
-|---|---|---|
-| WIN-04 | PASS_WITH_LIMITATION | Resize and Restore display in full in the v0.3.1 desktop Studio preview. Larger text settings still need a Studio check. |
-| STUDIO-01 | PASS_WITH_LIMITATION | The RoundedCorner8 warning disappeared with all plugins disabled. The owner reported clean Edit and Play Output. The specific plugin has not been isolated. |
-| WIN-05 | PASS_WITH_LIMITATION | Owner verified the improved mobile layout on Android in v0.3.2. Tab outline and launcher edge changes require a v0.3.3 retest. |
-| WIN-06 | PASS_WITH_LIMITATION | Owner activated window controls, sheet actions, and inline tabs with Controller Emulator in v0.3.2. |
-| WIN-07 | IMPLEMENTED_UNTESTED | Retest Gamepad A on Tabs/More with the v0.3.3 preview. An injected focus and activation fixture passes in Luau CLI. |
-| WIN-08 | IMPLEMENTED_UNTESTED | Retest launcher styling, image loading, and device-safe edge reach on Android in v0.3.3. |
-| WIN-09 | IMPLEMENTED_UNTESTED | Verify live window appearance, custom bounds and header/status slots in the v0.3.4 preview. CLI tests cover validation, bounds and layout. |
-| WIN-01 | IMPLEMENTED_UNTESTED | Verify drag, resize, dock and rotation in Studio. The geometry and gesture model passes in CLI. |
-| WIN-02 | IMPLEMENTED_UNTESTED | Check real Android and iOS keyboard, cutouts, game controls and bubble clearance. Custom experiences can configure reserved rectangles. |
-| WIN-03 | IMPLEMENTED_UNTESTED | Verify keyboard and gamepad focus, nested dismissal and lifecycle under native Roblox input events. The focus model passes in CLI. |
 
 ## Roadmap
 

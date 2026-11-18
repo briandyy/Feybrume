@@ -1,19 +1,44 @@
 # Feybrume
 
-[English](README.md) · [Bahasa Indonesia](README.id.md) · [简体中文](README.zh-CN.md)
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-Framework UI Luau untuk pengalaman Roblox, dengan tampilan yang bisa dikustomisasi dan kontrol yang dirancang untuk perangkat sentuh.
+Feybrume menambahkan jendela yang bisa digeser di experience Roblox. Jendela bisa menempel ke tepi, menampung tab, dan dibuka lagi lewat tombol melayang. Isi tab bisa memakai objek GUI Roblox.
 
-Kode saat ini mencakup inti runtime dan mesin tema dengan 40 preset, pengaturan gaya per bagian, kontrol kontras, fallback font bawaan Roblox, dan pengaturan pengurangan animasi. Pratinjau Studio mencakup tema dan jendela responsif dengan docking, tab, dan bottom sheet.
+## Coba demo di Studio
 
-## Coba
+Pasang [Rojo](https://rojo.space/), lalu jalankan perintah ini dari folder utama repo.
 
-- [Pasang inti runtime di Roblox Studio](docs/id/core.md)
-- [Jalankan pratinjau atau buat tema sendiri](docs/id/design-system.md)
-- [Coba jendela, docking, dan layout HP](docs/id/window.md)
-- [Lihat indeks dokumentasi](docs/id/index.md)
+```sh
+rojo build window-preview.project.json -o Feybrume.rbxlx
+```
 
-Pasang [Luau CLI](https://github.com/luau-lang/luau/releases), lalu jalankan perintah ini dari direktori utama repo.
+Buka `Feybrume.rbxlx` di Roblox Studio dan tekan **F5**. Coba geser jendela, buka panel dialog, atau ganti profil layar ke HP di Device Emulator.
+
+## Pasang di game sendiri
+
+Sinkronkan proyek dengan Rojo agar modul `Feybrume` masuk ke `ReplicatedStorage`. Masukkan contoh ini ke `LocalScript` di `StarterPlayerScripts`. [Panduan pemasangan](docs/id/core.md)
+
+```luau
+local Fey = require(game:GetService("ReplicatedStorage"):WaitForChild("Feybrume"))
+
+local window = Fey:Window({ id = "tools", title = "Game tools", theme = "cosmic" })
+local home = window:Tab({ id = "home", title = "Home" })
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0, 40)
+label.Text = "Siap bermain"
+home:Add(label)
+```
+
+[Panduan jendela](docs/id/window.md) · [Tema](docs/id/design-system.md) · [Dokumentasi](docs/id/index.md)
+
+## Status preview
+
+Source di `main` menghasilkan **v0.3.4**. Preview **v0.3.5** diuji terpisah di Roblox. Di Android, pemilik proyek memastikan bubble bisa sampai ke tepi kiri dan kanan, bergeser dari area Jump, dan menampilkan logo contoh dari CDN. Fase berikutnya menambah kontrol dasar dan pengikatan nilai. [Catatan tes perangkat](docs/qa-and-backlog.md#window-preview-checks)
+
+## Tes lokal
+
+Jalankan pemeriksaan dengan [Luau CLI](https://github.com/luau-lang/luau/releases).
 
 ```sh
 luau tests/core.luau
@@ -22,4 +47,4 @@ luau tests/window.luau
 luau-analyze src tests examples
 ```
 
-[Lihat riwayat perubahan](CHANGELOG.md) dan [hasil uji](evidence/phase3-checks.json).
+[Riwayat perubahan](CHANGELOG.md) · [Catatan build Fase 3](phase3-manifest.json)
