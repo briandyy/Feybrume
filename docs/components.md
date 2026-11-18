@@ -92,4 +92,4 @@ rojo build foundation-preview.project.json -o Feybrume-Foundation.rbxlx
 - In Studio, press **F5**, record a lap, and load the hard preset. **Difficulty**, **Show training tips**, and **Hard mode reminder** should update together.
 - In the Controller Emulator, use D-pad to reach a row and **A** to activate it. Verify a disabled row is skipped.
 - On a phone in a published test place, try the full row tap target in portrait and landscape. Turn tips off on Setup and check that Guide shows the same state. Drag the resize icon in the lower-right corner in landscape. Check that the scrolling page reaches the right padding and that the selection survives rotation.
-- Version 0.4.2 was compiled and checked with Luau CLI and Rojo. Native Studio and phone interaction still require the checks above. [Test record](../evidence/phase4-checks.json)
+- Version 0.4.3 was compiled and checked with Luau CLI and Rojo. Native Studio and phone interaction still require the checks above. [Test record](../evidence/phase4-checks.json)

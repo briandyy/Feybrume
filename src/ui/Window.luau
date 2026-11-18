@@ -52,8 +52,7 @@ function Window.new(workspace, options)
     self._shape = Factory.Create("UICorner", shell)
     self._edge = Factory.Create("UIStroke", shell)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
-    local body = newFrame(shell, "Chrome", { ZIndex = 2 })
-    self._body = body
+    local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
     self._heading = Factory.Label(body, props.title, props.titleSize)
     self._heading.Font = Enum.Font.SourceSansBold
@@ -174,13 +173,11 @@ function Window:_reflow()
         return
     end
     if not self._requested then
-        local initial = self._initialBounds
-        local centered = Layout.Center(area, initial.width, initial.height)
-        self._requested = Layout.Rect(initial.x or centered.x, initial.y or centered.y, centered.width, centered.height)
+        self._requested = Layout.OpenFloating(self._initialBounds, workspace._windowArea, self._limits)
     end
     local fillCompact = profile.narrow and self._options.fillCompact == true
     local floating = self._placement == "floating" and not fillCompact
-    local rect = Layout.Window(self._requested, if floating then workspace._screenArea else area, profile,
+    local rect = Layout.Window(self._requested, if floating then workspace._windowArea else area, profile,
         self._placement, self._limits, fillCompact)
     self._rect = rect
     self._shell.Visible = self._open
@@ -201,9 +198,7 @@ function Window:_reflow()
     self._subtitle.TextColor3 = Factory.Hex(theme.tokens.textMuted or theme.tokens.onSurface)
     self._subtitle.TextSize = math.round(13 * scale)
 
-    local content = Layout.WindowContent(rect, workspace._chromeArea)
-    Factory.Rect(self._body, content.x, content.y, content.width, content.height)
-    local w, h = content.width, content.height
+    local w, h = rect.width, rect.height
     local target = workspace:_target(theme)
     local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
@@ -255,8 +250,7 @@ function Window:_reflow()
     Factory.Rect(status, pad, y + remaining - statusH, bodyW, statusH)
     status.Visible = statusH > 0
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
-    local contentX, contentY = rect.x + content.x, rect.y + content.y
-    self._bubbleExclusions = { Layout.Rect(contentX, contentY, w, bar) }
+    self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
         self._nav.Visible = false
         Factory.Rect(self._pages, pad, y, bodyW, bodyH)
@@ -267,14 +261,14 @@ function Window:_reflow()
             local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(railLimit, math.floor(bodyW * 0.29))
             local rail = math.min(math.max(0, bodyW - gap), math.max(target, preferredRail))
             table.insert(self._bubbleExclusions,
-                Layout.Rect(contentX + (if mode == "left" then pad else pad + bodyW - rail), contentY + y, rail, bodyH))
+                Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
             self:_layoutTabs(mode, rail, target)
             Factory.Rect(self._nav, if mode == "left" then pad else pad + bodyW - rail, y, rail, bodyH)
             Factory.Rect(self._pages, if mode == "left" then pad + rail + gap else pad, y, bodyW - rail - gap, bodyH)
         else
             local navH = target + 2 * Layout.TabPadding
             local navY = if mode == "bottom" then y + math.max(0, bodyH - navH) else y
-            table.insert(self._bubbleExclusions, Layout.Rect(contentX + pad, contentY + navY, bodyW, navH))
+            table.insert(self._bubbleExclusions, Layout.Rect(rect.x + pad, rect.y + navY, bodyW, navH))
             self:_layoutTabs(mode, bodyW, target)
             Factory.Rect(self._nav, pad, navY, bodyW, navH)
             Factory.Rect(self._pages, pad, if mode == "bottom" then y else y + navH + gap, bodyW, bodyH - navH - gap)
@@ -332,9 +326,9 @@ function Window:_bindGestures()
         local changed = false
         return {
             drag = function(dx, dy)
-                local origin, area = workspace._origin, workspace._screenArea
+                local origin, area = workspace._origin, workspace._windowArea
                 if wasDocked and not changed then
-                    local requested = Layout.Clamp(self._requested, area)
+                    local requested = Layout.Window(self._requested, area, workspace._profile, "floating", self._limits, false)
                     local fraction = math.clamp(((position.X - origin.X) - before.x) / math.max(1, before.width), 0, 1)
                     before = Layout.Rect(position.X - origin.X - requested.width * fraction,
                         position.Y - origin.Y - workspace:_target(self:_theme()) / 2, requested.width, requested.height)
@@ -346,7 +340,7 @@ function Window:_bindGestures()
             end,
             finish = function(pointer)
                 if snap then
-                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._screenArea, self._props.snapDistance))
+                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._windowArea, self._props.snapDistance))
                 else
                     workspace:_placeBubbles()
                 end
@@ -358,7 +352,8 @@ function Window:_bindGestures()
         workspace:_raise(self)
         local rect = self._rect
         return { drag = function(dx, dy)
-            self._requested = Layout.Resize(rect, workspace._screenArea, dx, dy, self._limits)
+            local area = workspace._windowArea
+            self._requested = Layout.Resize(rect, area, dx, dy, Layout.FloatingLimits(area, self._limits))
             self:_reflow()
         end, finish = function() workspace:_placeBubbles() end }
     end)

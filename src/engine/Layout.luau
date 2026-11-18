@@ -58,6 +58,25 @@ function Layout.Center(area, width, height)
     return Layout.Rect(area.x + (area.width - width) / 2, area.y + (area.height - height) / 2, width, height)
 end
 
+function Layout.FloatingLimits(area, limits)
+    -- Leave travel available even if the requested floating size exceeds the viewport.
+    local spareWidth = math.min(48, math.floor(area.width * 0.1))
+    local spareHeight = math.min(56, math.floor(area.height * 0.16))
+    return {
+        minWidth = limits.minWidth, minHeight = limits.minHeight,
+        maxWidth = math.min(limits.maxWidth, area.width - spareWidth),
+        maxHeight = math.min(limits.maxHeight, area.height - spareHeight),
+    }
+end
+
+function Layout.OpenFloating(bounds, area, limits)
+    local fitted = Layout.FloatingLimits(area, limits)
+    local size = Layout.Clamp(Layout.Rect(area.x, area.y, bounds.width, bounds.height), area,
+        fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
+    local centered = Layout.Center(area, size.width, size.height)
+    return Layout.Rect(bounds.x or centered.x, bounds.y or centered.y, bounds.width, bounds.height)
+end
+
 function Layout.Window(rect, area, profile, placement, limits, fillCompact)
     if placement == "fullscreen" or (profile.narrow and fillCompact) then return table.clone(area) end
     if placement == "left" or placement == "right" then
@@ -66,7 +85,8 @@ function Layout.Window(rect, area, profile, placement, limits, fillCompact)
         local x = if placement == "left" then area.x else area.x + area.width - half
         return Layout.Rect(x, area.y, half, area.height)
     end
-    return Layout.Clamp(rect, area, limits.minWidth, limits.minHeight, limits.maxWidth, limits.maxHeight)
+    local fitted = Layout.FloatingLimits(area, limits)
+    return Layout.Clamp(rect, area, fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
 end
 
 function Layout.Resize(rect, area, dx, dy, limits)
@@ -198,14 +218,6 @@ function Layout.FreeBubble(area: Rectangle, reserved: { Rectangle }, anchor: Anc
         end
     end
     return best
-end
-
-function Layout.WindowContent(window, safe)
-    local x = math.clamp(safe.x - window.x, 0, window.width)
-    local y = math.clamp(safe.y - window.y, 0, window.height)
-    local right = math.clamp(safe.x + safe.width - window.x, x, window.width)
-    local bottom = math.clamp(safe.y + safe.height - window.y, y, window.height)
-    return Layout.Rect(x, y, right - x, bottom - y)
 end
 
 function Layout.ResizeGrip(profile)

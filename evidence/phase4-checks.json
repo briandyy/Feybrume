@@ -1,6 +1,6 @@
 {
   "phase": 4,
-  "version": "0.4.2-foundation",
+  "version": "0.4.3-foundation",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 35,
+        "passed": 36,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -68,8 +68,9 @@
           "free bubbles keep a center drop and preserve relative position through rotation",
           "free bubbles move the shortest distance around occupied regions",
           "short touch layouts use a rail or bottom bar and keep their layout after input changes",
-          "floating windows reach all four screen edges, with no off-screen position",
-          "the title and controls stay inside safe insets when the window frame reaches a screen edge",
+          "floating windows reach each playable edge and can always move back",
+          "oversized launch requests fit and center below the Roblox top bar with room to drag",
+          "resize stops before a floating window loses its travel in a short viewport",
           "resize grip adapts to phone, tablet, and desktop while preserving content width",
           "a condensed tab launcher identifies the active page by title",
           "launcher can sit beside the Roblox controls at the top of the device safe area",
@@ -111,7 +112,7 @@
         ]
       }
     },
-    "passed": 80,
+    "passed": 81,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -124,9 +125,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.2.rbxlx",
-        "sha256": "9df36570e14ccf54d843167b578baf7e1a765783c11bcdf864224fc4ba7ea2c8",
-        "bytes": 362587,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.3.rbxlx",
+        "sha256": "f6ddfa4ed86ec1ed2f00da6a4b0d927b37cbe4ae820fdd51c9b624a5a4e295e3",
+        "bytes": 362063,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -150,10 +151,10 @@
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
   ],
   "review": {
-    "previousPublishedPreview": "0.4.1",
-    "previousPlaceVersion": 6,
-    "ownerObservation": "The condensed tab picker hides the active page name. The Android resize grip should be smaller and at the bottom-right.",
-    "followup": "Current page labels, flush screen edges with safe chrome, and a responsive icon-only resize grip.",
+    "previousPublishedPreview": "0.4.2",
+    "previousPlaceVersion": 7,
+    "ownerObservation": "On Android the shell sat underneath the Roblox top bar and filled the viewport height.",
+    "followup": "Restore native safe insets for the shell and fit floating geometry before centering.",
     "desktopAndMobileRetest": "IMPLEMENTED_UNTESTED"
   }
 }

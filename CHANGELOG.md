@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.3-foundation
+
+- Keep the whole window below the Roblox top bar and inside the playable viewport.
+- Fit and center oversized floating windows on launch. Leave room to move the panel after resizing.
+
 ## 0.4.2-foundation
 
 - Show the active page title in the condensed tab picker.
