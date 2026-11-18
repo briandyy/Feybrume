@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1-theme
+
+- Switch the default serif role from Garamond to Bodoni.
+- Add an optional text-bounds probe to native font resolution and use it in the Studio preview.
+- Top-align preview headings and body text, and draw Cosmic's sparkle with UI frames.
+
 ## 0.2.0-theme
 
 - Load all 40 built-in theme palettes and derive new themes at runtime.

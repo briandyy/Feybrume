@@ -5,7 +5,7 @@ local UserInputService = game:GetService("UserInputService")
 local Fey = require(ReplicatedStorage:WaitForChild("Feybrume"))
 local runtime = Fey.Runtime.Create()
 local registry = Fey.Theme.new({ initial = "cultivation", clock = runtime.Clock })
-local typesetter = Fey.Typography.new()
+local typesetter = Fey.Typography.new(nil, Fey.Typography.RobloxBoundsProbe(runtime.Services))
 local transitions = Fey.Transition.new(Fey.Animation.RobloxAdapter(runtime.Services), runtime.Scope)
 runtime.Scope:Give(registry)
 
@@ -42,17 +42,42 @@ local gradient = Instance.new("UIGradient")
 gradient.Parent = swatch
 
 local title = Instance.new("TextLabel")
-title.Position = UDim2.fromOffset(16, 52)
-title.Size = UDim2.new(1, -32, 0, 42)
+title.Position = UDim2.fromOffset(16, 59)
+title.Size = UDim2.new(1, -32, 0, 34)
 title.BackgroundTransparency = 1
 title.TextXAlignment = Enum.TextXAlignment.Left
+title.TextYAlignment = Enum.TextYAlignment.Top
+title.TextTruncate = Enum.TextTruncate.AtEnd
+title.TextSize = 20
 title.Parent = panel
 
+local sparkle = Instance.new("Frame")
+sparkle.AnchorPoint = Vector2.new(1, 0)
+sparkle.Position = UDim2.new(1, -16, 0, 61)
+sparkle.Size = UDim2.fromOffset(16, 16)
+sparkle.BackgroundTransparency = 1
+sparkle.Visible = false
+sparkle.Parent = panel
+
+local function sparklePart(width, height, rotation)
+    local part = Instance.new("Frame")
+    part.AnchorPoint = Vector2.new(0.5, 0.5)
+    part.Position = UDim2.fromScale(0.5, 0.5)
+    part.Size = UDim2.fromOffset(width, height)
+    part.Rotation = rotation
+    part.BorderSizePixel = 0
+    part.Parent = sparkle
+    return part
+end
+
+local sparkleParts = { sparklePart(7, 7, 45), sparklePart(2, 15, 0), sparklePart(15, 2, 0) }
 local sample = Instance.new("TextLabel")
 sample.Position = UDim2.fromOffset(16, 99)
 sample.Size = UDim2.new(1, -32, 0, 56)
 sample.TextWrapped = true
 sample.TextXAlignment = Enum.TextXAlignment.Left
+sample.TextYAlignment = Enum.TextYAlignment.Top
+sample.TextSize = 15
 sample.Text = "The quick brown fox · Selamat datang · 中文排版"
 sample.BackgroundTransparency = 1
 sample.Parent = panel
@@ -62,6 +87,8 @@ button.Position = UDim2.fromOffset(16, 170)
 button.AutoButtonColor = false
 button.Selectable = true
 button.Text = "Next theme"
+button.TextXAlignment = Enum.TextXAlignment.Center
+button.TextYAlignment = Enum.TextYAlignment.Center
 button.Parent = panel
 local buttonShape = Instance.new("UICorner")
 buttonShape.Parent = button
@@ -77,9 +104,24 @@ local function hex(value)
     return Color3.fromHex(value:sub(2))
 end
 
-local function setTypography(target, theme, role, size)
-    local resolved = typesetter:Resolve(theme, role)
-    if resolved.ok then Fey.Typography.Apply(target, resolved.value, size) end
+local fontTask
+local fontThemeId
+
+local function updateTypography(theme, buttonPlan)
+    if fontThemeId == theme.id then return end
+    fontThemeId = theme.id
+    if fontTask then fontTask:Cancel() end
+    fontTask = runtime:Spawn(function(token)
+        local heading = typesetter:Resolve(theme, "title")
+        if token:IsCancelled() then return end
+        local body = typesetter:Resolve(theme, "body")
+        if token:IsCancelled() then return end
+        local action = typesetter:ResolvePlan(buttonPlan)
+        if token:IsCancelled() then return end
+        if heading.ok then title.FontFace = heading.value.face end
+        if body.ok then sample.FontFace = body.value.face end
+        if action.ok then button.FontFace = action.value.face end
+    end)
 end
 
 local function render(theme)
@@ -105,13 +147,17 @@ local function render(theme)
     end
     gradient.Color = ColorSequence.new(stops)
 
-    title.Text = string.format("%02d · %s", index, theme.name)
+    local cosmic = theme.id == "cosmic"
+    title.Size = UDim2.new(1, if cosmic then -56 else -32, 0, 34)
+    title.Text = string.format("%02d · %s", index, if cosmic then "Cosmic" else theme.name)
+    sparkle.Visible = cosmic
+    if cosmic then
+        for _, part in ipairs(sparkleParts) do part.BackgroundColor3 = hex(theme.tokens.focus) end
+    end
     title.TextColor3 = hex(theme.tokens.onSurface)
     sample.TextColor3 = title.TextColor3
-    setTypography(title, theme, "title", 20)
-    setTypography(sample, theme, "body", 15)
-    local buttonFont = typesetter:ResolvePlan(style.typography)
-    if buttonFont.ok then Fey.Typography.Apply(button, buttonFont.value, style.textSize) end
+    button.TextSize = style.textSize
+    updateTypography(theme, style.typography)
 
     button.Size = UDim2.new(1, -32, 0, style.minHeight)
     buttonShape.CornerRadius = UDim.new(0, style.radius)

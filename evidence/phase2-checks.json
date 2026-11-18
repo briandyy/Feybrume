@@ -1,6 +1,6 @@
 {
   "phase": 2,
-  "version": "0.2.0-theme",
+  "version": "0.2.1-theme",
   "testedAt": "2026-11-18",
   "environment": {
     "toolchain": "Official Luau CLI 0.747",
@@ -39,7 +39,7 @@
     {
       "command": "luau tests/theme.luau",
       "status": "PASS",
-      "passed": 9,
+      "passed": 11,
       "cases": [
         "all 40 presets load with frozen tokens and distinct geometry",
         "registry changes publish token deltas and skip identical selections",
@@ -48,6 +48,8 @@
         "all presets, variants and states meet contrast over solid surfaces",
         "transparent fills use their real backdrop and contrast can warn",
         "native font resolver tries preferred face, theme family and fallback",
+        "font fallback handles rejected and throwing load probes without repeating them",
+        "native font test can yield before selecting fallback",
         "reduced motion is honored for every profile",
         "transition cancels old work, skips no-op and releases scope resources"
       ]
@@ -65,6 +67,13 @@
       "command": "python3 tooling/generate_themes.py --check",
       "status": "PASS",
       "presets": 40
+    },
+    {
+      "command": "rojo build and XML/source verification",
+      "status": "PASS",
+      "moduleScripts": 25,
+      "localScripts": 1,
+      "referencesToReportedAssetId": 0
     }
   ],
   "styleMatrix": {
@@ -80,5 +89,15 @@
     "mobileClient": "IMPLEMENTED_UNTESTED",
     "verifiedFontFamilies": 0,
     "smokeTest": "examples/theme-preview.client.luau"
+  },
+  "priorStudioObservation": {
+    "version": "0.2.0-theme",
+    "scope": "User photographs and reported Output in desktop Studio",
+    "themeCycle": "All 40 presets displayed, followed by a return to the first preset",
+    "findings": [
+      "Cosmic sparkle displayed as a missing glyph",
+      "Garamond font family load warning"
+    ],
+    "patchedStudioRetest": "PENDING"
   }
 }

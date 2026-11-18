@@ -167,6 +167,44 @@ test("native font resolver tries preferred face, theme family and fallback", fun
     equal(Fey.Typography.new(function() return nil end):Resolve(theme, "body").error.code, "FONT_UNAVAILABLE")
 end)
 
+test("font fallback handles rejected and throwing load probes without repeating them", function()
+    local theme = Fey.Theme.new():Get("cultivation")
+    local checked = {}
+    local resolver = Fey.Typography.new(function(candidate)
+        return candidate.family
+    end, function(face)
+        table.insert(checked, face)
+        if face == "Bodoni" then return false end
+        if face == "BuilderSans" then error("font could not be loaded") end
+        return face == "SourceSans"
+    end)
+    local first = value(resolver:Resolve(theme, "title"))
+    equal(first.face, "SourceSans")
+    equal(first.fallback, true)
+    equal(table.concat(checked, ","), "Bodoni,BuilderSans,SourceSans")
+    equal(value(resolver:Resolve(theme, "title")).face, "SourceSans")
+    equal(#checked, 3)
+end)
+
+test("native font test can yield before selecting fallback", function()
+    local theme = Fey.Theme.new():Get("cultivation")
+    local resolver = Fey.Typography.new(function(candidate) return candidate.family end, function(face)
+        if face == "Bodoni" then return coroutine.yield(face) end
+        return true
+    end)
+    local selected
+    local thread = coroutine.create(function()
+        selected = value(resolver:Resolve(theme, "title"))
+    end)
+    local ok, first = coroutine.resume(thread)
+    equal(ok, true)
+    equal(first, "Bodoni")
+    equal(selected, nil)
+    equal(coroutine.resume(thread, false), true)
+    equal(selected.face, "BuilderSans")
+    equal(selected.fallback, true)
+end)
+
 test("reduced motion is honored for every profile", function()
     local registry = Fey.Theme.new()
     for _, theme in ipairs(registry:List()) do

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 2,
-  "version": "0.2.0-theme",
+  "version": "0.2.1-theme",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase1-manifest.json",
@@ -22,7 +22,11 @@
       "Animation",
       "Transition"
     ],
-    "breakingChanges": []
+    "breakingChanges": [],
+    "addedInPatch": [
+      "Typography.RobloxBoundsProbe(services)",
+      "Optional second argument to Typography.new"
+    ]
   },
   "runtimeBuild": {
     "entry": "src/init.luau",
@@ -50,7 +54,7 @@
   },
   "evidence": {
     "report": "evidence/phase2-checks.json",
-    "testsPassed": 29,
+    "testsPassed": 31,
     "traceability": "design/traceability.json",
     "limits": "docs/design-system.md"
   },
@@ -62,8 +66,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 1320,
-      "sha256": "8c6ac466a9920c5e2ebc16d96c5cfd2cb9e753dd7308d91b1c7daea612f9ee70"
+      "bytes": 1576,
+      "sha256": "cc31905656f5b883fc651311d70728c70a83c6e138e7bf3368345658ceed76b8"
     },
     {
       "path": "README.id.md",
@@ -122,8 +126,8 @@
     },
     {
       "path": "docs/design-system.md",
-      "bytes": 5671,
-      "sha256": "5eff908abd2d0cc231f63e6a7f7ce6f04ca6d78cdac37852046e2c208d98d6bf"
+      "bytes": 6407,
+      "sha256": "bcdf04ab942458abe076b9eda49ce15fbad722d0b1943dbe94a23ecd322dcd64"
     },
     {
       "path": "docs/id/core.md",
@@ -132,8 +136,8 @@
     },
     {
       "path": "docs/id/design-system.md",
-      "bytes": 2834,
-      "sha256": "ade8462b35588bf07a5490b9cf97a9dda037ac3d613e5c2a4070b58d077d546e"
+      "bytes": 3070,
+      "sha256": "7fde718bb9b6e8b2a5cb718df9555b0bdcce8ae32caafa3828c0a305d337bf42"
     },
     {
       "path": "docs/id/index.md",
@@ -192,8 +196,8 @@
     },
     {
       "path": "docs/zh-CN/design-system.md",
-      "bytes": 2645,
-      "sha256": "867d18417a486b720dd2830f28cf6eb4184e8e0d5f7a0aa6f31cba613ba54b36"
+      "bytes": 2853,
+      "sha256": "1c30dad7dac1042aa5fc9768b5789ef8ed50af55e2e9644129c6cada5678e6e8"
     },
     {
       "path": "docs/zh-CN/index.md",
@@ -222,13 +226,13 @@
     },
     {
       "path": "evidence/phase2-checks.json",
-      "bytes": 3285,
-      "sha256": "8023e662becd6c1f2029da822a3be9856e4f64efd204c9c6f074192c0b55d956"
+      "bytes": 4008,
+      "sha256": "59e32a0f23a34527179ff082f1b3b5d631ca94c71e07f7d452ac7bbb054e8141"
     },
     {
       "path": "examples/theme-preview.client.luau",
-      "bytes": 6293,
-      "sha256": "d6cf294c2365b70736227bec480fd8f0b9840531d3b8f6947706597f1735a7fc"
+      "bytes": 8006,
+      "sha256": "eb669222b53a7d7a9ae6db322d216bd492dd43cea509b90a221c3a63361a6423"
     },
     {
       "path": "phase0-manifest.json",
@@ -357,8 +361,8 @@
     },
     {
       "path": "src/engine/Typography.luau",
-      "bytes": 5205,
-      "sha256": "f4c33df79506593c1223bd79f4015bfb976ff191bfd712fe442d9ae4c2d8a72f"
+      "bytes": 6705,
+      "sha256": "7104dfb2f5f6abaedffee51f2a35724d83784d50a07ef8efd72460d345ad2150"
     },
     {
       "path": "src/init.luau",
@@ -377,8 +381,8 @@
     },
     {
       "path": "tests/theme.luau",
-      "bytes": 10557,
-      "sha256": "b448d0e8039a43aa34edaca341fdd9151f14cd3a5f92552448eafe4e8e68bb13"
+      "bytes": 12057,
+      "sha256": "b75340cac35634b21f5cb4554d07c029b1e7dd31e5583d4419cb35bcd7aa1796"
     },
     {
       "path": "tooling/generate_themes.py",

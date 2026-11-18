@@ -8,7 +8,7 @@ local roleFields = {
     button = "bodyRole", input = "bodyRole", caption = "bodyRole", code = "codeRole",
 }
 local families = {
-    serif = "Garamond", literary = "Merriweather", condensed = "Oswald", wide = "Montserrat",
+    serif = "Bodoni", literary = "Merriweather", condensed = "Oswald", wide = "Montserrat",
     sans = "BuilderSans", geometric = "Montserrat", rounded = "FredokaOne", mono = "RobotoMono",
 }
 local weights = {
@@ -65,15 +65,43 @@ function Typography.Describe(theme, role, preferred)
     return Result.Ok(table.freeze({ role = role, candidates = table.freeze(candidates) }))
 end
 
+local enumFonts
+
 local function buildNative(descriptor)
     local weight = Enum.FontWeight[descriptor.weight]
     local style = Enum.FontStyle[descriptor.style]
-    if descriptor.family then return Font.fromName(descriptor.family, weight, style) end
-    return Font.fromId(descriptor.assetId, weight, style)
+    if descriptor.assetId then return Font.fromId(descriptor.assetId, weight, style) end
+    if not enumFonts then
+        enumFonts = {}
+        for _, item in ipairs(Enum.Font:GetEnumItems()) do enumFonts[item.Name] = item end
+    end
+    local known = enumFonts[descriptor.family]
+    if known then
+        local face = Font.fromEnum(known)
+        return Font.new(face.Family, weight, style)
+    end
+    return Font.fromName(descriptor.family, weight, style)
 end
 
-function Typography.new(createFont)
-    return setmetatable({ _create = createFont or buildNative, _cache = {}, _size = 0 }, Typography)
+function Typography.RobloxBoundsProbe(services)
+    return function(face)
+        local textService = services:Get("TextService")
+        local params = Instance.new("GetTextBoundsParams")
+        local ok, bounds = pcall(function()
+            params.Text = "Feybrume"
+            params.Font = face
+            params.Size = 16
+            params.Width = 1024
+            return textService:GetTextBoundsAsync(params)
+        end)
+        params:Destroy()
+        return ok and bounds.X > 0 and bounds.Y > 0
+    end
+end
+
+-- A supplied probe may yield. Configure it where resolution runs in an async task.
+function Typography.new(createFont, checkFont)
+    return setmetatable({ _create = createFont or buildNative, _check = checkFont, _cache = {}, _size = 0 }, Typography)
 end
 
 function Typography:Resolve(theme, role, preferred)
@@ -86,21 +114,32 @@ function Typography:ResolvePlan(plan)
     if type(plan) ~= "table" or type(plan.candidates) ~= "table" or #plan.candidates == 0 then
         return Result.Err(Error.Create("INVALID_VALUE"))
     end
-    for index, candidate in ipairs(plan.candidates) do
-        if not Typography.IsDescriptor(candidate) then return Result.Err(Error.Create("INVALID_VALUE")) end
+    for index, input in ipairs(plan.candidates) do
+        if not Typography.IsDescriptor(input) then return Result.Err(Error.Create("INVALID_VALUE")) end
+        local candidate = table.freeze({
+            family = input.family, assetId = input.assetId,
+            weight = input.weight or "Regular", style = input.style or "Normal",
+        })
         local source = candidate.family or ("#" .. tostring(candidate.assetId))
         local key = source .. "/" .. candidate.weight .. "/" .. candidate.style
         local face = self._cache[key]
-        if not face then
+        if face == nil then
             local created = Result.CallSync(self._create, candidate)
-            if created.ok then face = created.value end
-            if face then
+            face = if created.ok then created.value or false else false
+            if face and self._check then
+                local ok, accepted = pcall(self._check, face, candidate)
+                if not ok or accepted ~= true then face = false end
+            end
+            local cached = self._cache[key]
+            if cached then
+                face = cached
+            else
                 if self._size == 64 then
                     table.clear(self._cache)
                     self._size = 0
                 end
+                if self._cache[key] == nil then self._size += 1 end
                 self._cache[key] = face
-                self._size += 1
             end
         end
         if face then
