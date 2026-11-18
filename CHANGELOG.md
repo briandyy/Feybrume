@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.3-window
+
+- Route Gamepad A on **Tabs** and **More** through the same tab picker as mouse and touch.
+- Inset tab borders from the scrolling viewport and separate the first tab from the header.
+- Move the reopen button into the device-safe viewport. Keep it below the top bar by default, with an option to use free space beside the Roblox controls.
+- Add configurable launcher size, shape, radius, image, image scale, and a live preview in Preferences.
+
 ## 0.3.2-window
 
 - Let reopen buttons keep a free position inside the safe area and restore it after rotation. Edge snapping is available as an option.

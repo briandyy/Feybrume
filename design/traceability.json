@@ -4143,7 +4143,7 @@
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/engine/Focus.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Scoped gamepad entry and visible descendant selection with modal return",
+    "fallback": "Scoped gamepad entry, directional selection, tab picker activation and modal return",
     "testCase": "MOB-21/MOB-22",
     "testedEnvironments": [
       "Luau CLI injected-selectable-node fixtures for direction and focus restoration"
@@ -4155,11 +4155,11 @@
   },
   {
     "featureId": "windowEngine.workspace",
-    "publicAPI": "Fey:CreateWorkspace / Workspace:Window / SetReopenSide / Destroy",
+    "publicAPI": "Fey:CreateWorkspace / Workspace:Window / SetReopenSide / Destroy / Window:SetReopenBubble",
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/ui/Workspace.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Free launcher placement with restricted-region fallback and optional edge snapping",
+    "fallback": "Device-safe launcher travel and readable label while the configured Roblox image is unavailable",
     "testCase": "MOB-05/MOB-17/MOB-18",
     "testedEnvironments": [
       "Luau CLI bubble geometry model and Studio place source verification"

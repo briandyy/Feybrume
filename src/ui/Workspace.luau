@@ -8,6 +8,7 @@ local Runtime = require(if script then script.Parent.Parent.core.Runtime else ".
 local Result = require(if script then script.Parent.Parent.core.Result else "../core/Result")
 local Window = require(if script then script.Parent.Window else "./Window")
 local Sheet = require(if script then script.Parent.Sheet else "./Sheet")
+local ReopenStyle = require(if script then script.Parent.ReopenStyle else "./ReopenStyle")
 local Workspace = {}
 Workspace.__index = Workspace
 
@@ -35,6 +36,7 @@ local function settings(options)
     end
     return {
         side = side, reopenMode = reopenMode, fontScale = scale, reserved = reserved,
+        reopenBubble = ReopenStyle.Merge(nil, if options.reopenBubble == nil then {} else options.reopenBubble),
         avoidMovement = options.avoidMovementControls ~= false,
         breakpoints = Layout.ValidateBreakpoints(options.breakpoints or {}),
     }
@@ -71,6 +73,7 @@ function Workspace.new(options)
         _area = Layout.Rect(0, 0, 0, 0), _profile = Layout.Profile(0, 0, "pointer", config.breakpoints),
         _actionName = "FeybrumeSheet" .. tostring(workspaceCount),
         _gamepadAction = "FeybrumeGamepad" .. tostring(workspaceCount),
+        _topbarObstacles = {}, _launcherOffsetX = 0, _launcherOffsetY = 0,
     }, Workspace)
     local screen = scope:Give(Factory.Create("ScreenGui", parent, {
         Name = options.name or "FeybrumeWorkspace", ResetOnSpawn = false,
@@ -82,16 +85,29 @@ function Workspace.new(options)
     self._bubbleArea = self._area
     self._root = Factory.Frame(screen, "SafeArea", { Size = UDim2.fromScale(1, 1) })
     self._windowsLayer = Factory.Frame(self._root, "Windows", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
-    self._bubblesLayer = Factory.Frame(self._root, "Reopen", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
+    local launcher = scope:Give(Factory.Create("ScreenGui", parent, {
+        Name = screen.Name .. "Reopen", ResetOnSpawn = false,
+        ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets, ClipToDeviceSafeArea = true,
+        SafeAreaCompatibility = Enum.SafeAreaCompatibility.None,
+        ZIndexBehavior = Enum.ZIndexBehavior.Sibling, DisplayOrder = screen.DisplayOrder + 1,
+    }))
+    self._bubblesLayer = Factory.Frame(launcher, "Reopen", { Size = UDim2.fromScale(1, 1) })
     self._overlaysLayer = Factory.Frame(self._root, "Overlays", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
     self._input = Input.new(input, scope)
     runtime.Scope:Give(self, nil, self)
     scope:Give(screen.Destroying:Connect(function() self:Destroy() end))
+    scope:Give(launcher.Destroying:Connect(function() self:Destroy() end))
+    scope:Give(screen:GetPropertyChangedSignal("Enabled"):Connect(function() launcher.Enabled = screen.Enabled end))
+    scope:Give(screen:GetPropertyChangedSignal("DisplayOrder"):Connect(function() launcher.DisplayOrder = screen.DisplayOrder + 1 end))
     scope:Give(themes:Subscribe(function() self:_refresh() end))
-    Viewport.Observe(scope, self._root, input, function()
+    local function refreshBounds()
         self._input:Cancel()
         self:_refresh()
-    end)
+    end
+    Viewport.Observe(scope, self._root, input, refreshBounds)
+    scope:Give(self._bubblesLayer:GetPropertyChangedSignal("AbsoluteSize"):Connect(refreshBounds))
+    scope:Give(self._bubblesLayer:GetPropertyChangedSignal("AbsolutePosition"):Connect(refreshBounds))
+    scope:Give(guiService:GetPropertyChangedSignal("TopbarInset"):Connect(refreshBounds))
     scope:Give(input.TextBoxFocused:Connect(function() Viewport.RevealFocused(self._root, input) end))
     scope:Give(guiService:GetPropertyChangedSignal("TouchControlsEnabled"):Connect(function() self:_placeBubbles() end))
     scope:Give(guiService:GetPropertyChangedSignal("PreferredTextSize"):Connect(function() self:_refresh() end))
@@ -137,17 +153,30 @@ end
 
 function Workspace:_refresh()
     if self._destroyed then return end
-    self._area, self._profile, self._origin, self._bubbleArea = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
+    self._area, self._profile, self._origin = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
+    self._bubbleArea, self._launcherOffsetX, self._launcherOffsetY, self._topbarObstacles =
+        Viewport.ReadLauncher(self._bubblesLayer, self._userInput, self._guiService)
     for _, window in ipairs(self._windows) do window:_reflow() end
     for _, sheet in ipairs(self._modal) do sheet:_reflow() end
     self:_placeBubbles()
     Viewport.RevealFocused(self._root, self._userInput)
 end
 
+function Workspace:_bubbleBounds(window)
+    local area = self._bubbleArea
+    if window._bubbleStyle.allowTopbar then return area, self._topbarObstacles end
+    local top = math.clamp(self._launcherOffsetY, area.y, area.y + area.height)
+    return Layout.Rect(area.x, top, area.width, area.y + area.height - top), {}
+end
+
 function Workspace:_placeBubbles()
     if self._destroyed then return end
     local area = self._bubbleArea
-    local reserved = table.clone(self._settings.reserved)
+    local reserved = {}
+    local function launcherRect(rect)
+        return Layout.Rect(rect.x + self._launcherOffsetX, rect.y + self._launcherOffsetY, rect.width, rect.height)
+    end
+    for _, region in ipairs(self._settings.reserved) do table.insert(reserved, launcherRect(region)) end
     if self._userInput.TouchEnabled and self._guiService.TouchControlsEnabled
         and self._settings.avoidMovement and not self._userInput.OnScreenKeyboardVisible then
         local w, h = math.min(138, area.width / 2), math.min(142, area.height / 2)
@@ -157,33 +186,38 @@ function Workspace:_placeBubbles()
     local visible, chrome = {}, {}
     for _, window in ipairs(self._windows) do
         if window._shell.Visible and window._rect then
-            table.insert(visible, window._rect)
-            for _, region in ipairs(window._bubbleExclusions or {}) do table.insert(chrome, region) end
+            table.insert(visible, launcherRect(window._rect))
+            for _, region in ipairs(window._bubbleExclusions or {}) do table.insert(chrome, launcherRect(region)) end
         end
     end
     for _, window in ipairs(self._windows) do
         local button = window._bubble
-        if window._open or self:_hasModal() or math.min(area.width, area.height) < 44 then
+        local bounds, protected = self:_bubbleBounds(window)
+        if window._open or self:_hasModal() or math.min(bounds.width, bounds.height) < 36 then
             button.Visible, window._bubbleRect = false, nil
         else
             local theme = window:_theme()
-            local size = math.max(52, self:_target(theme))
+            local size = math.max(window._bubbleStyle.size, self:_target(theme))
             local anchor = window._bubbleAnchor or { x = if window._side == "left" then 0 else 1, y = 0.58 }
+            local avoid = table.clone(reserved)
+            for _, region in ipairs(protected) do table.insert(avoid, region) end
             local rect = window._bubbleDragging
             if not rect and self._settings.reopenMode == "edge" then
-                local y = area.y + math.max(0, area.height - size) * anchor.y
-                rect = Layout.Bubble(area, reserved, window._side, y, size)
+                local y = bounds.y + math.max(0, bounds.height - size) * anchor.y
+                rect = Layout.Bubble(bounds, avoid, window._side, y, size)
             end
             if not rect then
-                local avoid = table.clone(reserved)
-                for _, region in ipairs(visible) do table.insert(avoid, region) end
-                rect = Layout.FreeBubble(area, avoid, anchor, size)
+                if not window._bubbleAnchor then
+                    local clear = table.clone(avoid)
+                    for _, region in ipairs(visible) do table.insert(clear, region) end
+                    rect = Layout.FreeBubble(bounds, clear, anchor, size)
+                end
                 if not rect then
-                    local controls = table.clone(reserved)
+                    local controls = table.clone(avoid)
                     for _, region in ipairs(chrome) do table.insert(controls, region) end
-                    rect = Layout.FreeBubble(area, controls, anchor, size)
-                        or Layout.FreeBubble(area, reserved, anchor, size)
-                        or Layout.FreeBubble(area, {}, anchor, size)
+                    rect = Layout.FreeBubble(bounds, controls, anchor, size)
+                        or Layout.FreeBubble(bounds, avoid, anchor, size)
+                        or Layout.FreeBubble(bounds, protected, anchor, size)
                 end
             end
             window._bubbleRect = rect
@@ -192,7 +226,7 @@ function Workspace:_placeBubbles()
                 Factory.Rect(button, rect.x, rect.y, rect.width, rect.height)
                 Factory.StyleButton(button, theme, self._profile, { focused = self._guiService.SelectedObject == button },
                     "solid", self._settings.fontScale)
-                button.Shape.CornerRadius = UDim.new(0.5, 0)
+                window:_styleBubble(rect.width)
                 table.insert(reserved, rect)
             end
         end
@@ -208,6 +242,7 @@ function Workspace:_raise(window)
 end
 
 function Workspace:_forget(window)
+    if self._tabsPress and self._tabsPress.window == window then self._tabsPress = nil end
     local index = table.find(self._windows, window)
     if index then table.remove(self._windows, index) end
     self:_placeBubbles()
@@ -261,6 +296,10 @@ function Workspace:_hasModal()
     return self:_top() ~= nil
 end
 
+function Workspace:_ownsSelection(object)
+    return object and (object:IsDescendantOf(self._root) or object:IsDescendantOf(self._bubblesLayer))
+end
+
 function Workspace:_gamepadEntry(allowHidden)
     local sheet = self:_top()
     if sheet then return sheet._card, sheet._close end
@@ -281,6 +320,26 @@ function Workspace:_gamepadEntry(allowHidden)
     return nil, nil
 end
 
+function Workspace:_handleTabLauncher(state, device, selected, active)
+    local press = self._tabsPress
+    if press and press.device == device then
+        if state == "End" or state == "Cancel" then self._tabsPress = nil end
+        if state == "End" and active and selected == press.window._more then
+            press.window:_showTabs()
+        end
+        return true
+    end
+    if not press and state == "Begin" and active and selected and not self:_hasModal() then
+        for _, window in ipairs(self._windows) do
+            if selected == window._more and Focus.Eligible(selected, window._shell) then
+                self._tabsPress = { window = window, device = device }
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function Workspace:_bindGamepad()
     local key, actions = Enum.KeyCode, self._actions
     local directions = {
@@ -290,11 +349,13 @@ function Workspace:_bindGamepad()
     actions:BindActionAtPriority(self._gamepadAction, function(_, state, input)
         local gui = self._guiService
         local pass, sink = Enum.ContextActionResult.Pass, Enum.ContextActionResult.Sink
-        if self._destroyed or not self._screen.Enabled or gui.MenuIsOpen
-            or (modalOwner and modalOwner ~= self) or self._userInput:GetFocusedTextBox() then return pass end
-        local selected = gui.SelectedObject
-        if selected and not selected:IsDescendantOf(self._root) then return pass end
-        local code = input.KeyCode
+        local code, selected = input.KeyCode, gui.SelectedObject
+        local active = not self._destroyed and self._screen.Enabled and not gui.MenuIsOpen
+            and (not modalOwner or modalOwner == self) and not self._userInput:GetFocusedTextBox()
+        if code == key.ButtonA then
+            return if self:_handleTabLauncher(state.Name, input.UserInputType, selected, active) then sink else pass
+        end
+        if not active or (selected and not self:_ownsSelection(selected)) then return pass end
         local root, first = self:_gamepadEntry(code == key.ButtonSelect or selected ~= nil)
         if selected and not self:_hasModal() then
             if selected:IsDescendantOf(self._bubblesLayer) then
@@ -318,7 +379,7 @@ function Workspace:_bindGamepad()
         if not Focus.Eligible(selected, root) then
             if state == Enum.UserInputState.Begin and Focus.Eligible(first, root) then
                 gui.SelectedObject = first
-                Viewport.Reveal(first)
+                Viewport.Reveal(first, Layout.TabPadding)
                 return sink
             end
             return pass
@@ -329,12 +390,15 @@ function Workspace:_bindGamepad()
             local target = Focus.InDirection(root, selected, direction[1], direction[2])
             if target then
                 gui.SelectedObject = target
-                Viewport.Reveal(target)
+                Viewport.Reveal(target, Layout.TabPadding)
             end
         end
         return sink
     end, false, Enum.ContextActionPriority.High.Value, key.DPadUp, key.DPadDown,
-        key.DPadLeft, key.DPadRight, key.ButtonSelect)
+        key.DPadLeft, key.DPadRight, key.ButtonSelect, key.ButtonA)
+    self._scope:Give(self._userInput.GamepadDisconnected:Connect(function(device)
+        if self._tabsPress and device == self._tabsPress.device then self._tabsPress = nil end
+    end))
     self._scope:Give(function() actions:UnbindAction(self._gamepadAction) end)
 end
 
@@ -429,9 +493,14 @@ function Workspace:_finishSheet(sheet)
     else
         local selected = self._guiService.SelectedObject
         if sheet._previous or self._userInput.PreferredInput == Enum.PreferredInput.Gamepad
-            or (selected and selected:IsDescendantOf(self._root)) then
+            or self:_ownsSelection(selected) then
             local _, fallback = self:_gamepadEntry(true)
-            Focus.Restore(self._guiService, self._root, sheet._previous, fallback)
+            local previous = sheet._previous
+            if Focus.Eligible(previous, self._root) or Focus.Eligible(previous, self._bubblesLayer) then
+                self._guiService.SelectedObject = previous
+            else
+                self._guiService.SelectedObject = fallback
+            end
         end
     end
 end
@@ -448,7 +517,7 @@ function Workspace:Destroy()
     if modalOwner == self then modalOwner = nil end
     self:_setShortcuts(false)
     local selected = self._guiService.SelectedObject
-    if selected and selected:IsDescendantOf(self._root) then self._guiService.SelectedObject = nil end
+    if self:_ownsSelection(selected) then self._guiService.SelectedObject = nil end
     while self:_top() do self:_top():Close() end
     while #self._windows > 0 do self._windows[#self._windows]:Destroy() end
     self._scope:Destroy()

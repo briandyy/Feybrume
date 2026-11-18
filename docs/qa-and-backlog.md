@@ -50,8 +50,10 @@ The runtime baseline uses a native ModuleScript, canonical schema names, a 48-un
 |---|---|---|
 | WIN-04 | PASS_WITH_LIMITATION | Resize and Restore display in full in the v0.3.1 desktop Studio preview. Larger text settings still need a Studio check. |
 | STUDIO-01 | PASS_WITH_LIMITATION | The RoundedCorner8 warning disappeared with all plugins disabled. The owner reported clean Edit and Play Output. The specific plugin has not been isolated. |
-| WIN-05 | IMPLEMENTED_UNTESTED | Retest free launcher placement, rotation and compact navigation in v0.3.2. Physical Android screenshots from v0.3.1 exposed forced snapping and cramped landscape chrome. |
-| WIN-06 | IMPLEMENTED_UNTESTED | Retest D-pad entry, A activation and B dismissal with Controller Emulator. The owner reported that v0.3.1 controls did not respond. Directional focus fixtures pass in Luau CLI. |
+| WIN-05 | PASS_WITH_LIMITATION | Owner verified the improved mobile layout on Android in v0.3.2. Tab outline and launcher edge changes require a v0.3.3 retest. |
+| WIN-06 | PASS_WITH_LIMITATION | Owner activated window controls, sheet actions, and inline tabs with Controller Emulator in v0.3.2. |
+| WIN-07 | IMPLEMENTED_UNTESTED | Retest Gamepad A on Tabs/More with the v0.3.3 preview. An injected focus and activation fixture passes in Luau CLI. |
+| WIN-08 | IMPLEMENTED_UNTESTED | Retest launcher styling, image loading, and device-safe edge reach on Android in v0.3.3. |
 | WIN-01 | IMPLEMENTED_UNTESTED | Verify drag, resize, dock and rotation in Studio. The geometry and gesture model passes in CLI. |
 | WIN-02 | IMPLEMENTED_UNTESTED | Check real Android and iOS keyboard, cutouts, game controls and bubble clearance. Custom experiences can configure reserved rectangles. |
 | WIN-03 | IMPLEMENTED_UNTESTED | Verify keyboard and gamepad focus, nested dismissal and lifecycle under native Roblox input events. The focus model passes in CLI. |

@@ -1,4 +1,4 @@
-local Layout = {}
+local Layout = { TabPadding = 5 }
 type Rectangle = { x: number, y: number, width: number, height: number }
 type Anchor = { x: number, y: number }
 local defaults = table.freeze({ micro = 360, compact = 480, phone = 640, tablet = 1000, short = 400 })
@@ -122,6 +122,32 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
         end
     end
     return best
+end
+
+function Layout.TopbarObstacles(area: Rectangle, top: number, free: Rectangle)
+    local height = math.clamp(top - area.y, 0, area.height)
+    if height == 0 then return {} end
+    local right, bottom = area.x + area.width, area.y + height
+    local x1 = math.max(area.x, free.x)
+    local x2 = math.min(right, free.x + free.width)
+    local y1 = math.max(area.y, free.y)
+    local y2 = math.min(bottom, free.y + free.height)
+    if x2 <= x1 or y2 <= y1 then return { Layout.Rect(area.x, area.y, area.width, height) } end
+    local blocked = {}
+    if y1 > area.y then table.insert(blocked, Layout.Rect(area.x, area.y, area.width, y1 - area.y)) end
+    if y2 < bottom then table.insert(blocked, Layout.Rect(area.x, y2, area.width, bottom - y2)) end
+    if x1 > area.x then table.insert(blocked, Layout.Rect(area.x, y1, x1 - area.x, y2 - y1)) end
+    if x2 < right then table.insert(blocked, Layout.Rect(x2, y1, right - x2, y2 - y1)) end
+    return blocked
+end
+
+function Layout.TabBounds(width, step, index, slots, rail)
+    local padding, gap = Layout.TabPadding, 8
+    local usable = math.max(0, width - 2 * padding - (if rail then 4 else 0))
+    local buttonW = if rail then usable else math.floor((usable - gap * (slots - 1)) / math.max(slots, 1))
+    local x = padding + (if rail then 0 else index * (buttonW + gap))
+    local y = padding + (if rail then index * (step + gap) else 0)
+    return Layout.Rect(x, y, buttonW, step)
 end
 
 function Layout.BubbleAnchor(rect, area)

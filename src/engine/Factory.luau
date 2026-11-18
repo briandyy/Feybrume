@@ -42,7 +42,7 @@ end
 function Factory.Scroll(parent, name)
     return Factory.Create("ScrollingFrame", parent, {
         Name = name, BackgroundTransparency = 1, BorderSizePixel = 0,
-        CanvasSize = UDim2.fromOffset(0, 0), Active = true,
+        CanvasSize = UDim2.fromOffset(0, 0), Active = true, Selectable = false,
         AutomaticCanvasSize = Enum.AutomaticSize.Y, ScrollingDirection = Enum.ScrollingDirection.Y,
         ScrollBarThickness = 4,
     })

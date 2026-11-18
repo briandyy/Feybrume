@@ -1,6 +1,9 @@
 local Layout = require("../src/engine/Layout")
 local Gesture = require("../src/engine/Gesture")
 local Focus = require("../src/engine/Focus")
+local Workspace = require("../src/ui/Workspace")
+local Window = require("../src/ui/Window")
+local ReopenStyle = require("../src/ui/ReopenStyle")
 local Factory = require("../src/engine/Factory")
 
 local count = 0
@@ -215,6 +218,88 @@ test("short touch layouts use a rail or bottom bar and keep their layout after i
     equal(Layout.Navigation(landscape, "drawer", 500, 240, 48, 4), "drawer")
 end)
 
+test("launcher can sit beside the Roblox controls at the top of the device safe area", function()
+    local area = Layout.Rect(0, 0, 780, 395)
+    local free = Layout.Rect(185, 0, 512, 58)
+    local obstacles = Layout.TopbarObstacles(area, 58, free)
+    local atTop = assert(Layout.FreeBubble(area, obstacles, { x = 0.5, y = 0 }, 52))
+    equal(atTop.y, 0)
+    assert(atTop.x >= free.x and atTop.x + atTop.width <= free.x + free.width)
+    local atLeft = assert(Layout.FreeBubble(area, obstacles, { x = 0, y = 0.4 }, 52))
+    equal(atLeft.x, 0)
+    local unavailable = Layout.TopbarObstacles(area, 58, Layout.Rect(0, 0, 0, 0))
+    local below = assert(Layout.FreeBubble(area, unavailable, { x = 0.5, y = 0 }, 52))
+    equal(below.y, 58)
+    local shortSlot = Layout.TopbarObstacles(area, 58, Layout.Rect(185, 0, 512, 34))
+    equal(assert(Layout.FreeBubble(area, shortSlot, { x = 0.5, y = 0 }, 52)).y, 58)
+end)
+
+test("bubble reaches the right side of the device safe viewport without entering the top bar by default", function()
+    local workspace = {
+        _bubbleArea = Layout.Rect(0, 0, 780, 395),
+        _launcherOffsetY = 58,
+        _topbarObstacles = {},
+    }
+    local window = { _bubbleStyle = ReopenStyle.Merge(nil, {}) }
+    local bounds, protected = Workspace._bubbleBounds(workspace, window)
+    local right = assert(Layout.FreeBubble(bounds, protected, { x = 1, y = 0 }, 52))
+    equal(right.x + right.width, 780)
+    equal(right.y, 58)
+    window._bubbleStyle = ReopenStyle.Merge(window._bubbleStyle, { allowTopbar = true })
+    equal(Workspace._bubbleBounds(workspace, window).y, 0)
+end)
+
+test("reopen style merges overrides and validates images, size and shape", function()
+    local defaults = ReopenStyle.Merge(nil, { label = "Launcher", shape = "rounded", radius = 14 })
+    local custom = ReopenStyle.Merge(defaults, { size = 76, image = 14304828123, imageScale = 0.8 })
+    equal(custom.label, "Launcher")
+    equal(custom.size, 76)
+    equal(custom.image, "rbxassetid://14304828123")
+    equal(defaults.image, false)
+    local _, iconRadius = ReopenStyle.Corner(custom, 76, 8)
+    equal(iconRadius, 6)
+    equal(ReopenStyle.Corner(ReopenStyle.Merge(custom, { shape = "circle" }), 76, 8), 0.5)
+    equal(ReopenStyle.Merge(custom, { image = false }).image, false)
+    equal(pcall(ReopenStyle.Merge, custom, { image = "https://example.com/icon.png" }), false)
+    equal(pcall(ReopenStyle.Merge, custom, { size = 5 }), false)
+    equal(pcall(ReopenStyle.Merge, custom, { shape = "triangle" }), false)
+end)
+
+test("window applies bubble customization live and keeps its old style on invalid edits", function()
+    local placed = 0
+    local window = {
+        _bubbleStyle = ReopenStyle.Merge(nil, { label = "UI" }),
+        _bubbleIcon = { Image = "", IsLoaded = false }, _bubble = {},
+        _workspace = { _input = { Cancel = function() end }, _placeBubbles = function() placed += 1 end },
+        _assertLive = function() end, _refreshBubbleImage = Window._refreshBubbleImage,
+    }
+    Window.SetReopenBubble(window, { image = "14304828123", size = 84 })
+    equal(window._bubbleIcon.Image, "rbxassetid://14304828123")
+    equal(window._bubble.Text, "UI")
+    equal(placed, 1)
+    window._bubbleIcon.IsLoaded = true
+    window:_refreshBubbleImage()
+    equal(window._bubble.Text, "")
+    equal(pcall(Window.SetReopenBubble, window, { size = 0 }), false)
+    equal(window._bubbleStyle.size, 84)
+    equal(placed, 1)
+    Window.SetReopenBubble(window, { image = false })
+    equal(window._bubble.Text, "UI")
+    equal(window._bubbleIcon.Visible, false)
+end)
+
+test("tab outlines have clearance from scrollbar and clipping boundaries", function()
+    local first = Layout.TabBounds(140, 48, 0, 4, true)
+    local last = Layout.TabBounds(140, 48, 3, 4, true)
+    equal(first.x, Layout.TabPadding)
+    equal(first.y, Layout.TabPadding)
+    equal(first.x + first.width, 140 - Layout.TabPadding - 4)
+    equal(last.y, Layout.TabPadding + 3 * (48 + 8))
+    local row = Layout.TabBounds(350, 48, 3, 4, false)
+    assert(row.x + row.width <= 350 - Layout.TabPadding)
+    equal(row.y, Layout.TabPadding)
+end)
+
 test("grid columns and bottom navigation account for spacing", function()
     equal(Layout.Columns(320, 4, 150, 8), 2)
     equal(Layout.Columns(900, 4, 150, 8), 4)
@@ -313,6 +398,49 @@ test("gamepad focus stays in its scope and prefers the same row or column", func
     equal(Focus.Eligible(disabled, root), false)
     root.Visible = false
     equal(Focus.First(root), nil)
+end)
+
+test("gamepad opens the tab list once on release and leaves other buttons alone", function()
+    local root = { Visible = true, IsA = function() return true end }
+    local more = {
+        Visible = true, Selectable = true, Parent = root,
+        IsA = root.IsA, IsDescendantOf = function(_, parent) return parent == root end,
+    }
+    local buttonClicks, selectedId = 0, nil
+    local window = {
+        _more = more, _shell = root, _nav = { Visible = true },
+        _tabs = {
+            { Id = "home", _button = { Text = "Home" } },
+            { Id = "help", _button = { Text = "Help" }, _disabled = true },
+        },
+        _canInteract = function() return true end,
+        SelectTab = function(_, id) selectedId = id end,
+        OpenContextMenu = function(_, entries)
+            buttonClicks += 1
+            equal(#entries, 1)
+            entries[1].callback()
+        end,
+        _showTabs = Window._showTabs,
+    }
+    local workspace = { _windows = { window }, _hasModal = function() return false end }
+    local function key(state, selected, active)
+        return Workspace._handleTabLauncher(workspace, state, "gamepad", selected, active ~= false)
+    end
+    equal(key("Begin", {}), false)
+    equal(key("Begin", more), true)
+    equal(buttonClicks, 0)
+    equal(key("End", more), true)
+    equal(buttonClicks, 1)
+    equal(selectedId, "home")
+    equal(key("End", more), false)
+    equal(key("Begin", more), true)
+    equal(key("Cancel", more), true)
+    equal(key("End", more), false)
+    equal(key("Begin", more), true)
+    equal(key("End", {}), true)
+    equal(key("Begin", more), true)
+    equal(key("End", more, false), true)
+    equal(buttonClicks, 1)
 end)
 
 print(string.format("%d window tests passed", count))

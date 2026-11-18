@@ -16,7 +16,7 @@ A color picker uses a large saturation/value plane, wide hue and alpha rails, nu
 
 Provide a button alternative to long press. Tab swipes and two-finger hide are opt-in and limited to the UI region. The reopen bubble defaults to size 52 and accepts free placement inside the safe area. An optional edge mode and a side setting support left- or right-handed placement. Keep it clear of navigation and virtual controls. Trap focus in the top modal, close the top overlay with Back or Escape and then restore focus. Use real engine accessibility capabilities. Respect system and manual reduced motion. Haptics require opt-in and a successful device probe. Test text scaling from 80 to 160 percent, plus a 200 percent stress case with readable wrapping or scrolling.
 
-The rules for advanced controls, gameplay gestures, haptics and performance below are acceptance targets. The current implementation lets authors reserve host-specific regions and stores the launcher position relative to the safe area.
+The rules for advanced controls, gameplay gestures, haptics and performance below are acceptance targets. The launcher uses device-safe horizontal bounds and keeps its normalized position. The default range begins below the Roblox top bar. Authors can opt into available top bar space and supply host-specific exclusions.
 
 ## Device scenarios
 

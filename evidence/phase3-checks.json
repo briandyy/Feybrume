@@ -1,6 +1,6 @@
 {
   "phase": 3,
-  "version": "0.3.2-window",
+  "version": "0.3.3-window",
   "testedAt": "2026-11-18",
   "environment": {
     "toolchain": "Official Luau CLI 0.747 and Rojo 7.7.1",
@@ -57,7 +57,7 @@
     {
       "command": "luau tests/window.luau",
       "status": "PASS",
-      "passed": 20,
+      "passed": 26,
       "cases": [
         "mobile and desktop breakpoints honor width, height, and input separately",
         "breakpoints reject invalid order and allow overrides",
@@ -74,11 +74,17 @@
         "free bubbles keep a center drop and preserve relative position through rotation",
         "free bubbles move the shortest distance around occupied regions",
         "short touch layouts use a rail or bottom bar and keep their layout after input changes",
+        "launcher can sit beside the Roblox controls at the top of the device safe area",
+        "bubble reaches the right side of the device safe viewport without entering the top bar by default",
+        "reopen style merges overrides and validates images, size and shape",
+        "window applies bubble customization live and keeps its old style on invalid edits",
+        "tab outlines have clearance from scrollbar and clipping boundaries",
         "grid columns and bottom navigation account for spacing",
         "gesture ignores another pointer and distinguishes a tap",
         "drag remains a drag after returning to origin and supports owner cancellation",
         "focus restores a visible descendant and falls back when hidden",
-        "gamepad focus stays in its scope and prefers the same row or column"
+        "gamepad focus stays in its scope and prefers the same row or column",
+        "gamepad opens the tab list once on release and leaves other buttons alone"
       ]
     },
     {
@@ -98,10 +104,10 @@
     {
       "command": "rojo build window-preview.project.json and exact XML source verification",
       "status": "PASS",
-      "name": "Feybrume_Phase_3_Window_Preview_v0.3.2.rbxlx",
-      "sha256": "82371d74e724a0735b3d3ad9cbb7090899a2db4827747a6f70be48377deb4a5a",
-      "bytes": 283309,
-      "moduleScripts": 35,
+      "name": "Feybrume_Phase_3_Window_Preview_v0.3.3.rbxlx",
+      "sha256": "9322d40964b9181e52f8559885d257574fe20763e9c326ae9e2a36ea11782565",
+      "bytes": 296840,
+      "moduleScripts": 36,
       "localScripts": 1,
       "mapping": "window-preview.project.json",
       "screenOrientation": "Sensor"
@@ -124,7 +130,9 @@
       "WIN-03",
       "WIN-04",
       "WIN-05",
-      "WIN-06"
+      "WIN-06",
+      "WIN-07",
+      "WIN-08"
     ],
     "smokeTest": "examples/window-preview.client.luau"
   },
@@ -194,7 +202,7 @@
           "Short windows used a full-width Tabs bar even for one tab, plus a dedicated Resize row."
         ],
         "patch": "Free launcher with normalized placement, separate margins and compact window chrome.",
-        "retest": "IMPLEMENTED_UNTESTED"
+        "retest": "PASS_WITH_LIMITATION"
       },
       {
         "id": "WIN-06",
@@ -202,8 +210,31 @@
         "scope": "Studio Controller Emulator",
         "observed": "Owner reported no response to gamepad controls.",
         "patch": "Scoped controller focus entry and directional selection.",
-        "retest": "IMPLEMENTED_UNTESTED"
+        "retest": "PASS_WITH_LIMITATION"
       }
     ]
+  },
+  "phase3MobileAndGamepadRetest": {
+    "version": "0.3.2-window",
+    "environment": "Owner testing on physical Android in both orientations and in Studio Controller Emulator",
+    "status": "PASS_WITH_LIMITATION",
+    "passed": [
+      "Gamepad activates window restore, hide, resize, dock and float controls.",
+      "Gamepad activates sheet controls, nested sheet, TextBox, and inline tabs.",
+      "Android screenshots show landscape side navigation and portrait bottom navigation."
+    ],
+    "findings": [
+      {
+        "id": "WIN-07",
+        "observed": "The Tabs launcher required a mouse. The items inside its list used gamepad successfully.",
+        "patch": "Separate launcher from scrolling container and route scoped Gamepad A to the tab picker."
+      },
+      {
+        "id": "WIN-08",
+        "observed": "Tab border clipped along the top and left, and the launcher stopped short of the screen edge.",
+        "patch": "Inset tab buttons, use device safe bounds for launcher travel, and add live launcher appearance options."
+      }
+    ],
+    "v0.3.3Retest": "IMPLEMENTED_UNTESTED"
   }
 }

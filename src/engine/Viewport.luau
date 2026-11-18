@@ -1,11 +1,8 @@
 local Layout = require(if script then script.Parent.Layout else "./Layout")
 local Viewport = {}
 
-function Viewport.Read(root, input, breakpoints)
+local function available(root, input)
     local size, origin = root.AbsoluteSize, root.AbsolutePosition
-    local preferred = input.PreferredInput
-    local kind = if preferred == Enum.PreferredInput.Touch then "touch"
-        elseif preferred == Enum.PreferredInput.Gamepad then "gamepad" else "pointer"
     local area = Layout.Rect(0, 0, size.X, size.Y)
     if input.OnScreenKeyboardVisible then
         local keyboard = input.OnScreenKeyboardPosition
@@ -15,7 +12,26 @@ function Viewport.Read(root, input, breakpoints)
                 Layout.Rect(keyboard.X - origin.X, keyboard.Y - origin.Y, keyboardSize.X, keyboardSize.Y))
         end
     end
-    return Layout.Inset(area, 8), Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), origin, area
+    return area
+end
+
+function Viewport.Read(root, input, breakpoints)
+    local size = root.AbsoluteSize
+    local preferred = input.PreferredInput
+    local kind = if preferred == Enum.PreferredInput.Touch then "touch"
+        elseif preferred == Enum.PreferredInput.Gamepad then "gamepad" else "pointer"
+    return Layout.Inset(available(root, input), 8),
+        Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), root.AbsolutePosition
+end
+
+function Viewport.ReadLauncher(root, input, gui)
+    local device = gui:GetInsetArea(Enum.ScreenInsets.DeviceSafeInsets)
+    local topbar = gui:GetInsetArea(Enum.ScreenInsets.TopbarSafeInsets)
+    local core = gui:GetInsetArea(Enum.ScreenInsets.CoreUISafeInsets)
+    local area = available(root, input)
+    local x, y = core.Min.X - device.Min.X, core.Min.Y - device.Min.Y
+    local free = Layout.Rect(topbar.Min.X - device.Min.X, topbar.Min.Y - device.Min.Y, topbar.Width, topbar.Height)
+    return area, x, y, Layout.TopbarObstacles(area, y, free)
 end
 
 function Viewport.RevealFocused(root, service)
@@ -24,10 +40,10 @@ function Viewport.RevealFocused(root, service)
     Viewport.Reveal(editor)
 end
 
-function Viewport.Reveal(object)
+function Viewport.Reveal(object, padding)
+    padding = padding or 6
     local scroll = object:FindFirstAncestorWhichIsA("ScrollingFrame")
     if not scroll then return end
-    local padding = 6
     local y = object.AbsolutePosition.Y - scroll.AbsolutePosition.Y
     local viewHeight = scroll.AbsoluteWindowSize.Y
     local bottom = y + object.AbsoluteSize.Y

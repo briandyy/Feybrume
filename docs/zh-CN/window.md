@@ -14,6 +14,10 @@
 
 在 **Help** 标签页可右键点击或长按标题来打开菜单，也可以点击 **Open actions**。**Preferences** 中的 **Move bubble to side** 可切换浮动按钮的侧边。要恢复吸附边缘的方式，可使用 `reopenMode = "edge"`。
 
-在手柄模拟器中，按方向键或 **Select/View** 进入界面，按 **A** 选择。打开嵌套面板后按一次 **B** 应返回上一层。
+在手柄模拟器中，在 **Preferences** 中选择 **Navigation: drawer**，按方向键移到 **Tabs**，按 **A** 打开列表并选择标签页。打开嵌套面板后按一次 **B** 应返回上一层。
+
+## 自定义浮动按钮
+
+在 **Preferences** 中调整按钮尺寸、形状和图片缩放。可启用示例图片或输入自己的 Roblox 图片 ID。点击 **Hide** 查看效果。脚本可用 `window:SetReopenBubble({ size = 68, shape = "rounded", radius = 14, image = 14304828123, imageScale = 0.72 })` 即时修改。默认范围是设备安全区且位于顶栏下方。
 
 在桌面确认 **Resize** 和 **Restore** 两个按钮都显示完整文字。Luau CLI 已测试布局计算、手势识别与焦点恢复规则。仍需在 Studio 和真机中验证实际交互。[完整 API（英文）](../window.md) · [测试记录](../../evidence/phase3-checks.json)

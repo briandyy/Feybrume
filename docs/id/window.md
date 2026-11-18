@@ -14,6 +14,12 @@ Workspace menampung beberapa jendela Roblox. Masing-masing menyimpan tab aktif, 
 
 Di desktop, klik kanan judul pada tab **Help** untuk membuka menu aksi. Di layar sentuh, tekan dan tahan judul yang sama. Tombol **Open actions** juga tersedia. **Move bubble to side** pada tab **Preferences** memindahkan bubble ke sisi lain. Posisi bebas dibatasi area aman Roblox. Pilih `reopenMode = "edge"` jika ingin bubble selalu mendekati tepi.
 
-Di **Controller Emulator**, tekan **D-pad** atau **Select/View** untuk masuk ke UI. Gunakan **A** untuk memilih. Buka sheet kedua dan tekan **B** sekali untuk kembali ke sheet pertama. Saat semua window disembunyikan, **Select/View** memilih bubble untuk membuka ulang.
+Di **Controller Emulator**, pilih **Navigation: drawer** di Preferences. Pindahkan fokus ke **Tabs** dengan **D-pad**, lalu tekan **A** untuk membuka daftar dan memilih tab. Buka sheet kedua dan tekan **B** sekali untuk kembali ke sheet pertama. Saat semua window disembunyikan, **Select/View** memilih bubble untuk membuka ulang.
+
+## Ubah bubble
+
+Di **Preferences**, pilih ukuran bubble, bentuk, dan ukuran gambar. Aktifkan gambar contoh lewat **Bubble image** atau masukkan ID gambar Roblox sendiri. Tekan **Hide** untuk melihat hasilnya.
+
+Dari skrip, tentukan `reopenBubble` saat membuat workspace atau window. Saat berjalan, contoh pemakaiannya adalah `window:SetReopenBubble({ size = 68, shape = "rounded", radius = 14, image = 14304828123, imageScale = 0.72 })`. Bentuk yang tersedia adalah `square`, `rounded`, dan `circle`. Gunakan `image = false` untuk menghapus gambar. Bubble berhenti di area aman perangkat dan berada di bawah top bar secara bawaan.
 
 Tes Luau mencakup perhitungan layout, gesture, dan pemulihan fokus. Perilaku langsung di Studio dan perangkat fisik masih perlu dicek. [Referensi API lengkap (Inggris)](../window.md) · [Hasil uji](../../evidence/phase3-checks.json)

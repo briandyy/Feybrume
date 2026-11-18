@@ -136,6 +136,59 @@ button(settings, "Cycle theme", function()
 end)
 button(settings, "Navigation: auto", function() window:SetNavigation("auto") end)
 button(settings, "Navigation: top", function() window:SetNavigation("top") end)
+button(settings, "Navigation: drawer", function() window:SetNavigation("drawer") end)
+
+local bubbleSettings = preferences:Section():Grid({ columns = 2, minWidth = 145, rowHeight = 52 })
+local sizes, shapes, scales = { 52, 68, 84 }, { "circle", "rounded", "square" }, { 0.62, 0.84, 0.44 }
+local sizeIndex, shapeIndex, scaleIndex = 1, 1, 1
+local sizeButton, shapeButton, scaleButton, imageButton
+sizeButton = button(bubbleSettings, "Bubble size: 52", function()
+    sizeIndex = sizeIndex % #sizes + 1
+    window:SetReopenBubble({ size = sizes[sizeIndex] })
+    sizeButton.Text = "Bubble size: " .. tostring(sizes[sizeIndex])
+end)
+shapeButton = button(bubbleSettings, "Bubble shape: circle", function()
+    shapeIndex = shapeIndex % #shapes + 1
+    window:SetReopenBubble({ shape = shapes[shapeIndex] })
+    shapeButton.Text = "Bubble shape: " .. shapes[shapeIndex]
+end)
+scaleButton = button(bubbleSettings, "Image size: 62%", function()
+    scaleIndex = scaleIndex % #scales + 1
+    window:SetReopenBubble({ imageScale = scales[scaleIndex] })
+    scaleButton.Text = string.format("Image size: %.0f%%", scales[scaleIndex] * 100)
+end)
+local showImage = false
+imageButton = button(bubbleSettings, "Bubble image: off", function()
+    showImage = not showImage
+    -- Public trapezoid image from Roblox Creator Hub's UI implementation tutorial.
+    window:SetReopenBubble({ image = if showImage then 14304828123 else false })
+    imageButton.Text = if showImage then "Bubble image: on" else "Bubble image: off"
+end)
+
+local imageId = Instance.new("TextBox")
+imageId.Size = UDim2.new(1, 0, 0, 52)
+imageId.PlaceholderText = "Custom Roblox image ID"
+imageId.Font = Enum.Font.SourceSans
+imageId.TextSize = 16
+imageId.Text = ""
+imageId.ClearTextOnFocus = false
+imageId.BorderSizePixel = 0
+local preferencesTheme = workspace.Themes:Get()
+imageId.BackgroundColor3 = Color3.fromHex(preferencesTheme.tokens.input:sub(2))
+imageId.PlaceholderColor3 = Color3.fromHex(preferencesTheme.tokens.placeholder:sub(2))
+paint(imageId, "body")
+preferences:Add(imageId)
+imageId.FocusLost:Connect(function()
+    local id = imageId.Text:match("^%s*([1-9]%d*)%s*$")
+    if id then
+        window:SetReopenBubble({ image = id })
+        showImage = true
+        imageButton.Text = "Bubble image: on"
+    elseif imageId.Text ~= "" then
+        imageId.Text = ""
+        imageId.PlaceholderText = "Enter a Roblox image ID"
+    end
+end)
 
 local slots = window:Tab({ id = "slots", title = "Slots" })
 local demo = slots:Section({ name = "SlotDemonstration" })

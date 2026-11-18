@@ -36,13 +36,32 @@ Window options use `movable`, `resizable`, and `dockable` to enable default gest
 
 Tabs and sections expose Leading, Main, Trailing, Footer, Background and Overlay slots. A window provides window-sized Background and Overlay slots plus the active page's other slots. Use native GuiObjects for content. Passing ownership to a section lets its scope remove that content on teardown. `section:Destroy()` releases the section and any nested grids or child sections.
 
+## Customize the reopen button
+
+Set `reopenBubble` on a workspace for defaults or on a window to override them. Use `Window:SetReopenBubble(options)` to update the current window in place.
+
+```luau
+window:SetReopenBubble({
+    size = 68,
+    shape = "rounded",
+    radius = 14,
+    image = 14304828123,
+    imageScale = 0.72,
+    label = "UI",
+})
+```
+
+Use `square`, `rounded`, or `circle` for the shape. The requested size is 36–160 GUI units and is increased to the minimum hit target when appropriate. A viewport that is too small caps the displayed size. For rounded corners, set `radius` in GUI units. The image uses an available Roblox image asset ID and fits inside the fraction given by `imageScale` (0.15–1). The label displays while the image is unavailable, and `image = false` removes it. Changes apply to the current session.
+
+The device safe area determines how far the reopen button can reach. It stays below the Roblox top bar by default. Set `allowTopbar = true` in `reopenBubble` to permit the free space beside Core UI if the button fits. Core UI buttons and device cutouts stay outside the placement area. [Roblox screen insets](https://create.roblox.com/docs/reference/engine/enums/ScreenInsets) · [ImageLabel](https://create.roblox.com/docs/reference/engine/classes/ImageLabel)
+
 ## Bottom sheets and focus
 
 `workspace:OpenSheet({ title, width, height, actionLabel, action })` returns a sheet with `GetContent()`, `AddAction(label, callback)` and `Close()`. A compact portrait screen uses a bottom sheet. Wider or landscape screens use a centered dialog. The body scrolls independently of the header and action footer. Another nested sheet hides the previous layer. Close, Escape or gamepad Back dismiss the top layer and restore an eligible selection. Tab and Shift+Tab cycle focus while the sheet owns keyboard input. An active TextBox keeps native editing shortcuts.
 
 D-pad selects an entry control when an open window has no focus and then navigates within that window or the top sheet. Use Select/View to enter or leave window navigation, or to select a reopen bubble when all windows are hidden. A activates the selected button. Set `gamepadNavigation = false` on the workspace to let an experience manage D-pad and Select itself.
 
-The ScreenGui opts into Roblox core and device safe insets. If the host reports an on-screen keyboard rectangle, Feybrume shrinks the available area and tries to reveal the focused editor within its scroll container. Use `reserved = { { x, y, width, height } }` on the workspace to reserve host-specific areas for the reopen bubble. The launcher uses the core safe area without the window margin. The workspace keeps its preferred relative position across rotation and checks estimated thumbstick and jump areas while Roblox touch controls are enabled. It tries to stay away from open windows and their navigation controls. On extremely restricted viewports, reopening takes priority if the requested reservations leave no room. Studio and device tests should confirm these positions with the experience's actual controls. [Roblox screen insets](https://create.roblox.com/docs/reference/engine/enums/ScreenInsets) · [UserInputService](https://create.roblox.com/docs/reference/engine/classes/UserInputService)
+The ScreenGui opts into Roblox core and device safe insets. If the host reports an on-screen keyboard rectangle, Feybrume shrinks the available area and tries to reveal the focused editor within its scroll container. Use `reserved = { { x, y, width, height } }` on the workspace to reserve host-specific areas for the reopen bubble. The launcher uses the device safe area without the window margin. The workspace keeps its preferred relative position across rotation and checks estimated thumbstick and jump areas while Roblox touch controls are enabled. It tries to stay away from open windows and their navigation controls. On extremely restricted viewports, reopening takes priority if the requested reservations leave no room. Studio and device tests should confirm these positions with the experience's actual controls. [Roblox screen insets](https://create.roblox.com/docs/reference/engine/enums/ScreenInsets) · [UserInputService](https://create.roblox.com/docs/reference/engine/classes/UserInputService)
 
 ## Build the Studio preview
 
@@ -60,7 +79,8 @@ rojo build window-preview.project.json -o Feybrume_Phase_3_Window_Preview.rbxlx
 4. Open **Open sheet**, then the nested sheet. Close the top sheet and confirm the first one returns. Scroll to the text field and check that the action stays reachable when the keyboard appears.
 5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs remain reachable from the side or bottom and rotation preserves the active page. On short touch layouts, drag the corner-shaped resize handle.
 
-6. In Controller Emulator, press D-pad or Select/View to enter the UI, then A to open a sheet. Open the nested sheet and press B once. The original sheet should return with focus inside it.
+6. In Controller Emulator, select **Navigation: drawer** under Preferences. Focus **Tabs** with D-pad, then press A to open the list. Select a tab with A. Open a nested sheet and press B once to check focus restoration.
+7. In **Preferences**, change the launcher size, shape, and image scale. Toggle the sample image or enter a Roblox image ID. Hide the window to check the updated launcher and drag it toward the right safe edge.
 
 Luau CLI exercises the layout, pointer capture and focus rules. Studio callbacks, real keyboard geometry, gamepad and device safe areas require the walkthrough. Standard widgets and universal component methods are planned in later phases. [Phase 3 test evidence](../evidence/phase3-checks.json)
 

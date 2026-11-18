@@ -2,6 +2,7 @@ local Container = require(if script then script.Parent.Container else "./Contain
 local Factory = require(if script then script.Parent.Parent.engine.Factory else "../engine/Factory")
 local Layout = require(if script then script.Parent.Parent.engine.Layout else "../engine/Layout")
 local Input = require(if script then script.Parent.Parent.engine.Input else "../engine/Input")
+local ReopenStyle = require(if script then script.Parent.ReopenStyle else "./ReopenStyle")
 local Window = {}
 Window.__index = Window
 local Tab = {}
@@ -29,13 +30,16 @@ function Window.new(workspace, options)
     }
     assert(limits.minWidth <= limits.maxWidth and limits.minHeight <= limits.maxHeight, "Invalid size limits")
 
+    local bubble = workspace._settings.reopenBubble
+    if options.reopenLabel ~= nil then bubble = ReopenStyle.Merge(bubble, { label = options.reopenLabel }) end
+    if options.reopenBubble ~= nil then bubble = ReopenStyle.Merge(bubble, options.reopenBubble) end
     local scope = workspace._scope:Fork()
     local self = setmetatable({
         _workspace = workspace, _scope = scope, _options = table.clone(options), _limits = limits,
         _width = width, _height = height, _placement = options.placement or "floating",
         _navigation = options.navigation or "auto", _themeId = options.theme,
         _tabs = {}, _open = true, _canDrag = options.movable ~= false, _canResize = options.resizable ~= false,
-        _side = workspace._settings.side,
+        _side = workspace._settings.side, _bubbleStyle = bubble,
     }, Window)
     local newFrame, newButton = Factory.Frame, Factory.Button
     local shell = scope:Give(newFrame(workspace._windowsLayer, options.id or "Window", {
@@ -52,8 +56,12 @@ function Window.new(workspace, options)
     self._grip = newFrame(body, "DragHandle")
     self._hide = newButton(body, "Hide")
     self._max = newButton(body, "Max")
-    self._nav = Factory.Scroll(body, "Navigation")
+    self._nav = newFrame(body, "Navigation")
+    self._tabScroll = Factory.Scroll(self._nav, "TabList")
+    self._tabScroll.Size = UDim2.fromScale(1, 1)
     self._more = newButton(self._nav, "More")
+    self._more.Name = "TabLauncher"
+    self._more.ZIndex = 2
     self._pages = newFrame(body, "Pages", { ClipsDescendants = true })
     self._resize = newButton(body, "Resize")
     self._resize.Name = "Resize"
@@ -69,10 +77,18 @@ function Window.new(workspace, options)
             Position = UDim2.fromOffset(14, 3), Size = UDim2.fromOffset(2, 13), BackgroundTransparency = 0,
         }),
     }
-    self._bubble = scope:Give(newButton(workspace._bubblesLayer, options.reopenLabel or "Open"))
+    self._bubble = scope:Give(newButton(workspace._bubblesLayer, bubble.label))
     self._bubble.Name = "Reopen" .. shell.Name
     self._bubble.Visible = false
-    self._chrome = { self._hide, self._max, self._more, self._resize, self._bubble }
+    self._bubbleIcon = Factory.Create("ImageLabel", self._bubble, {
+        Name = "Icon", BackgroundTransparency = 1, Active = false, Selectable = false,
+        AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+        ScaleType = Enum.ScaleType.Fit, Image = bubble.image or "",
+    })
+    self._bubbleIconCorner = Factory.Create("UICorner", self._bubbleIcon)
+    scope:Give(self._bubbleIcon:GetPropertyChangedSignal("IsLoaded"):Connect(function() self:_refreshBubbleImage() end))
+    self:_refreshBubbleImage()
+    self._chrome = { self._hide, self._max, self._more, self._resize }
     scope:Give(self._hide.Activated:Connect(function() if self:_canInteract() then self:Hide() end end))
     scope:Give(self._max.Activated:Connect(function()
         if self:_canInteract() then
@@ -80,7 +96,7 @@ function Window.new(workspace, options)
         end
     end))
     scope:Give(self._more.Activated:Connect(function()
-        if self:_canInteract() then self:_showTabs() end
+        self:_showTabs()
     end))
     scope:Give(self._resize.Activated:Connect(function(input)
         if self:_canInteract() and not Input.IsPointerActivation(input) then
@@ -116,7 +132,7 @@ function Window:_styleChrome()
     local theme, profile, selected = self:_theme(), workspace._profile, workspace._guiService.SelectedObject
     for _, button in ipairs(self._chrome) do
         Factory.StyleButton(button, theme, profile, { focused = selected == button },
-            if button == self._bubble then "solid" elseif button == self._resize then "outline" else "soft",
+            if button == self._resize then "outline" else "soft",
             workspace._settings.fontScale)
     end
     for _, tab in ipairs(self._tabs) do
@@ -178,9 +194,9 @@ function Window:_reflow()
         local resizeW = math.min(w, if useGutter then target else workspace:_buttonWidth(self._resize, target + 16))
         Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
     end
-    local y = bar
+    local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
     local gutter = if useGutter then target + gap else 0
-    local bodyW, bodyH = math.max(0, w - 2 * pad - gutter), math.max(0, h - bar - pad - footerH)
+    local bodyW, bodyH = math.max(0, w - 2 * pad - gutter), math.max(0, h - y - pad - footerH)
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
     self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
@@ -196,7 +212,7 @@ function Window:_reflow()
             Factory.Rect(self._nav, if mode == "left" then pad else pad + bodyW - rail, y, rail, bodyH)
             Factory.Rect(self._pages, if mode == "left" then pad + rail + gap else pad, y, bodyW - rail - gap, bodyH)
         else
-            local navH = target + 2
+            local navH = target + 2 * Layout.TabPadding
             local navY = if mode == "bottom" then y + math.max(0, bodyH - navH) else y
             table.insert(self._bubbleExclusions, Layout.Rect(rect.x + pad, rect.y + navY, bodyW, navH))
             self:_layoutTabs(mode, bodyW, target)
@@ -209,7 +225,7 @@ end
 function Window:_layoutTabs(mode, width, step)
     local rail = mode == "left" or mode == "right"
     local count = #self._tabs
-    local capacity = if rail then count elseif mode == "drawer" then 0 else Layout.TabCapacity(width, math.max(step, 62), 8)
+    local capacity = if rail then count elseif mode == "drawer" then 0 else Layout.TabCapacity(width - 2 * Layout.TabPadding, math.max(step, 62), 8)
     local overflow = capacity < count
     local visible = if overflow then math.max(0, capacity - 1) else count
     local shown = {}
@@ -219,22 +235,27 @@ function Window:_layoutTabs(mode, width, step)
     end
     if visible > 0 and self._activeTab and not table.find(shown, self._activeTab) then shown[visible] = self._activeTab end
     local slots = visible + (if overflow then 1 else 0)
-    local cell = if rail then width - 5 else math.floor((width - 8 * (slots - 1)) / math.max(slots, 1))
     for _, tab in ipairs(self._tabs) do
         local index = table.find(shown, tab)
         tab._button.Visible = index ~= nil
         if index then
-            local i = index - 1
-            Factory.Rect(tab._button, if rail then 0 else i * (cell + 8), if rail then i * (step + 8) else 0, cell, step)
+            local rect = Layout.TabBounds(width, step, index - 1, slots, rail)
+            Factory.Rect(tab._button, rect.x, rect.y, rect.width, rect.height)
         end
     end
     self._more.Visible = overflow
     self._more.Text = if visible == 0 then "Tabs" else "More"
-    if overflow then Factory.Rect(self._more, visible * (cell + 8), 0, cell, step) end
-    self._nav.ScrollingEnabled = rail
-    self._nav.AutomaticCanvasSize = Enum.AutomaticSize.None
-    self._nav.CanvasSize = UDim2.fromOffset(0, if rail then count * (step + 8) else 0)
-    if not rail then self._nav.CanvasPosition = Vector2.zero end
+    if overflow then
+        local rect = Layout.TabBounds(width, step, visible, slots, false)
+        Factory.Rect(self._more, rect.x, rect.y, rect.width, rect.height)
+    end
+    local scroll = self._tabScroll
+    scroll.Visible = visible > 0
+    scroll.ScrollingEnabled = rail
+    scroll.AutomaticCanvasSize = Enum.AutomaticSize.None
+    local canvas = if rail then count * step + math.max(0, count - 1) * 8 + 2 * Layout.TabPadding else 0
+    scroll.CanvasSize = UDim2.fromOffset(0, canvas)
+    if not rail then scroll.CanvasPosition = Vector2.zero end
 end
 
 function Window:_bindGestures()
@@ -283,9 +304,10 @@ function Window:_bindGestures()
     input:Bind(self._scope, self._bubble, self, function()
         if self._open or workspace:_hasModal() or not self._bubbleRect then return nil end
         local rect = self._bubbleRect
+        local area, protected = workspace:_bubbleBounds(self)
         local function finish()
             if self._bubbleDragging then
-                self._bubbleAnchor = Layout.BubbleAnchor(self._bubbleDragging, workspace._bubbleArea)
+                self._bubbleAnchor = Layout.BubbleAnchor(self._bubbleDragging, area)
                 self._side = if self._bubbleAnchor.x < 0.5 then "left" else "right"
             end
             self._bubbleDragging = nil
@@ -293,9 +315,13 @@ function Window:_bindGestures()
         end
         return {
             drag = function(dx, dy)
-                local nextRect = Layout.Clamp(Layout.Rect(rect.x + dx, rect.y + dy, rect.width, rect.height), workspace._bubbleArea)
-                self._bubbleDragging = nextRect
-                Factory.Rect(self._bubble, nextRect.x, nextRect.y, nextRect.width, nextRect.height)
+                local nextRect = Layout.Clamp(Layout.Rect(rect.x + dx, rect.y + dy, rect.width, rect.height), area)
+                local anchor = Layout.BubbleAnchor(nextRect, area)
+                local safe = Layout.FreeBubble(area, protected, anchor, nextRect.width)
+                if safe then
+                    self._bubbleDragging = safe
+                    Factory.Rect(self._bubble, safe.x, safe.y, safe.width, safe.height)
+                end
             end,
             tap = function() self:Show() end,
             finish = finish,
@@ -318,7 +344,7 @@ function Window:Tab(options)
     page.Visible = false
     Factory.Padding(page, 6)
     Factory.List(page, 8)
-    local button = scope:Give(Factory.Button(self._nav, options.title or options.id))
+    local button = scope:Give(Factory.Button(self._tabScroll, options.title or options.id))
     local tab = setmetatable({
         Id = options.id, _window = self, _page = page, _button = button, _scope = scope,
         _disabled = options.disabled == true, _container = Container.new(page, scope):Section({ name = "Content" }),
@@ -380,6 +406,7 @@ function Window:GetBounds()
 end
 
 function Window:_showTabs()
+    if not self:_canInteract() or not self._nav.Visible or not self._more.Visible then return end
     local items = {}
     for _, tab in ipairs(self._tabs) do
         if not tab._disabled then
@@ -435,6 +462,34 @@ end
 
 function Window:_assertLive()
     assert(not self._destroyed, "Window is destroyed")
+end
+
+function Window:_refreshBubbleImage()
+    if self._destroyed then return end
+    local appearance, icon = self._bubbleStyle, self._bubbleIcon
+    icon.Visible = appearance.image ~= false
+    self._bubble.Text = if appearance.image and icon.IsLoaded then "" else appearance.label
+end
+
+function Window:_styleBubble(size)
+    local appearance = self._bubbleStyle
+    local scale, radius = ReopenStyle.Corner(appearance, size, 0)
+    self._bubble.Shape.CornerRadius = UDim.new(scale, radius)
+    local imageScale = appearance.imageScale
+    self._bubbleIcon.Size = UDim2.fromScale(imageScale, imageScale)
+    local iconScale, iconRadius = ReopenStyle.Corner(appearance, size, size * (1 - imageScale) / 2)
+    self._bubbleIconCorner.CornerRadius = UDim.new(iconScale, iconRadius)
+end
+
+function Window:SetReopenBubble(options)
+    self:_assertLive()
+    local appearance = ReopenStyle.Merge(self._bubbleStyle, options)
+    self._workspace._input:Cancel(self)
+    self._bubbleStyle = appearance
+    local image = appearance.image or ""
+    if self._bubbleIcon.Image ~= image then self._bubbleIcon.Image = image end
+    self:_refreshBubbleImage()
+    self._workspace:_placeBubbles()
 end
 
 function Window:SetTheme(id)
