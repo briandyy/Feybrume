@@ -1,0 +1,123 @@
+{
+  "phase": 3,
+  "version": "0.3.0-window",
+  "testedAt": "2026-11-18",
+  "environment": {
+    "toolchain": "Official Luau CLI 0.747 and Rojo 7.7.1",
+    "system": "Linux",
+    "arch": "x86_64",
+    "nativeAdapters": "Pure model and injected fixtures"
+  },
+  "results": [
+    {
+      "command": "luau tests/core.luau",
+      "status": "PASS",
+      "passed": 20,
+      "cases": [
+        "services cache misses and retry after invalidation",
+        "capability changes only fire on transition",
+        "scope cleanup is reverse order, exactly once and isolated",
+        "removing a key or closing a child detaches it from the parent",
+        "signal dispatch handles once, disconnect, recursion and errors",
+        "signal wait preserves nil arguments and clears timers",
+        "promise cancellation propagates and discards a late result",
+        "pending descendants are cancelled with their parent",
+        "promise await timeout leaves the task pending",
+        "diagnostic ring redacts before storing and sending to subscribers",
+        "schema defaults, nested normalization and patch rejection",
+        "store rolls back failed writes, yielded callbacks and thrown errors",
+        "observers see one revision per batch and writes are queued",
+        "computed values are atomic, topological and cycle checked",
+        "flags use namespaces, shared schema identity and explicit persistence",
+        "serializer is stable, bounds output and sanitizes migrations",
+        "debounce and throttle honor scope disposal and trailing values",
+        "explicit cleanup repeatedly returns owned counts to baseline",
+        "waits from synchronous callbacks are rejected without scheduling a timer",
+        "redaction does not invoke properties on thrown objects"
+      ]
+    },
+    {
+      "command": "luau tests/theme.luau",
+      "status": "PASS",
+      "passed": 11,
+      "cases": [
+        "all 40 presets load with frozen tokens and distinct geometry",
+        "registry changes publish token deltas and skip identical selections",
+        "custom themes derive new colors and preserve base presets",
+        "override precedence, focus and mobile target minimum",
+        "all presets, variants and states meet contrast over solid surfaces",
+        "transparent fills use their real backdrop and contrast can warn",
+        "native font resolver tries preferred face, theme family and fallback",
+        "font fallback handles rejected and throwing load probes without repeating them",
+        "native font test can yield before selecting fallback",
+        "reduced motion is honored for every profile",
+        "transition cancels old work, skips no-op and releases scope resources"
+      ]
+    },
+    {
+      "command": "luau tests/window.luau",
+      "status": "PASS",
+      "passed": 15,
+      "cases": [
+        "mobile and desktop breakpoints honor width, height, and input separately",
+        "breakpoints reject invalid order and allow overrides",
+        "clamping fits a rectangle smaller than the configured minimum",
+        "compact layout keeps the original floating request for restoration",
+        "left and right docking never overlaps at supported widths",
+        "resize preserves the loaded origin and obeys min max and safe area",
+        "edge targets distinguish left right top and free drop",
+        "keyboard contraction leaves an undocked window and sheet reachable",
+        "landscape sheet centers instead of covering the full bottom row",
+        "floating bubble stays clear of movement and neighboring bubbles",
+        "floating bubble can fall back to the other edge",
+        "grid columns and bottom navigation account for spacing",
+        "gesture ignores another pointer and distinguishes a tap",
+        "drag remains a drag after returning to origin and supports owner cancellation",
+        "focus restores a visible descendant and falls back when hidden"
+      ]
+    },
+    {
+      "command": "luau-analyze src tests examples",
+      "status": "PASS",
+      "diagnostics": 0
+    },
+    {
+      "command": "luau-compile --null src tests examples",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tooling/generate_themes.py --check",
+      "status": "PASS",
+      "presets": 40
+    },
+    {
+      "command": "rojo build window-preview.project.json and exact XML source verification",
+      "status": "PASS",
+      "name": "Feybrume_Phase_3_Window_Preview.rbxlx",
+      "sha256": "37ab098f45192a1bb551606b913df88e2d5da524513332e62a304d8c622e38bd",
+      "bytes": 269824,
+      "moduleScripts": 35,
+      "localScripts": 1,
+      "mapping": "window-preview.project.json"
+    }
+  ],
+  "roblox": {
+    "studio": "IMPLEMENTED_UNTESTED",
+    "deviceEmulator": "IMPLEMENTED_UNTESTED",
+    "desktopClient": "IMPLEMENTED_UNTESTED",
+    "mobileClient": "IMPLEMENTED_UNTESTED",
+    "nativeChecks": [
+      "WIN-01",
+      "WIN-02",
+      "WIN-03"
+    ],
+    "smokeTest": "examples/window-preview.client.luau"
+  },
+  "priorStudioObservation": {
+    "version": "0.2.1-theme",
+    "scope": "Owner smoke test in desktop Studio",
+    "output": "Owner reported empty Output",
+    "cosmic": "Owner confirmed that the Cosmic sparkle displayed correctly",
+    "status": "PASS_WITH_LIMITATION"
+  }
+}

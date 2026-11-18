@@ -6,7 +6,7 @@ Inti Feybrume dapat memakai layanan Roblox atau host yang disediakan pengembang.
 
 ## Roblox Studio
 
-Jalankan `rojo serve` dari direktori utama repo dan hubungkan plugin Rojo di Studio. Proyek memetakan `src` ke `ReplicatedStorage.Feybrume`. Untuk pemasangan manual, buat ModuleScript bernama `Feybrume` dengan isi `src/init.luau`. Tambahkan folder `core` dan `engine` di bawahnya. Masukkan setiap file dari `src/core` dan `src/engine` ke folder masing-masing sebagai ModuleScript dengan nama file tanpa ekstensi.
+Jalankan `rojo serve` dari direktori utama repo dan hubungkan plugin Rojo di Studio. Proyek memetakan `src` ke `ReplicatedStorage.Feybrume`. Untuk pemasangan manual, buat ModuleScript bernama `Feybrume` dengan isi `src/init.luau`. Tambahkan folder `core`, `engine`, dan `ui` di bawahnya. Masukkan setiap file dari folder `src` yang sesuai ke folder masing-masing sebagai ModuleScript dengan nama file tanpa ekstensi.
 
 Jalankan skrip uji singkat ini dari LocalScript di StarterPlayerScripts.
 

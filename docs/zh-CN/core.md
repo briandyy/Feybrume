@@ -6,7 +6,7 @@ Feybrume 可使用 Roblox 服务，也可接收自定义宿主。核心模块负
 
 ## 在 Studio 中安装
 
-在仓库根目录运行 `rojo serve`，并连接 Studio 的 Rojo 插件。项目将 `src` 映射到 `ReplicatedStorage.Feybrume`。手动安装时，用 `src/init.luau` 创建名为 `Feybrume` 的 ModuleScript，在其下建立 `core` 和 `engine` 文件夹，再按文件名将两组模块放入对应文件夹。
+在仓库根目录运行 `rojo serve`，并连接 Studio 的 Rojo 插件。项目将 `src` 映射到 `ReplicatedStorage.Feybrume`。手动安装时，用 `src/init.luau` 创建名为 `Feybrume` 的 ModuleScript，在其下建立 `core`、`engine` 与 `ui` 文件夹，再按文件名将模块放入对应文件夹。
 
 在 StarterPlayerScripts 中加入以下 LocalScript 并运行。
 

@@ -1,6 +1,6 @@
 # Touch layout and device acceptance
 
-The window engine will use the safe rectangle in Roblox layout units. Use CoreUISafeInsets and observe root viewport and GuiService updates. A separate device-safe layer can hold decorative backgrounds. Reserve room for thumbsticks, jump controls and experience overlays in the host because safe insets alone do not cover them. Follow PreferredInput for pointer, keyboard and gamepad changes, including on touch devices. Observe supported keyboard geometry and TextBox focus. Scroll the active field into view when geometry is unavailable. [ScreenGui](https://create.roblox.com/docs/reference/engine/classes/ScreenGui) · [ScreenInsets](https://create.roblox.com/docs/reference/engine/enums/ScreenInsets) · [GuiService](https://create.roblox.com/docs/reference/engine/classes/GuiService) · [UserInputService](https://create.roblox.com/docs/reference/engine/classes/UserInputService) · [Mobile input](https://create.roblox.com/docs/input/mobile)
+The window engine uses the safe rectangle in Roblox layout units with CoreUISafeInsets and observes root size and position. Reserve room for thumbsticks, jump controls and experience overlays in the host because safe insets alone do not cover them. Follow PreferredInput for pointer, keyboard and gamepad changes, including on touch devices. Observe supported keyboard geometry and TextBox focus. Scroll the active field into view when geometry is unavailable. [ScreenGui](https://create.roblox.com/docs/reference/engine/classes/ScreenGui) · [ScreenInsets](https://create.roblox.com/docs/reference/engine/enums/ScreenInsets) · [GuiService](https://create.roblox.com/docs/reference/engine/classes/GuiService) · [UserInputService](https://create.roblox.com/docs/reference/engine/classes/UserInputService) · [Mobile input](https://create.roblox.com/docs/input/mobile)
 
 | Safe width | Default composition | Short-height or landscape behavior |
 |---|---|---|
@@ -16,9 +16,11 @@ A color picker uses a large saturation/value plane, wide hue and alpha rails, nu
 
 Provide a button alternative to long press. Tab swipes and two-finger hide are opt-in and limited to the UI region. The reopen bubble defaults to size 52, snaps to the edge and allows left- or right-handed use. Keep it clear of navigation and virtual controls. Trap focus in the top modal, close the top overlay with Back or Escape and then restore focus. Use real engine accessibility capabilities. Respect system and manual reduced motion. Haptics require opt-in and a successful device probe. Test text scaling from 80 to 160 percent, plus a 200 percent stress case with readable wrapping or scrolling.
 
+The rules for advanced controls, gameplay gestures, haptics and performance below are acceptance targets. The current implementation lets authors reserve host-specific regions and applies left- or right-handed placement to the reopen bubble.
+
 ## Device scenarios
 
-These scenarios belong to the window and control phases. The theme resolver's target-size and touch-state rules are tested separately in CLI.
+The window geometry and capture rules now have CLI coverage. Studio and real-device checks remain open. Control-specific scenarios belong to later phases. [Window walkthrough](window.md)
 
 | ID | Steps | Acceptance |
 |---|---|---|

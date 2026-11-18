@@ -1,6 +1,6 @@
 # QA, risks, and roadmap
 
-PASS records executed checks. PASS_WITH_LIMITATION indicates narrower evidence than the target. IMPLEMENTED_UNTESTED indicates working source awaiting the named environment. BLOCKED records a missing prerequisite. FAIL records a failed check. NOT_IMPLEMENTED identifies planned work. Phase 1 core and Phase 2 theme tests run in Luau CLI with an injected host. Roblox runtime and real-device results remain pending. [Core evidence](../evidence/phase1-checks.json) · [Theme evidence](../evidence/phase2-checks.json) · [Traceability](../design/traceability.json)
+PASS records executed checks. PASS_WITH_LIMITATION indicates narrower evidence than the target. IMPLEMENTED_UNTESTED indicates working source awaiting the named environment. BLOCKED records a missing prerequisite. FAIL records a failed check. NOT_IMPLEMENTED identifies planned work. Phase 1 core and Phase 2 theme tests run in Luau CLI with an injected host. The desktop Phase 2 preview passed a user retest. Phase 3 has CLI window tests and awaits Studio and device interaction checks. [Core evidence](../evidence/phase1-checks.json) · [Theme evidence](../evidence/phase2-checks.json) · [Window evidence](../evidence/phase3-checks.json) · [Traceability](../design/traceability.json)
 
 | Area | Release weight | Acceptance evidence |
 |---|---:|---|
@@ -44,14 +44,22 @@ Release scores require evidence for every category. The library research links i
 
 The runtime baseline uses a native ModuleScript, canonical schema names, a 48-unit preset touch target and separate IDs for theme geometry. Pelinda is planned as a Panda compatibility layer. Device bugs require real-device reproduction.
 
+## Current preview checks
+
+| ID | Status | Scope and impact |
+|---|---|---|
+| WIN-01 | IMPLEMENTED_UNTESTED | Verify drag, resize, dock and rotation in Studio. The geometry and gesture model passes in CLI. |
+| WIN-02 | IMPLEMENTED_UNTESTED | Check real Android and iOS keyboard, cutouts, game controls and bubble clearance. Custom experiences can configure reserved rectangles. |
+| WIN-03 | IMPLEMENTED_UNTESTED | Verify keyboard and gamepad focus, nested dismissal and lifecycle under native Roblox input events. The focus model passes in CLI. |
+
 ## Roadmap
 
 | Phase | Implementation | Acceptance |
 |---:|---|---|
 | 0 | Research, architecture, registry and QA baseline | Catalog, contrast checks and source evidence. |
 | 1 | Runtime core, cancellation, state and diagnostics | CLI tests for ownership and state pass. Studio integration remains pending. |
-| 2 | Tokens, style resolver, 40 presets, native fonts and motion | CLI checks 3,200 style combinations. Roblox visual and input checks remain pending. |
-| 3 | Windows, layout, input, navigation and focus | Device layout, keyboard/focus restoration and hide/reopen. |
+| 2 | Tokens, style resolver, 40 presets, native fonts and motion | CLI checks 3,200 style combinations. The desktop preview retest passed. Device coverage is pending. |
+| 3 | Windows, layout, input, navigation and focus | CLI geometry, gesture and focus fixtures pass. Studio interaction and device checks use the [window walkthrough](window.md). |
 | 4 | Foundation controls and state bindings | Handles, callbacks, disposal and config restoration. |
 | 5 | Forms and advanced controls | Touch input, validation and field focus. |
 | 6 | Data views, notifications, search and command palette | Virtual rows, stable keys and bounded history. |

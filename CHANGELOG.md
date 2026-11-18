@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0-window
+
+- Mount responsive Roblox windows with tabs, drag, resize, docking and reopen buttons.
+- Add bottom sheets, context menus, focus restoration, and named slots with responsive grids.
+- Add a Studio walkthrough and CLI fixtures for layout, pointer capture, and focus.
+
 ## 0.2.1-theme
 
 - Switch the default serif role from Garamond to Bodoni.

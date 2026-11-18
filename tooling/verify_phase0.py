@@ -113,11 +113,11 @@ def evidence_checks(components, themes):
             verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
                    and entry["status"] == "PASS" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
                    f"Missing core evidence: {entry['featureId']}")
-        elif entry["featureId"].startswith(("theme.", "designSystem.")):
+        elif entry["featureId"].startswith(("theme.", "designSystem.", "windowEngine.")):
             path = entry["implementationFile"]
             verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
                    and entry["status"] == "PASS_WITH_LIMITATION" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
-                   f"Missing theme evidence: {entry['featureId']}")
+                   f"Missing runtime evidence: {entry['featureId']}")
         else:
             verify(entry["implementationFile"] is None and not entry["testedEnvironments"] and
                    entry["status"] in ("NOT_IMPLEMENTED", "BLOCKED"),

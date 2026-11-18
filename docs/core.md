@@ -6,7 +6,7 @@ Feybrume runs with Roblox services or an injected host. The core owns resources,
 
 ## Roblox Studio
 
-Run `rojo serve` from the repository root and connect the Rojo Studio plugin. The project maps `src` to `ReplicatedStorage.Feybrume`. To install manually, create a ModuleScript named `Feybrume` from `src/init.luau`. Add folders named `core` and `engine` under it, then put each module from `src/core` or `src/engine` into its corresponding folder as a ModuleScript with the filename as its name and no extension.
+Run `rojo serve` from the repository root and connect the Rojo Studio plugin. The project maps `src` to `ReplicatedStorage.Feybrume`. To install manually, create a ModuleScript named `Feybrume` from `src/init.luau`. Add folders named `core`, `engine` and `ui` under it, then put each module from the corresponding `src` folder into it as a ModuleScript with the filename as its name and no extension.
 
 Add this LocalScript to StarterPlayerScripts and press Play.
 

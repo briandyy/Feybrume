@@ -4088,5 +4088,133 @@
     "robloxStatus": "IMPLEMENTED_UNTESTED",
     "issue": "R-01",
     "earliestPhase": 2
+  },
+  {
+    "featureId": "windowEngine.layout",
+    "publicAPI": "Workspace:GetViewport / Window:GetBounds",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/engine/Layout.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Safe rectangle, responsive navigation and basic bounds",
+    "testCase": "MOB-01/MOB-03/MOB-04",
+    "testedEnvironments": [
+      "Luau CLI geometry fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-07",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.viewport",
+    "publicAPI": "Workspace:GetViewport",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/engine/Viewport.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Safe-area layout and editor scroll when native keyboard geometry is unavailable",
+    "testCase": "MOB-09/MOB-10",
+    "testedEnvironments": [
+      "Luau CLI keyboard geometry model"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-07",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.input",
+    "publicAPI": "Window:BindContextMenu",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/engine/Input.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Pointer cancellation and an explicit menu action",
+    "testCase": "MOB-06/MOB-19/MOB-20/MOB-27",
+    "testedEnvironments": [
+      "Luau CLI pointer state fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-07",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.focus",
+    "publicAPI": "Workspace:OpenSheet / Sheet:Close",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/engine/Focus.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Visible descendant or the sheet close action",
+    "testCase": "MOB-21/MOB-22",
+    "testedEnvironments": [
+      "Luau CLI injected selectable nodes"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-09",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.workspace",
+    "publicAPI": "Fey:CreateWorkspace / Workspace:Window / SetReopenSide / Destroy",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/ui/Workspace.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Preferred edge and alternative free position for the reopen bubble",
+    "testCase": "MOB-05/MOB-17/MOB-18",
+    "testedEnvironments": [
+      "Luau CLI bubble geometry model and Studio place source verification"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-07",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.window",
+    "publicAPI": "Fey:Window / Window:Tab / Dock / Hide / Show / SetNavigation",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/ui/Window.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Safe area fill or explicit floating bounds and drawer overflow",
+    "testCase": "MOB-03/MOB-06/MOB-08",
+    "testedEnvironments": [
+      "Luau CLI dock and navigation model and Studio place source verification"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.sheet",
+    "publicAPI": "Workspace:OpenSheet / Sheet:GetContent / AddAction / Close",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/ui/Sheet.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Bottom sheet in compact portrait or centered dialog otherwise",
+    "testCase": "MOB-04/MOB-22",
+    "testedEnvironments": [
+      "Luau CLI sheet geometry model and Studio place source verification"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 3
+  },
+  {
+    "featureId": "windowEngine.slots",
+    "publicAPI": "Window:GetSlot / Tab:Section / Container:Add / Grid / HStack",
+    "sourceEvidence": "evidence/phase3-checks.json",
+    "implementationFile": "src/ui/Container.luau",
+    "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
+    "fallback": "Named native GUI slots and responsive columns",
+    "testCase": "MOB-01/MOB-07",
+    "testedEnvironments": [
+      "Luau CLI column calculation and Studio place source verification"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 3
   }
 ]

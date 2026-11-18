@@ -13,6 +13,13 @@ local function engine(name)
     return require("./src/engine/" .. name)
 end
 
+local Workspace = require(if script then script.ui.Workspace else "./src/ui/Workspace")
+local defaultWorkspace
+local function getWorkspace()
+    if not defaultWorkspace or defaultWorkspace._destroyed then defaultWorkspace = Workspace.new() end
+    return defaultWorkspace
+end
+
 return table.freeze({
     Runtime = core("Runtime"),
     Clock = core("Clock"),
@@ -36,4 +43,14 @@ return table.freeze({
     Motion = engine("Motion"),
     Animation = engine("Animation"),
     Transition = engine("Transition"),
+    Workspace = Workspace,
+    CreateWorkspace = function(_, options) return Workspace.new(options) end,
+    Window = function(_, options) return getWorkspace():Window(options) end,
+    SetTheme = function(_, id) return getWorkspace():SetTheme(id) end,
+    RegisterTheme = function(_, spec) return getWorkspace():RegisterTheme(spec) end,
+    Destroy = function()
+        if not defaultWorkspace then return end
+        defaultWorkspace:Destroy()
+        defaultWorkspace = nil
+    end,
 })
