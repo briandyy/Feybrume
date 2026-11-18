@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 3,
-  "version": "0.3.3-window",
+  "version": "0.3.4-window",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase2-manifest.json",
@@ -26,7 +26,8 @@
     "addedInPatch": [
       "CreateWorkspace({ reopenMode = \"free\" | \"edge\", gamepadNavigation = boolean })",
       "Window({ touchDock = boolean })",
-      "Workspace and Window reopenBubble options, plus Window:SetReopenBubble(options)"
+      "Workspace and Window reopenBubble options, plus Window:SetReopenBubble(options)",
+      "Window:SetProps(patch), Window:SetBounds(patch), and persistent TopbarLeading, TopbarTrailing and StatusBar slots"
     ],
     "defaultBehaviorChanges": [
       "Free reopen placement, with edge mode available explicitly",
@@ -43,10 +44,10 @@
     "robloxStudio": "IMPLEMENTED_UNTESTED",
     "robloxMobile": "IMPLEMENTED_UNTESTED",
     "studioPreview": {
-      "name": "Feybrume_Phase_3_Window_Preview_v0.3.3.rbxlx",
-      "sha256": "9322d40964b9181e52f8559885d257574fe20763e9c326ae9e2a36ea11782565",
-      "bytes": 296840,
-      "moduleScripts": 36,
+      "name": "Feybrume_Phase_3_Window_Preview_v0.3.4.rbxlx",
+      "sha256": "462ca3f198717b910d1eb1b082acd035bac5a2943eda7effab36e806c16a0238",
+      "bytes": 304509,
+      "moduleScripts": 37,
       "localScripts": 1,
       "mapping": "window-preview.project.json",
       "screenOrientation": "Sensor"
@@ -71,7 +72,7 @@
   },
   "evidence": {
     "report": "evidence/phase3-checks.json",
-    "testsPassed": 57,
+    "testsPassed": 60,
     "traceability": "design/traceability.json",
     "limits": "docs/qa-and-backlog.md"
   },
@@ -83,8 +84,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3028,
-      "sha256": "fcb803221991b2a94040c55f7e64850c3475273f7e9e07366afa5f2b08e05136"
+      "bytes": 3351,
+      "sha256": "630a2db3785efd8bd4b33b3f21062c1010f3d8e2259014d662f82d60f01b0026"
     },
     {
       "path": "README.id.md",
@@ -123,8 +124,8 @@
     },
     {
       "path": "design/traceability.json",
-      "bytes": 140989,
-      "sha256": "7bce32bcc3b82a1169dd0a900b13a9495f5dad541252be606485e7ab58a8adb9"
+      "bytes": 141085,
+      "sha256": "081881f54eda952caf22380aba8700e51b8f0fe339d503d5be456c30596b020c"
     },
     {
       "path": "docs/architecture.md",
@@ -168,8 +169,8 @@
     },
     {
       "path": "docs/id/window.md",
-      "bytes": 3242,
-      "sha256": "94b51760d69cffd1742e02533da7ca823d3fb459d1ec22291d624a8c7723d63f"
+      "bytes": 3741,
+      "sha256": "c9ac179ff58b7aa3e0a61249612675092bed993d7ce4da276a98eb80254ae07c"
     },
     {
       "path": "docs/index.md",
@@ -178,8 +179,8 @@
     },
     {
       "path": "docs/media.md",
-      "bytes": 6298,
-      "sha256": "37cbc715ea55727c6e1f1dcfb905fac76fb2be41d9ee17ee755d878c1ae9a2a6"
+      "bytes": 6641,
+      "sha256": "90c79bf548a9197c7637de2facd796a820d7f3933cf620c3365a91a6e960bf50"
     },
     {
       "path": "docs/mobile.md",
@@ -193,8 +194,8 @@
     },
     {
       "path": "docs/qa-and-backlog.md",
-      "bytes": 9599,
-      "sha256": "3717f6ad5c73bc718ab0e8c970c574e2d51fdbf4db03276395385f3197bc2397"
+      "bytes": 9774,
+      "sha256": "d02278ad34880bae1d346a76df958f58ecdf394f5f60a02bb2add34cb73208d4"
     },
     {
       "path": "docs/release-doc-map.md",
@@ -213,8 +214,8 @@
     },
     {
       "path": "docs/window.md",
-      "bytes": 9734,
-      "sha256": "7eb1f31505440647d1348befa64c0a263f3992d6db47a82fd16bee02c0bf0585"
+      "bytes": 11483,
+      "sha256": "721601412fae85a1dbb5bea8629e6db6f7e5e110f6015d13d2733ea0ace22dca"
     },
     {
       "path": "docs/zh-CN/core.md",
@@ -238,8 +239,8 @@
     },
     {
       "path": "docs/zh-CN/window.md",
-      "bytes": 2500,
-      "sha256": "a27f66a71c761e978c1bcca68daae572a8262336d81a3fad8e1f5cf2133ecc01"
+      "bytes": 2922,
+      "sha256": "c2a1c2c4182257a77cdf0b38c6ced8189522382378a6135429e5e87ad7bf1115"
     },
     {
       "path": "evidence/font-license-samples.json",
@@ -263,8 +264,8 @@
     },
     {
       "path": "evidence/phase3-checks.json",
-      "bytes": 10261,
-      "sha256": "cc81dcff072c38cc04e86ac73962088d7e03957d0eb2ccee076d1e3d653138ec"
+      "bytes": 11068,
+      "sha256": "fa4f063fd2542a1b7240c81536ccc5b07d1bd53d2579d83a0b6b6ae5ac9d6f0a"
     },
     {
       "path": "examples/theme-preview.client.luau",
@@ -273,8 +274,8 @@
     },
     {
       "path": "examples/window-preview.client.luau",
-      "bytes": 9283,
-      "sha256": "cdfd468aa74ab4edaa408a2d2f1cbe3e8e53c4292b65cde273831280d3761ed9"
+      "bytes": 10509,
+      "sha256": "d9f4294ea1140fff5ec4d491ec15141aed6e766d61d214f8b8bd87be7a36162f"
     },
     {
       "path": "phase0-manifest.json",
@@ -398,8 +399,8 @@
     },
     {
       "path": "src/engine/Layout.luau",
-      "bytes": 9934,
-      "sha256": "01f7def246a9ceff29cd0ef89599eb38319da2ee3c87b75c6b317d63fb50d2ad"
+      "bytes": 10301,
+      "sha256": "91952a73c48b1238224bf324c335bc530399ce2a6e3b929b8601607d9b684d3a"
     },
     {
       "path": "src/engine/Motion.luau",
@@ -463,8 +464,13 @@
     },
     {
       "path": "src/ui/Window.luau",
-      "bytes": 27581,
-      "sha256": "c42c8e3d0ea57cc85bbb0d2ccbaac30f852585e9edac3e4b2afb1c23cb308195"
+      "bytes": 31139,
+      "sha256": "d6ff32412d0346ff536ccc7bcb83b85e18abc25b40b15cd922187c790ecbf2a0"
+    },
+    {
+      "path": "src/ui/WindowProps.luau",
+      "bytes": 2296,
+      "sha256": "753fb30a84b4b3a0dd2376a171df8c30f210a6f183375a7fbb42fb777fe28b0e"
     },
     {
       "path": "src/ui/Workspace.luau",
@@ -488,8 +494,8 @@
     },
     {
       "path": "tests/window.luau",
-      "bytes": 19315,
-      "sha256": "6b74288a049386c8e98a334eab11f02679ab07e7649b1aa9fc368aa4cadc07a2"
+      "bytes": 21363,
+      "sha256": "4db8b6abdeaf796de2fa12ecd720b741c10af409950b1cc90efb34d7c23c38a7"
     },
     {
       "path": "tooling/generate_themes.py",

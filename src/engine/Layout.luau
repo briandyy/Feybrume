@@ -124,6 +124,14 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
     return best
 end
 
+function Layout.HeaderAdornmentWidths(width, requestedLeading, requestedTrailing)
+    local available = math.max(0, width - 64)
+    local leading = math.min(requestedLeading, math.max(0, available - 8))
+    if leading > 0 then available -= leading + 8 end
+    local trailing = math.min(requestedTrailing, math.max(0, available - 8))
+    return leading, trailing
+end
+
 function Layout.TopbarObstacles(area: Rectangle, top: number, free: Rectangle)
     local height = math.clamp(top - area.y, 0, area.height)
     if height == 0 then return {} end

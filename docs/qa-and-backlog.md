@@ -54,6 +54,7 @@ The runtime baseline uses a native ModuleScript, canonical schema names, a 48-un
 | WIN-06 | PASS_WITH_LIMITATION | Owner activated window controls, sheet actions, and inline tabs with Controller Emulator in v0.3.2. |
 | WIN-07 | IMPLEMENTED_UNTESTED | Retest Gamepad A on Tabs/More with the v0.3.3 preview. An injected focus and activation fixture passes in Luau CLI. |
 | WIN-08 | IMPLEMENTED_UNTESTED | Retest launcher styling, image loading, and device-safe edge reach on Android in v0.3.3. |
+| WIN-09 | IMPLEMENTED_UNTESTED | Verify live window appearance, custom bounds and header/status slots in the v0.3.4 preview. CLI tests cover validation, bounds and layout. |
 | WIN-01 | IMPLEMENTED_UNTESTED | Verify drag, resize, dock and rotation in Studio. The geometry and gesture model passes in CLI. |
 | WIN-02 | IMPLEMENTED_UNTESTED | Check real Android and iOS keyboard, cutouts, game controls and bubble clearance. Custom experiences can configure reserved rectangles. |
 | WIN-03 | IMPLEMENTED_UNTESTED | Verify keyboard and gamepad focus, nested dismissal and lifecycle under native Roblox input events. The focus model passes in CLI. |

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4-window
+
+- Update window titles, subtitles, typography, panel opacity, corner radius, padding, header height, sidebar width, and snap distance at runtime.
+- Add runtime floating bounds and stable header and status slots for native UI content.
+- Document window customization and the planned media source backends.
+
 ## 0.3.3-window
 
 - Route Gamepad A on **Tabs** and **More** through the same tab picker as mouse and touch.

@@ -36,6 +36,21 @@ Window options use `movable`, `resizable`, and `dockable` to enable default gest
 
 Tabs and sections expose Leading, Main, Trailing, Footer, Background and Overlay slots. A window provides window-sized Background and Overlay slots plus the active page's other slots. Use native GuiObjects for content. Passing ownership to a section lets its scope remove that content on teardown. `section:Destroy()` releases the section and any nested grids or child sections.
 
+## Customize a window
+
+Set these options when creating a window or update them in place with `window:SetProps(patch)`. Use the same APIs for floating and docked windows.
+
+| Property | Behavior |
+|---|---|
+| `title`, `subtitle`, `titleSize`, `titleFont` | Set the heading and an optional subtitle. Supply a Roblox `Font` value or `false` to restore the default heading font. |
+| `backgroundOpacity`, `cornerRadius`, `padding` | Customize the window surface and spacing. Set `cornerRadius = false` or `padding = false` to restore the inherited setting. |
+| `topbarHeight`, `sidebarWidth`, `snapDistance` | Set the requested header height, navigation rail width and pointer docking threshold. A value of 0 uses the automatic header or rail size. |
+| `topbarLeadingWidth`, `topbarTrailingWidth`, `statusBarHeight` | Give space to persistent `TopbarLeading`, `TopbarTrailing`, and `StatusBar` slots. A value of 0 collapses that slot. Narrow windows shrink adornments to leave room for the title. |
+
+Call `window:SetBounds({ x = 24, y = 30, width = 520, height = 360 })` to edit the floating bounds. Coordinates use the workspace's GUI units. When docked, the request is applied when the window returns to floating. Safe areas and the configured size limits still apply. The same four bounds are accepted at creation, and unspecified coordinates are centered. Invalid patches leave the previous values in effect.
+
+Use `window:GetSlot("TopbarLeading")` for a logo or avatar, `TopbarTrailing` for custom header actions, or `StatusBar` for footer content. These slots accept native GuiObjects and are owned by the window. `Background` and `Overlay` span the window. Source resolution and media playback are tracked separately in the [media plan](media.md).
+
 ## Customize the reopen button
 
 Set `reopenBubble` on a workspace for defaults or on a window to override them. Use `Window:SetReopenBubble(options)` to update the current window in place.

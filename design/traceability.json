@@ -4171,11 +4171,11 @@
   },
   {
     "featureId": "windowEngine.window",
-    "publicAPI": "Fey:Window / Window:Tab / Dock / Hide / Show / SetNavigation",
+    "publicAPI": "Fey:Window / Window:Tab / Dock / Hide / Show / SetNavigation / Window:SetProps / SetBounds",
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/ui/Window.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Safe area fill or explicit floating bounds and drawer overflow",
+    "fallback": "Responsive window controls, native appearance overrides and clamped floating restore bounds",
     "testCase": "MOB-03/MOB-06/MOB-08",
     "testedEnvironments": [
       "Luau CLI dock and navigation model and Studio place source verification"
@@ -4207,7 +4207,7 @@
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/ui/Container.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Named native GUI slots and responsive columns",
+    "fallback": "Named native GUI slots, persistent header and status hosts, and responsive columns",
     "testCase": "MOB-01/MOB-07",
     "testedEnvironments": [
       "Luau CLI column calculation and Studio place source verification"

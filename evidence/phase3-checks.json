@@ -1,6 +1,6 @@
 {
   "phase": 3,
-  "version": "0.3.3-window",
+  "version": "0.3.4-window",
   "testedAt": "2026-11-18",
   "environment": {
     "toolchain": "Official Luau CLI 0.747 and Rojo 7.7.1",
@@ -57,7 +57,7 @@
     {
       "command": "luau tests/window.luau",
       "status": "PASS",
-      "passed": 26,
+      "passed": 29,
       "cases": [
         "mobile and desktop breakpoints honor width, height, and input separately",
         "breakpoints reject invalid order and allow overrides",
@@ -84,7 +84,10 @@
         "drag remains a drag after returning to origin and supports owner cancellation",
         "focus restores a visible descendant and falls back when hidden",
         "gamepad focus stays in its scope and prefers the same row or column",
-        "gamepad opens the tab list once on release and leaves other buttons alone"
+        "gamepad opens the tab list once on release and leaves other buttons alone",
+        "window title and appearance can be updated atomically at runtime",
+        "set bounds updates the floating restore request without undocking",
+        "header slots reserve title space on touch-sized windows"
       ]
     },
     {
@@ -104,10 +107,10 @@
     {
       "command": "rojo build window-preview.project.json and exact XML source verification",
       "status": "PASS",
-      "name": "Feybrume_Phase_3_Window_Preview_v0.3.3.rbxlx",
-      "sha256": "9322d40964b9181e52f8559885d257574fe20763e9c326ae9e2a36ea11782565",
-      "bytes": 296840,
-      "moduleScripts": 36,
+      "name": "Feybrume_Phase_3_Window_Preview_v0.3.4.rbxlx",
+      "sha256": "462ca3f198717b910d1eb1b082acd035bac5a2943eda7effab36e806c16a0238",
+      "bytes": 304509,
+      "moduleScripts": 37,
       "localScripts": 1,
       "mapping": "window-preview.project.json",
       "screenOrientation": "Sensor"
@@ -132,7 +135,8 @@
       "WIN-05",
       "WIN-06",
       "WIN-07",
-      "WIN-08"
+      "WIN-08",
+      "WIN-09"
     ],
     "smokeTest": "examples/window-preview.client.luau"
   },
@@ -236,5 +240,25 @@
       }
     ],
     "v0.3.3Retest": "IMPLEMENTED_UNTESTED"
+  },
+  "phase3WindowCustomization": {
+    "version": "0.3.4-window",
+    "api": [
+      "Window:SetProps",
+      "Window:SetBounds",
+      "Window:GetSlot"
+    ],
+    "scope": "Runtime appearance, floating bounds and native GUI slots for header and status content",
+    "luau": "PASS",
+    "studio": "IMPLEMENTED_UNTESTED",
+    "deferredContract": {
+      "phase": 7,
+      "status": "NOT_IMPLEMENTED",
+      "features": [
+        "Capability-aware media resolution",
+        "Approved CDN/import backends",
+        "YouTube metadata and permitted handoff"
+      ]
+    }
   }
 }

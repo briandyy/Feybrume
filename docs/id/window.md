@@ -16,6 +16,10 @@ Di desktop, klik kanan judul pada tab **Help** untuk membuka menu aksi. Di layar
 
 Di **Controller Emulator**, pilih **Navigation: drawer** di Preferences. Pindahkan fokus ke **Tabs** dengan **D-pad**, lalu tekan **A** untuk membuka daftar dan memilih tab. Buka sheet kedua dan tekan **B** sekali untuk kembali ke sheet pertama. Saat semua window disembunyikan, **Select/View** memilih bubble untuk membuka ulang.
 
+## Ubah tampilan window
+
+Di **Preferences**, tekan **Window appearance** untuk mencoba perubahan tanpa membuka ulang window. Pembuat skrip bisa memakai `window:SetProps({ subtitle = "Tools", cornerRadius = 18, sidebarWidth = 152, statusBarHeight = 24 })` dan `window:SetBounds({ x = 24, y = 30, width = 520, height = 360 })`. `window:GetSlot(namaSlot)` menyediakan `TopbarLeading`, `TopbarTrailing`, `StatusBar`, `Background`, dan `Overlay` untuk konten Roblox native. [Opsi lengkap](../window.md)
+
 ## Ubah bubble
 
 Di **Preferences**, pilih ukuran bubble, bentuk, dan ukuran gambar. Aktifkan gambar contoh lewat **Bubble image** atau masukkan ID gambar Roblox sendiri. Tekan **Hide** untuk melihat hasilnya.

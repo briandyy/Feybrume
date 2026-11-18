@@ -3,6 +3,7 @@ local Factory = require(if script then script.Parent.Parent.engine.Factory else 
 local Layout = require(if script then script.Parent.Parent.engine.Layout else "../engine/Layout")
 local Input = require(if script then script.Parent.Parent.engine.Input else "../engine/Input")
 local ReopenStyle = require(if script then script.Parent.ReopenStyle else "./ReopenStyle")
+local WindowProps = require(if script then script.Parent.WindowProps else "./WindowProps")
 local Window = {}
 Window.__index = Window
 local Tab = {}
@@ -22,8 +23,9 @@ function Window.new(workspace, options)
     assert(navigation[options.navigation or "auto"], "Unknown navigation placement")
     assert(placements[options.placement or "floating"], "Unknown window placement")
     assert(options.theme == nil or workspace.Themes:Get(options.theme), "Unknown window theme")
-    assert(options.title == nil or type(options.title) == "string", "Expected a title")
-    local width, height = positive(options.width, 590), positive(options.height, 420)
+    local props = WindowProps.FromOptions(options)
+    local initialBounds = WindowProps.Bounds({ width = 590, height = 420 },
+        { x = options.x, y = options.y, width = options.width, height = options.height })
     local limits = {
         minWidth = positive(options.minWidth, 280), minHeight = positive(options.minHeight, 220),
         maxWidth = positive(options.maxWidth, 1200), maxHeight = positive(options.maxHeight, 900),
@@ -36,7 +38,7 @@ function Window.new(workspace, options)
     local scope = workspace._scope:Fork()
     local self = setmetatable({
         _workspace = workspace, _scope = scope, _options = table.clone(options), _limits = limits,
-        _width = width, _height = height, _placement = options.placement or "floating",
+        _initialBounds = initialBounds, _props = props, _placement = options.placement or "floating",
         _navigation = options.navigation or "auto", _themeId = options.theme,
         _tabs = {}, _open = true, _canDrag = options.movable ~= false, _canResize = options.resizable ~= false,
         _side = workspace._settings.side, _bubbleStyle = bubble,
@@ -51,8 +53,14 @@ function Window.new(workspace, options)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
     local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
-    self._heading = Factory.Label(body, options.title or "Feybrume", 18)
+    self._heading = Factory.Label(body, props.title, props.titleSize)
     self._heading.Font = Enum.Font.SourceSansBold
+    self._subtitle = Factory.Label(body, props.subtitle, 13)
+    self._layoutSlots = {
+        TopbarLeading = newFrame(body, "TopbarLeading", { ClipsDescendants = true }),
+        TopbarTrailing = newFrame(body, "TopbarTrailing", { ClipsDescendants = true }),
+        StatusBar = newFrame(body, "StatusBar", { ClipsDescendants = true }),
+    }
     self._grip = newFrame(body, "DragHandle")
     self._hide = newButton(body, "Hide")
     self._max = newButton(body, "Max")
@@ -150,7 +158,11 @@ function Window:_reflow()
         self._shell.Visible = false
         return
     end
-    if not self._requested then self._requested = Layout.Center(area, self._width, self._height) end
+    if not self._requested then
+        local initial = self._initialBounds
+        local centered = Layout.Center(area, initial.width, initial.height)
+        self._requested = Layout.Rect(initial.x or centered.x, initial.y or centered.y, centered.width, centered.height)
+    end
     local rect = Layout.Window(self._requested, area, profile, self._placement, self._limits,
         self._options.fillCompact ~= false)
     self._rect = rect
@@ -159,16 +171,26 @@ function Window:_reflow()
 
     local theme, scale = self:_theme(), workspace._settings.fontScale
     Factory.Rect(self._shell, rect.x, rect.y, rect.width, rect.height)
+    local props = self._props
     self._shell.BackgroundColor3 = Factory.Hex(theme.palette.surface)
+    self._shell.BackgroundTransparency = 1 - props.backgroundOpacity
     self._edge.Color = Factory.Hex(theme.tokens.essentialStroke)
-    self._shape.CornerRadius = UDim.new(0, theme.radius)
+    self._shape.CornerRadius = UDim.new(0, props.cornerRadius or theme.radius)
+    self._heading.Text = props.title
     self._heading.TextColor3 = Factory.Hex(theme.tokens.onSurface)
-    self._heading.TextSize = math.round(18 * scale)
+    self._heading.TextSize = math.round(props.titleSize * scale)
+    if props.titleFont then self._heading.FontFace = props.titleFont else self._heading.Font = Enum.Font.SourceSansBold end
+    self._subtitle.Text = props.subtitle
+    self._subtitle.TextColor3 = Factory.Hex(theme.tokens.textMuted or theme.tokens.onSurface)
+    self._subtitle.TextSize = math.round(13 * scale)
 
     local w, h = rect.width, rect.height
     local target = workspace:_target(theme)
-    local gap, pad = 8, if profile.compactChrome then 6 else 12
-    local bar = math.min(h, target + 2 * pad)
+    local gap = 8
+    local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
+    local subtitleH = if props.subtitle == "" then 0 else self._subtitle.TextSize + 3
+    local titleH = self._heading.TextSize + 4
+    local bar = math.min(h, math.max(target, titleH + subtitleH, props.topbarHeight - 2 * pad) + 2 * pad)
     self._max.Text = if self._placement == "floating" then "Max" else "Restore"
     self._resize.Text = if profile.compactChrome then "" else "Resize"
     self._resizeMark.Visible = profile.compactChrome
@@ -178,12 +200,26 @@ function Window:_reflow()
     local hideW = math.min(w, workspace:_buttonWidth(self._hide, minimumWidth))
     local maxW = workspace:_buttonWidth(self._max, minimumWidth)
     local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
-    Factory.Rect(self._hide, math.max(0, w - pad - hideW), pad, hideW, target)
-    Factory.Rect(self._max, w - pad - hideW - maxW - gap, pad, maxW, target)
+    local buttonY = math.max(0, (bar - target) / 2)
+    Factory.Rect(self._hide, math.max(0, w - pad - hideW), buttonY, hideW, target)
+    Factory.Rect(self._max, w - pad - hideW - maxW - gap, buttonY, maxW, target)
     self._max.Visible = maxVisible
-    local headingWidth = w - 3 * pad - hideW - (if maxVisible then maxW + gap else 0)
-    Factory.Rect(self._heading, pad, pad, headingWidth, target)
-    Factory.Rect(self._grip, 0, 0, headingWidth + pad, bar)
+
+    local headingWidth = math.max(0, w - 3 * pad - hideW - (if maxVisible then maxW + gap else 0))
+    local leading, trailing = Layout.HeaderAdornmentWidths(headingWidth, props.topbarLeadingWidth, props.topbarTrailingWidth)
+    local titleX = pad + (if leading > 0 then leading + gap else 0)
+    local titleWidth = headingWidth - (titleX - pad) - (if trailing > 0 then trailing + gap else 0)
+    local titleY = math.max(0, (bar - titleH - subtitleH) / 2)
+    Factory.Rect(self._heading, titleX, titleY, titleWidth, titleH)
+    Factory.Rect(self._subtitle, titleX, titleY + titleH, titleWidth, subtitleH)
+    self._subtitle.Visible = subtitleH > 0
+    local slotHeight = math.max(0, bar - 2 * pad)
+    local leftSlot, rightSlot = self._layoutSlots.TopbarLeading, self._layoutSlots.TopbarTrailing
+    Factory.Rect(leftSlot, pad, pad, leading, slotHeight)
+    Factory.Rect(rightSlot, pad + headingWidth - trailing, pad, trailing, slotHeight)
+    leftSlot.Visible, rightSlot.Visible = leading > 0, trailing > 0
+    local gripX = if leading > 0 then titleX else 0
+    Factory.Rect(self._grip, gripX, 0, titleX + titleWidth - gripX, bar)
     self._grip.Visible = self._canDrag and not (profile.narrow and self._options.fillCompact ~= false)
 
     local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
@@ -196,7 +232,13 @@ function Window:_reflow()
     end
     local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
     local gutter = if useGutter then target + gap else 0
-    local bodyW, bodyH = math.max(0, w - 2 * pad - gutter), math.max(0, h - y - pad - footerH)
+    local bodyW = math.max(0, w - 2 * pad - gutter)
+    local remaining = math.max(0, h - y - pad - footerH)
+    local statusH = math.min(props.statusBarHeight, math.max(0, remaining - target - gap))
+    local bodyH = remaining - statusH - (if statusH > 0 then gap else 0)
+    local status = self._layoutSlots.StatusBar
+    Factory.Rect(status, pad, y + remaining - statusH, bodyW, statusH)
+    status.Visible = statusH > 0
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
     self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
@@ -205,7 +247,8 @@ function Window:_reflow()
     else
         self._nav.Visible = true
         if mode == "left" or mode == "right" then
-            local rail = math.min(136, math.max(target, math.floor(bodyW * 0.29)))
+            local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(136, math.floor(bodyW * 0.29))
+            local rail = math.min(math.max(0, bodyW - gap), math.max(target, preferredRail))
             table.insert(self._bubbleExclusions,
                 Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
             self:_layoutTabs(mode, rail, target)
@@ -285,7 +328,7 @@ function Window:_bindGestures()
             end,
             finish = function(pointer)
                 if snap then
-                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._area, 22))
+                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._area, self._props.snapDistance))
                 else
                     workspace:_placeBubbles()
                 end
@@ -492,6 +535,29 @@ function Window:SetReopenBubble(options)
     self._workspace:_placeBubbles()
 end
 
+function Window:SetProps(patch)
+    self:_assertLive()
+    local props = WindowProps.Merge(self._props, patch)
+    self._workspace._input:Cancel(self)
+    self._props = props
+    self:_reflow()
+    self._workspace:_placeBubbles()
+end
+
+function Window:SetBounds(patch)
+    self:_assertLive()
+    local current = self._requested or self._initialBounds
+    local bounds = WindowProps.Bounds(current, patch)
+    self._workspace._input:Cancel(self)
+    if self._requested then
+        self._requested = bounds
+    else
+        self._initialBounds = bounds
+    end
+    self:_reflow()
+    self._workspace:_placeBubbles()
+end
+
 function Window:SetTheme(id)
     self:_assertLive()
     if id ~= nil and not self._workspace.Themes:Get(id) then return false end
@@ -551,6 +617,8 @@ function Window:GetSlot(name)
     self:_assertLive()
     if name == "Background" then return self._background end
     if name == "Overlay" then return self._overlay end
+    local slot = self._layoutSlots[name]
+    if slot then return slot end
     return if self._activeTab then self._activeTab:GetSlot(name) else nil
 end
 

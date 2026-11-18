@@ -443,4 +443,53 @@ test("gamepad opens the tab list once on release and leaves other buttons alone"
     equal(buttonClicks, 1)
 end)
 
+test("window title and appearance can be updated atomically at runtime", function()
+    local WindowProps = require("../src/ui/WindowProps")
+    local reflowed, placed, canceled = 0, 0, 0
+    local window = {
+        _props = WindowProps.FromOptions({ title = "Original", navigation = "auto", sidebarWidth = 142 }),
+        _workspace = {
+            _input = { Cancel = function() canceled += 1 end },
+            _placeBubbles = function() placed += 1 end,
+        },
+        _assertLive = function() end,
+        _reflow = function() reflowed += 1 end,
+    }
+    Window.SetProps(window, { title = "Tools", subtitle = "Ready", cornerRadius = 0, backgroundOpacity = 0.8 })
+    equal(window._props.title, "Tools")
+    equal(window._props.subtitle, "Ready")
+    equal(window._props.cornerRadius, 0)
+    equal(window._props.sidebarWidth, 142)
+    equal(pcall(Window.SetProps, window, { title = "Uncommitted", padding = -1 }), false)
+    equal(window._props.title, "Tools")
+    equal(reflowed, 1)
+    equal(placed, 1)
+    equal(canceled, 1)
+end)
+
+test("set bounds updates the floating restore request without undocking", function()
+    local window = {
+        _requested = Layout.Rect(100, 40, 550, 360), _placement = "left",
+        _workspace = { _input = { Cancel = function() end }, _placeBubbles = function() end },
+        _assertLive = function() end, _reflow = function() end,
+    }
+    Window.SetBounds(window, { x = 36, width = 420 })
+    equal(window._placement, "left")
+    equal(window._requested.x, 36)
+    equal(window._requested.y, 40)
+    equal(window._requested.width, 420)
+    equal(pcall(Window.SetBounds, window, { x = 0, height = -1 }), false)
+    equal(window._requested.x, 36)
+end)
+
+test("header slots reserve title space on touch-sized windows", function()
+    local left, right = Layout.HeaderAdornmentWidths(240, 52, 60)
+    equal(left, 52)
+    equal(right, 60)
+    left, right = Layout.HeaderAdornmentWidths(150, 80, 70)
+    equal(left, 78)
+    equal(right, 0)
+    equal(Layout.HeaderAdornmentWidths(54, 50, 50), 0)
+end)
+
 print(string.format("%d window tests passed", count))

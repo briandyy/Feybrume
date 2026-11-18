@@ -138,6 +138,38 @@ button(settings, "Navigation: auto", function() window:SetNavigation("auto") end
 button(settings, "Navigation: top", function() window:SetNavigation("top") end)
 button(settings, "Navigation: drawer", function() window:SetNavigation("drawer") end)
 
+local function slotLabel(slot, text)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.fromScale(1, 1)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextSize = 14
+    label.Font = Enum.Font.SourceSansSemibold
+    label.TextTruncate = Enum.TextTruncate.AtEnd
+    label.Parent = window:GetSlot(slot)
+    paint(label, "body")
+    return label
+end
+
+slotLabel("TopbarLeading", "Fey")
+local status = slotLabel("StatusBar", "Custom window settings")
+status.TextXAlignment = Enum.TextXAlignment.Left
+
+local customWindow = false
+local windowStyleButton
+windowStyleButton = button(settings, "Window appearance: default", function()
+    customWindow = not customWindow
+    window:SetProps({
+        title = if customWindow then "Feybrume Studio" else "Feybrume Workbench",
+        subtitle = if customWindow then "Custom window" else "",
+        cornerRadius = if customWindow then 22 else false,
+        topbarLeadingWidth = if customWindow then 38 else 0,
+        statusBarHeight = if customWindow then 25 else 0,
+        sidebarWidth = if customWindow then 168 else 0,
+    })
+    windowStyleButton.Text = if customWindow then "Window appearance: custom" else "Window appearance: default"
+end)
+
 local bubbleSettings = preferences:Section():Grid({ columns = 2, minWidth = 145, rowHeight = 52 })
 local sizes, shapes, scales = { 52, 68, 84 }, { "circle", "rounded", "square" }, { 0.62, 0.84, 0.44 }
 local sizeIndex, shapeIndex, scaleIndex = 1, 1, 1

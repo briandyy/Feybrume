@@ -16,6 +16,10 @@
 
 在手柄模拟器中，在 **Preferences** 中选择 **Navigation: drawer**，按方向键移到 **Tabs**，按 **A** 打开列表并选择标签页。打开嵌套面板后按一次 **B** 应返回上一层。
 
+## 自定义窗口
+
+在 **Preferences** 中点击 **Window appearance**，即可在运行时切换窗口外观。脚本可用 `window:SetProps(...)` 修改标题、副标题、圆角、内边距、顶栏高度和侧栏宽度，并用 `window:SetBounds(...)` 修改浮动窗口的位置和大小。用 `window:GetSlot(name)` 获取顶栏、状态栏、背景和叠加层的原生 GUI 容器。[完整选项](../window.md)
+
 ## 自定义浮动按钮
 
 在 **Preferences** 中调整按钮尺寸、形状和图片缩放。可启用示例图片或输入自己的 Roblox 图片 ID。点击 **Hide** 查看效果。脚本可用 `window:SetReopenBubble({ size = 68, shape = "rounded", radius = 14, image = 14304828123, imageScale = 0.72 })` 即时修改。默认范围是设备安全区且位于顶栏下方。
