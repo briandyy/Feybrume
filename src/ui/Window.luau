@@ -21,12 +21,9 @@ local function positive(value, default)
 end
 
 local shapes = {
-    max = {
-        { 2, 2, 5, 1.5 }, { 2, 2, 1.5, 5 }, { 9, 2, 5, 1.5 }, { 12.5, 2, 1.5, 5 },
-        { 2, 12.5, 5, 1.5 }, { 2, 9, 1.5, 5 }, { 9, 12.5, 5, 1.5 }, { 12.5, 9, 1.5, 5 },
-    },
+    max = { { 2, 3, 12, 1 }, { 2, 12, 12, 1 }, { 2, 4, 1, 8 }, { 13, 4, 1, 8 } },
     restore = { { 6, 2, 8, 1 }, { 13, 3, 1, 8 }, { 2, 5, 9, 1 }, { 2, 13, 9, 1 }, { 2, 6, 1, 7 }, { 10, 6, 1, 7 } },
-    hide = { { 3, 5.5, 6, 1.5, 45 }, { 7, 5.5, 6, 1.5, -45 }, { 3, 12.5, 10, 1.25 } },
+    hide = { { 3, 8, 10, 1.5 } },
 }
 local defaultChrome = table.freeze({})
 
@@ -39,7 +36,6 @@ local function chromeMark(parent, name)
         strokes[i] = Factory.Frame(mark, tostring(i), {
             Position = UDim2.fromScale(line[1] / 16, line[2] / 16),
             Size = UDim2.fromScale(line[3] / 16, line[4] / 16), BackgroundTransparency = 0,
-            Rotation = line[5] or 0,
         })
     end
     return { node = mark, lines = strokes }
@@ -80,19 +76,16 @@ function Window.new(workspace, options)
     }, Window)
     local newFrame, newButton = Factory.Frame, Factory.Button
     local shell = scope:Give(newFrame(workspace._windowsLayer, options.id or "Window", {
-        Active = true, BackgroundTransparency = 0, ClipsDescendants = true,
+        Active = false, BackgroundTransparency = 0, ClipsDescendants = true,
     }))
     self._shell = shell
     self._shape = Factory.Create("UICorner", shell)
     self._edge = Factory.Create("UIStroke", shell)
-    self._topExtension = newFrame(shell, "TopExtension", { Visible = false })
-    self._face = newFrame(shell, "WindowFace", { Visible = false })
-    self._faceCorner = Factory.Create("UICorner", self._face)
-    self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
+    self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1, ClipsDescendants = true })
     local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
     body.Active = true
     self._body = body
-    self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
+    self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3, ClipsDescendants = true })
     self._titleLogo = nativeImage(body, "TitleLogo")
     self._heading = Factory.Label(body, props.title, props.titleSize)
     self._heading.Font = Enum.Font.SourceSansBold
@@ -103,6 +96,8 @@ function Window.new(workspace, options)
         StatusBar = newFrame(body, "StatusBar", { ClipsDescendants = true }),
     }
     self._grip = newFrame(body, "DragHandle")
+    self._actionRail = newFrame(body, "WindowActions")
+    Factory.Create("UICorner", self._actionRail, { CornerRadius = UDim.new(0, 10) })
     self._hide = newButton(body, "")
     self._hide.Name = "Hide"
     self._max = newButton(body, "")
@@ -176,7 +171,7 @@ function Window.new(workspace, options)
             self:Dock(if self._placement == "floating" then "fullscreen" else "floating")
         end
     end))
-    scope:Give(shell.InputBegan:Connect(function(input)
+    scope:Give(body.InputBegan:Connect(function(input)
         if self:_canInteract() and Input.IsPointerActivation(input) then workspace:_raise(self) end
     end))
     scope:Give(self._bubble.Activated:Connect(function(input)
@@ -203,6 +198,9 @@ end
 function Window:_styleChrome()
     local workspace = self._workspace
     local theme, profile, selected = self:_theme(), workspace._profile, workspace._guiService.SelectedObject
+    local railColor = Color.Mix(theme.palette.surface, theme.palette.accent, 0.09)
+    self._actionRail.BackgroundColor3 = Factory.Hex(railColor)
+    self._actionRail.BackgroundTransparency = 0
     for _, button in ipairs(self._chrome) do
         local focused = selected == button
         local image = self._buttonImages[button]
@@ -215,23 +213,24 @@ function Window:_styleChrome()
         if image then
             local name = if button == self._hide then "hide" elseif self._placement == "floating" then "max" else "restore"
             local appearance = self._props.chromeButtons[name] or defaultChrome
-            local size = appearance.iconSize or 19
+            local size = appearance.iconSize or 16
             image.Image = appearance.icon or ""
             image.Visible = image.Image ~= "" and image.IsLoaded
             image.Size = UDim2.fromOffset(size, size)
             image.ImageColor3 = if appearance.iconColor then Factory.Hex(appearance.iconColor) else Color3.new(1, 1, 1)
             button.Text = if image.Visible then "" else appearance.text or ""
             local hover = self._buttonHover[button] and not profile.touchLayout
-            local tint = if button == self._max then 0.15 else 0.09
-            local background = appearance.background or Color.Mix(theme.palette.surface, theme.palette.accent, if hover or focused then tint + 0.1 else tint)
+            local highlighted = hover or focused
+            local background = appearance.background or (if highlighted
+                then Color.Mix(theme.palette.surface, theme.palette.accent, 0.19) else railColor)
             local plate = self._buttonPlates[button]
-            plate.Visible = button.Text == ""
+            plate.Visible = button.Text == "" and (highlighted or type(appearance.background) == "string")
             plate.BackgroundColor3 = Factory.Hex(background)
             plate.BackgroundTransparency = 0
-            local surfaceSize = math.clamp(size + 10, 28, workspace:_target(theme))
+            local surfaceSize = math.clamp(size + 8, 24, workspace:_target(theme))
             plate.Size = UDim2.fromOffset(surfaceSize, surfaceSize)
             button.BackgroundColor3 = plate.BackgroundColor3
-            button.BackgroundTransparency = if plate.Visible then 1 else 0
+            button.BackgroundTransparency = if button.Text == "" then 1 else 0
             button.TextColor3 = Factory.Hex(Color.EnsureContrast(theme.tokens.onSurface, background, 4.5))
             button.TextSize = math.round(14 * workspace._settings.fontScale)
             local mark = self._marks[name]
@@ -312,29 +311,15 @@ function Window:_reflow()
     local theme, scale = self:_theme(), workspace._settings.fontScale
     Factory.Rect(self._shell, rect.x, rect.y, rect.width, rect.height)
     local props = self._props
-    local bodyRect, cut, extension = Layout.WindowSurface(rect, workspace._windowArea, workspace._deviceArea, workspace._topbarLane)
-    local color = Factory.Hex(theme.palette.surface)
-    local radius = UDim.new(0, props.cornerRadius or theme.radius)
-    self._shell.BackgroundColor3 = color
-    self._shell.BackgroundTransparency = if cut > 0 then 1 else 1 - props.backgroundOpacity
-    self._shell.Active = cut == 0
-    self._edge.Enabled = cut == 0
+    local bodyRect = Layout.WindowControls(rect, workspace._windowArea, workspace._deviceArea, workspace._topbarLane)
+    self._shell.BackgroundColor3 = Factory.Hex(theme.palette.surface)
+    self._shell.BackgroundTransparency = 1 - props.backgroundOpacity
     self._edge.Color = Factory.Hex(theme.tokens.essentialStroke)
-    self._shape.CornerRadius = radius
-    self._face.Visible = cut > 0
-    self._face.BackgroundColor3 = color
-    self._face.BackgroundTransparency = 1 - props.backgroundOpacity
-    self._faceCorner.CornerRadius = radius
-    Factory.Rect(self._face, 0, cut, rect.width, rect.height - cut)
-    self._topExtension.Visible = extension ~= nil
-    if extension then
-        self._topExtension.BackgroundColor3 = color
-        self._topExtension.BackgroundTransparency = 1 - props.backgroundOpacity
-        Factory.Rect(self._topExtension, extension.x, extension.y, extension.width, extension.height + math.min(radius.Offset, 10))
+    self._shape.CornerRadius = UDim.new(0, props.cornerRadius or theme.radius)
+    -- The shell is visual only. Roblox keeps the top strip; Feybrume hit targets live in the inner rectangle.
+    for _, layer in ipairs({ self._body, self._background, self._overlay }) do
+        Factory.Rect(layer, bodyRect.x, bodyRect.y, bodyRect.width, bodyRect.height)
     end
-    Factory.Rect(self._body, bodyRect.x, bodyRect.y, bodyRect.width, bodyRect.height)
-    Factory.Rect(self._background, 0, cut, rect.width, rect.height - cut)
-    Factory.Rect(self._overlay, 0, cut, rect.width, rect.height - cut)
     self._heading.Text = props.title
     self._heading.TextColor3 = Factory.Hex(theme.tokens.onSurface)
     self._heading.TextSize = math.round(props.titleSize * scale)
@@ -358,9 +343,24 @@ function Window:_reflow()
     local maxW = workspace:_buttonWidth(self._max, minimumWidth)
     local maxVisible = w >= math.max(220, hideW + maxW + gap + 4 * pad + 60)
     local buttonY = math.max(0, (bar - target) / 2)
-    Factory.Rect(self._hide, math.max(0, w - pad - hideW), buttonY, hideW, target)
-    Factory.Rect(self._max, w - pad - hideW - maxW - gap, buttonY, maxW, target)
+    local hideRect = Layout.Rect(math.max(0, w - pad - hideW), buttonY, hideW, target)
+    local maxRect = Layout.Rect(w - pad - hideW - maxW - gap, buttonY, maxW, target)
+    Factory.Rect(self._hide, hideRect.x, hideRect.y, hideRect.width, hideRect.height)
+    Factory.Rect(self._max, maxRect.x, maxRect.y, maxRect.width, maxRect.height)
     self._max.Visible = maxVisible
+    local grouped = self._hide.Text == "" and (not maxVisible or self._max.Text == "")
+    local actionRect, pull = Layout.WindowActionRail(if maxVisible then maxRect else nil, hideRect, profile.touchLayout)
+    self._actionRail.Visible = grouped
+    Factory.Rect(self._actionRail, actionRect.x, actionRect.y, actionRect.width, actionRect.height)
+    if not grouped then pull = 0 end
+    local maxCenter = UDim2.new(0.5, pull, 0.5, 0)
+    local hideCenter = UDim2.new(0.5, -pull, 0.5, 0)
+    self._buttonImages[self._max].Position = maxCenter
+    self._buttonPlates[self._max].Position = maxCenter
+    self._marks.max.node.Position, self._marks.restore.node.Position = maxCenter, maxCenter
+    self._buttonImages[self._hide].Position = hideCenter
+    self._buttonPlates[self._hide].Position = hideCenter
+    self._marks.hide.node.Position = hideCenter
 
     local standardButtons = hideW + (if maxVisible then maxW + gap else 0)
     local gripSize = if self._canResize and floating then math.min(Layout.ResizeGrip(profile), w, math.max(0, h - bar)) else 0

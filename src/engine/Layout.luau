@@ -160,25 +160,24 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
     return best
 end
 
-function Layout.WindowSurface(rect, playable, device, lane)
+function Layout.WindowControls(rect, playable, device, lane)
     local top = math.clamp(device.y - rect.y, 0, rect.height)
     local left = math.clamp(device.x - rect.x, 0, rect.width)
     local right = math.clamp(device.x + device.width - rect.x, left, rect.width)
     local bottom = math.clamp(device.y + device.height - rect.y, top, rect.height)
-    local above = math.clamp(playable.y - rect.y, 0, rect.height)
-    local fits = lane and rect.x >= lane.x and rect.x + rect.width <= lane.x + lane.width and rect.y >= lane.y
-    if above == 0 or fits then
-        return Layout.Rect(left, top, right - left, bottom - top), 0, nil
-    end
+    local above = math.clamp(playable.y - rect.y, top, bottom)
+    local insideLane = lane and rect.x + left >= lane.x and rect.x + right <= lane.x + lane.width
+    local y = if insideLane then top else above
+    return Layout.Rect(left, y, right - left, bottom - y)
+end
 
-    -- The outer rectangle keeps travelling. Draw only the free part of the top strip.
-    local body = Layout.Rect(left, above, right - left, bottom - above)
-    if not lane then return body, above, nil end
-    local x1 = math.max(rect.x, lane.x)
-    local x2 = math.min(rect.x + rect.width, lane.x + lane.width)
-    local y = math.max(rect.y, lane.y)
-    if x2 <= x1 or y >= playable.y then return body, above, nil end
-    return body, above, Layout.Rect(x1 - rect.x, y - rect.y, x2 - x1, playable.y - y)
+function Layout.WindowActionRail(maximum, hide, compact)
+    local y = hide.y + hide.height / 2
+    local right = hide.x + hide.width / 2
+    local left = if maximum then maximum.x + maximum.width / 2 else right
+    local pull = if maximum then math.min(8, (right - left) / 6) else 0
+    local radius = if compact then 14 else 13
+    return Layout.Rect(left + pull - radius, y - radius, right - left - 2 * pull + 2 * radius, 2 * radius), pull
 end
 
 function Layout.HeaderTitle(startX, endX, midpoint, alignment, wanted)

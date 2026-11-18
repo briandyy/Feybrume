@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.6-foundation
+
+- Keep the window silhouette continuous behind Roblox Core UI. Place interactive controls and slots outside the occupied top-bar area.
+- Group the default Max, Restore, and Hide icons in one compact control strip with separate hit targets.
+
 ## 0.4.5-foundation
 
 - Use the physical viewport for floating-window travel. Keep the initial size based on the playable viewport and expose only the free part of any top-bar overlap.
