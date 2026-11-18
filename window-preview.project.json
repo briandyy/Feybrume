@@ -14,6 +14,15 @@
         "ScreenOrientation": "Sensor"
       }
     },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "ReopenLogo": {
+        "$path": "examples/reopen-logo.server.luau"
+      },
+      "PngDecoder": {
+        "$path": "examples/vendor/png.luau"
+      }
+    },
     "StarterPlayer": {
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {

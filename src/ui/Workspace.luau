@@ -6,6 +6,10 @@ local Focus = require(if script then script.Parent.Parent.engine.Focus else "../
 local Theme = require(if script then script.Parent.Parent.engine.Theme else "../engine/Theme")
 local Runtime = require(if script then script.Parent.Parent.core.Runtime else "../core/Runtime")
 local Result = require(if script then script.Parent.Parent.core.Result else "../core/Result")
+local Error = require(if script then script.Parent.Parent.core.Error else "../core/Error")
+local Flags = require(if script then script.Parent.Parent.core.Flags else "../core/Flags")
+local Signal = require(if script then script.Parent.Parent.core.Signal else "../core/Signal")
+local Typography = require(if script then script.Parent.Parent.engine.Typography else "../engine/Typography")
 local Window = require(if script then script.Parent.Window else "./Window")
 local Sheet = require(if script then script.Parent.Sheet else "./Sheet")
 local ReopenStyle = require(if script then script.Parent.ReopenStyle else "./ReopenStyle")
@@ -24,6 +28,10 @@ local function settings(options)
     assert(side == "left" or side == "right", "Expected left or right reopen side")
     local reopenMode = options.reopenMode or "free"
     assert(reopenMode == "free" or reopenMode == "edge", "Expected free or edge reopen mode")
+    local reopenEdge = options.reopenEdge or "device"
+    assert(reopenEdge == "device" or reopenEdge == "screen", "Expected device or screen reopen edge")
+    assert(options.resolveReopenImage == nil or type(options.resolveReopenImage) == "function",
+        "Expected a reopen image resolver function")
     local scale = options.fontScale or 1
     assert(finite(scale) and scale >= 0.8 and scale <= 2, "Font scale must be 0.8 to 2")
     local count, reserved = 0, {}
@@ -35,7 +43,8 @@ local function settings(options)
         table.insert(reserved, Layout.Rect(rect.x, rect.y, rect.width, rect.height))
     end
     return {
-        side = side, reopenMode = reopenMode, fontScale = scale, reserved = reserved,
+        side = side, reopenMode = reopenMode, reopenEdge = reopenEdge, fontScale = scale, reserved = reserved,
+        resolveReopenImage = options.resolveReopenImage,
         reopenBubble = ReopenStyle.Merge(nil, if options.reopenBubble == nil then {} else options.reopenBubble),
         avoidMovement = options.avoidMovementControls ~= false,
         breakpoints = Layout.ValidateBreakpoints(options.breakpoints or {}),
@@ -52,6 +61,9 @@ end
 function Workspace.new(options)
     options = options or {}
     assert(type(options) == "table", "Expected workspace options")
+    local namespace = options.flagNamespace or "Feybrume"
+    assert(type(namespace) == "string" and #namespace <= 96 and namespace:match("^[%w_.-]+$"),
+        "Invalid flag namespace")
     local config = settings(options)
     local ownsRuntime = options.runtime == nil
     local runtime = options.runtime or Runtime.Create()
@@ -63,6 +75,8 @@ function Workspace.new(options)
     local unconstrainedText = Vector2.new(math.huge, math.huge)
     local scope = runtime.Scope:Fork()
     local themes = scope:Give(Theme.new({ clock = runtime.Clock, initial = options.theme }))
+    local state = scope:Give(runtime:CreateStore({}))
+    local function report(errorValue) runtime.Diagnostics:Push(errorValue) end
     workspaceCount += 1
     local self = setmetatable({
         Runtime = runtime, Themes = themes, _scope = scope, _ownsRuntime = ownsRuntime, _settings = config,
@@ -74,6 +88,9 @@ function Workspace.new(options)
         _actionName = "FeybrumeSheet" .. tostring(workspaceCount),
         _gamepadAction = "FeybrumeGamepad" .. tostring(workspaceCount),
         _topbarObstacles = {}, _launcherOffsetX = 0, _launcherOffsetY = 0,
+        _flags = Flags.new(state), _flagNamespace = namespace,
+        _componentChanged = scope:Give(Signal.new(runtime.Clock, report)),
+        _typography = Typography.new(),
     }, Workspace)
     local screen = scope:Give(Factory.Create("ScreenGui", parent, {
         Name = options.name or "FeybrumeWorkspace", ResetOnSpawn = false,
@@ -85,9 +102,11 @@ function Workspace.new(options)
     self._bubbleArea = self._area
     self._root = Factory.Frame(screen, "SafeArea", { Size = UDim2.fromScale(1, 1) })
     self._windowsLayer = Factory.Frame(self._root, "Windows", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
+    local fullWidth = config.reopenEdge == "screen"
     local launcher = scope:Give(Factory.Create("ScreenGui", parent, {
         Name = screen.Name .. "Reopen", ResetOnSpawn = false,
-        ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets, ClipToDeviceSafeArea = true,
+        ScreenInsets = if fullWidth then Enum.ScreenInsets.None else Enum.ScreenInsets.DeviceSafeInsets,
+        ClipToDeviceSafeArea = not fullWidth,
         SafeAreaCompatibility = Enum.SafeAreaCompatibility.None,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling, DisplayOrder = screen.DisplayOrder + 1,
     }))
@@ -154,12 +173,34 @@ end
 function Workspace:_refresh()
     if self._destroyed then return end
     self._area, self._profile, self._origin = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
-    self._bubbleArea, self._launcherOffsetX, self._launcherOffsetY, self._topbarObstacles =
-        Viewport.ReadLauncher(self._bubblesLayer, self._userInput, self._guiService)
+    self._bubbleArea, self._launcherOffsetX, self._launcherOffsetY, self._topbarObstacles, self._touchArea =
+        Viewport.ReadLauncher(self._bubblesLayer, self._userInput, self._guiService, self._settings.reopenEdge == "screen")
     for _, window in ipairs(self._windows) do window:_reflow() end
     for _, sheet in ipairs(self._modal) do sheet:_reflow() end
     self:_placeBubbles()
+    self._componentChanged:Fire()
     Viewport.RevealFocused(self._root, self._userInput)
+end
+
+function Workspace:ExportFlags(namespace)
+    self:_assertLive()
+    return self._flags:Export(namespace or self._flagNamespace)
+end
+
+function Workspace:RestoreFlags(values, options)
+    self:_assertLive()
+    if options ~= nil and type(options) ~= "table" then
+        return Result.Err(Error.Create("INVALID_ARGUMENT"))
+    end
+    options = options or {}
+    for key in pairs(options) do
+        if key ~= "namespace" and key ~= "silent" then return Result.Err(Error.Create("INVALID_ARGUMENT")) end
+    end
+    if (options.namespace ~= nil and type(options.namespace) ~= "string")
+        or (options.silent ~= nil and type(options.silent) ~= "boolean") then
+        return Result.Err(Error.Create("INVALID_ARGUMENT"))
+    end
+    return self._flags:Restore(options.namespace or self._flagNamespace, values, options.silent)
 end
 
 function Workspace:_bubbleBounds(window)
@@ -171,7 +212,6 @@ end
 
 function Workspace:_placeBubbles()
     if self._destroyed then return end
-    local area = self._bubbleArea
     local reserved = {}
     local function launcherRect(rect)
         return Layout.Rect(rect.x + self._launcherOffsetX, rect.y + self._launcherOffsetY, rect.width, rect.height)
@@ -179,9 +219,10 @@ function Workspace:_placeBubbles()
     for _, region in ipairs(self._settings.reserved) do table.insert(reserved, launcherRect(region)) end
     if self._userInput.TouchEnabled and self._guiService.TouchControlsEnabled
         and self._settings.avoidMovement and not self._userInput.OnScreenKeyboardVisible then
-        local w, h = math.min(138, area.width / 2), math.min(142, area.height / 2)
-        table.insert(reserved, Layout.Rect(area.x, area.y + area.height - h, w, h))
-        table.insert(reserved, Layout.Rect(area.x + area.width - w, area.y + area.height - h, w, h))
+        local touch = self._touchArea
+        local w, h = math.min(138, touch.width / 2), math.min(142, touch.height / 2)
+        table.insert(reserved, Layout.Rect(touch.x, touch.y + touch.height - h, w, h))
+        table.insert(reserved, Layout.Rect(touch.x + touch.width - w, touch.y + touch.height - h, w, h))
     end
     local visible, chrome = {}, {}
     for _, window in ipairs(self._windows) do

@@ -9,10 +9,10 @@ Feybrume menambahkan jendela yang bisa digeser di experience Roblox. Jendela bis
 Pasang [Rojo](https://rojo.space/), lalu jalankan perintah ini dari folder utama repo.
 
 ```sh
-rojo build window-preview.project.json -o Feybrume.rbxlx
+rojo build foundation-preview.project.json -o Feybrume.rbxlx
 ```
 
-Buka `Feybrume.rbxlx` di Roblox Studio dan tekan **F5**. Coba geser jendela, buka panel dialog, atau ganti profil layar ke HP di Device Emulator.
+Buka `Feybrume.rbxlx` di Roblox Studio dan tekan **F5**. Coba **Record lap**, lalu **Load hard preset**. Cek apakah toggle tips ikut berubah di tab Guide.
 
 ## Pasang di game sendiri
 
@@ -30,11 +30,11 @@ label.Text = "Siap bermain"
 home:Add(label)
 ```
 
-[Panduan jendela](docs/id/window.md) · [Tema](docs/id/design-system.md) · [Dokumentasi](docs/id/index.md)
+[Komponen dasar](docs/id/components.md) · [Panduan jendela](docs/id/window.md) · [Tema](docs/id/design-system.md) · [Dokumentasi](docs/id/index.md)
 
 ## Status preview
 
-Source di `main` menghasilkan **v0.3.4**. Preview **v0.3.5** diuji terpisah di Roblox. Di Android, pemilik proyek memastikan bubble bisa sampai ke tepi kiri dan kanan, bergeser dari area Jump, dan menampilkan logo contoh dari CDN. Fase berikutnya menambah kontrol dasar dan pengikatan nilai. [Catatan tes perangkat](docs/qa-and-backlog.md#window-preview-checks)
+**v0.4.0** menambah 18 komponen dasar dan flag. Mesin jendelanya memakai dasar v0.3.5 yang sudah dites di Android. [Hasil tes komponen](evidence/phase4-checks.json) · [Tes jendela di HP](docs/qa-and-backlog.md#window-preview-checks)
 
 ## Tes lokal
 
@@ -44,7 +44,8 @@ Jalankan pemeriksaan dengan [Luau CLI](https://github.com/luau-lang/luau/release
 luau tests/core.luau
 luau tests/theme.luau
 luau tests/window.luau
-luau-analyze src tests examples
+luau tests/components.luau
+luau-analyze src tests examples/foundation-preview.client.luau examples/window-preview.client.luau examples/reopen-logo.server.luau examples/theme-preview.client.luau
 ```
 
-[Riwayat perubahan](CHANGELOG.md) · [Catatan build Fase 3](phase3-manifest.json)
+[Riwayat perubahan](CHANGELOG.md) · [Catatan build Fase 4](phase4-manifest.json)

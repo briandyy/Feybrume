@@ -4,7 +4,7 @@ Start with the [window demo](window.md) to reproduce a device issue. Include the
 
 ## Window preview checks
 
-The published v0.3.5 preview passed the Android checks that prompted the launcher patch. The repo's build record covers v0.3.4. [Detailed test record](../evidence/phase3-checks.json)
+The published v0.3.5 preview passed the Android checks that prompted the launcher patch. [Detailed test record](../evidence/phase3-checks.json)
 
 | Check | What was observed | Follow-up |
 |---|---|---|
@@ -68,7 +68,7 @@ The runtime baseline uses a native ModuleScript, canonical schema names, a 48-un
 | 1 | Runtime core, cancellation, state and diagnostics | CLI tests for ownership and state pass. Studio integration remains pending. |
 | 2 | Tokens, style resolver, 40 presets, native fonts and motion | CLI checks 3,200 style combinations. The desktop preview retest passed. Device coverage is pending. |
 | 3 | Windows, layout, input, navigation and focus | CLI geometry, gesture and focus fixtures pass. Studio interaction and device checks use the [window walkthrough](window.md). |
-| 4 | Foundation controls and state bindings | Handles, callbacks, disposal and config restoration. |
+| 4 | Foundation controls and state bindings | 18 factories. Luau tests cover values, callbacks, cleanup, and atomic flag restore. The Studio and mobile preview still needs a retest. |
 | 5 | Forms and advanced controls | Touch input, validation and field focus. |
 | 6 | Data views, notifications, search and command palette | Virtual rows, stable keys and bounded history. |
 | 7 | Media and audio | Permission and playback fixtures with safe fallbacks. |

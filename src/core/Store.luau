@@ -43,7 +43,7 @@ function Store:Observe(keys, callback)
     end)
 end
 
-local function runBatch(self, callback, source)
+local function runBatch(self, callback, source, silent)
     local previous = self._snapshot
     local draft, invalid = table.clone(previous), nil
     local active = true
@@ -90,12 +90,13 @@ local function runBatch(self, callback, source)
     self._publishing = true
     self._signal:Fire(self._snapshot, table.freeze({
         previous = previous, source = source, revision = self._revision, changed = table.freeze(changed),
+        silent = silent == true,
     }))
     self._publishing = false
     return Result.Ok(self._revision)
 end
 
-function Store:Batch(callback, source)
+function Store:Batch(callback, source, silent)
     source = source or "programmatic"
     if self._destroyed then return Result.Err(Error.Create("DISPOSED")) end
     if self._inTransaction or type(callback) ~= "function" or not SOURCES[source] then
@@ -103,16 +104,16 @@ function Store:Batch(callback, source)
     end
     if self._publishing then
         if #self._queue >= MAX_QUEUE then return Result.Err(Error.Create("INVALID_ARGUMENT")) end
-        table.insert(self._queue, { callback = callback, source = source })
+        table.insert(self._queue, { callback = callback, source = source, silent = silent })
         return Result.Ok(table.freeze({ queued = true }))
     end
 
-    local result = runBatch(self, callback, source)
+    local result = runBatch(self, callback, source, silent)
     local remaining = MAX_QUEUE
     while #self._queue > 0 and remaining > 0 and not self._destroyed do
         remaining -= 1
         local item = table.remove(self._queue, 1)
-        local queued = runBatch(self, item.callback, item.source)
+        local queued = runBatch(self, item.callback, item.source, item.silent)
         if not queued.ok and self._onError then Result.CallSync(self._onError, queued.error) end
     end
     if #self._queue > 0 then

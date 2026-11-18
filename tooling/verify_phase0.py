@@ -58,7 +58,12 @@ def catalog_checks(components, themes):
     for row in components:
         verify(re.fullmatch(r"[A-Z][A-Za-z0-9]*", row["id"]), f"Invalid identifier: {row['id']}")
         verify(row["base"] is None or row["base"] in ids - {row["id"]}, f"Invalid base: {row['id']}")
-        verify(row["mobileAcceptance"] and row["status"] == "NOT_IMPLEMENTED", f"Missing acceptance: {row['id']}")
+        verify(row["mobileAcceptance"], f"Missing acceptance: {row['id']}")
+        if row["earliestPhase"] == 4:
+            verify(row["status"] == "PASS_WITH_LIMITATION" and row["testedEnvironments"]
+                   and row["robloxStatus"] == "IMPLEMENTED_UNTESTED", f"Missing foundation evidence: {row['id']}")
+        else:
+            verify(row["status"] == "NOT_IMPLEMENTED", f"Incorrect component status: {row['id']}")
         verify(row["testId"] == f"COMP-{row['ordinal']:03}", f"Unexpected test ID: {row['id']}")
         if row["valueModel"] in ("action", "structure"):
             verify(set(("Set", "Get", "Reset")) <= set(row["unsupportedOperations"]), f"Missing unsupported method: {row['id']}")
@@ -106,6 +111,8 @@ def evidence_checks(components, themes):
            "Component traceability is incomplete")
     verify({f"theme.{row['id']}" for row in themes} == {key for key in ids if key.startswith("theme.")},
            "Theme traceability is incomplete")
+    foundation = {f"component.{row['id']}" for row in components if row["earliestPhase"] == 4}
+    verify(len(foundation) == 18, "Expected 18 foundation factories")
     for entry in entries:
         verify((ROOT / entry["sourceEvidence"]).is_file(), f"Missing evidence: {entry['featureId']}")
         if entry["featureId"].startswith("core."):
@@ -113,7 +120,8 @@ def evidence_checks(components, themes):
             verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
                    and entry["status"] == "PASS" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
                    f"Missing core evidence: {entry['featureId']}")
-        elif entry["featureId"].startswith(("theme.", "designSystem.", "windowEngine.")):
+        elif entry["featureId"] in foundation or entry["featureId"].startswith(
+                ("theme.", "designSystem.", "windowEngine.", "foundation.")):
             path = entry["implementationFile"]
             verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
                    and entry["status"] == "PASS_WITH_LIMITATION" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
@@ -150,6 +158,7 @@ def evidence_checks(components, themes):
                all(re.fullmatch(r"[0-9a-f]{40}", sample[k]) for k in ("metadataBlob", "noticeBlob")),
                f"Missing source provenance: {sample['family']}")
     return {
+        "verifiedFoundationFactories": len(foundation),
         "traceabilityRows": len(ids), "providers": len(providers), "gateways": len(gateways),
         "providerGatewayPairs": len(providers) * len(gateways), "mobileScenarios": len(mobile_ids),
         "sampledLicenseFamilies": len(families), "verifiedRenderedFamilies": font["verifiedRenderedFamilies"],

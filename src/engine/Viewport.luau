@@ -24,14 +24,25 @@ function Viewport.Read(root, input, breakpoints)
         Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), root.AbsolutePosition
 end
 
-function Viewport.ReadLauncher(root, input, gui)
+function Viewport.LauncherAreas(visible, device, originX, originY)
+    local top = math.clamp(device.y - originY, visible.y, visible.y + visible.height)
+    local bottom = math.clamp(device.y + device.height - originY, top, visible.y + visible.height)
+    local left = math.clamp(device.x - originX, visible.x, visible.x + visible.width)
+    local right = math.clamp(device.x + device.width - originX, left, visible.x + visible.width)
+    return Layout.Rect(visible.x, top, visible.width, bottom - top),
+        Layout.Rect(left, top, right - left, bottom - top)
+end
+
+function Viewport.ReadLauncher(root, input, gui, fullWidth)
     local device = gui:GetInsetArea(Enum.ScreenInsets.DeviceSafeInsets)
     local topbar = gui:GetInsetArea(Enum.ScreenInsets.TopbarSafeInsets)
     local core = gui:GetInsetArea(Enum.ScreenInsets.CoreUISafeInsets)
-    local area = available(root, input)
-    local x, y = core.Min.X - device.Min.X, core.Min.Y - device.Min.Y
-    local free = Layout.Rect(topbar.Min.X - device.Min.X, topbar.Min.Y - device.Min.Y, topbar.Width, topbar.Height)
-    return area, x, y, Layout.TopbarObstacles(area, y, free)
+    local origin = if fullWidth then gui:GetInsetArea(Enum.ScreenInsets.None).Min else device.Min
+    local deviceRect = Layout.Rect(device.Min.X, device.Min.Y, device.Width, device.Height)
+    local area, touchArea = Viewport.LauncherAreas(available(root, input), deviceRect, origin.X, origin.Y)
+    local x, y = core.Min.X - origin.X, core.Min.Y - origin.Y
+    local free = Layout.Rect(topbar.Min.X - origin.X, topbar.Min.Y - origin.Y, topbar.Width, topbar.Height)
+    return area, x, y, Layout.TopbarObstacles(area, y, free), touchArea
 end
 
 function Viewport.RevealFocused(root, service)

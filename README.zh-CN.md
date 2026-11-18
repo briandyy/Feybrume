@@ -9,10 +9,10 @@ Feybrume 为 Roblox 游戏提供可拖动的窗口。窗口可以停靠在屏幕
 安装 [Rojo](https://rojo.space/)，然后在仓库根目录运行以下命令。
 
 ```sh
-rojo build window-preview.project.json -o Feybrume.rbxlx
+rojo build foundation-preview.project.json -o Feybrume.rbxlx
 ```
 
-用 Roblox Studio 打开 `Feybrume.rbxlx`，按 **F5**。试试停靠窗口、打开弹出面板，或在 Device Emulator 中选择手机布局。
+用 Roblox Studio 打开 `Feybrume.rbxlx`，按 **F5**。点击 **Record lap** 和 **Load hard preset**，再到 Guide 标签页检查开关是否同步。
 
 ## 在自己的游戏中使用
 
@@ -30,11 +30,11 @@ label.Text = "准备就绪"
 home:Add(label)
 ```
 
-[窗口指南](docs/zh-CN/window.md) · [主题](docs/zh-CN/design-system.md) · [文档](docs/zh-CN/index.md)
+[基础控件（英文）](docs/components.md) · [窗口指南](docs/zh-CN/window.md) · [主题](docs/zh-CN/design-system.md) · [文档](docs/zh-CN/index.md)
 
 ## 预览状态
 
-`main` 分支的源码构建 **v0.3.4**。项目维护者在 Android 上单独测试了 Roblox 中的 **v0.3.5** 预览，确认浮动按钮可到达屏幕左右边缘、避开跳跃按钮，并显示 CDN 示例图片。下一阶段将添加基础控件及状态绑定。[设备测试记录](docs/qa-and-backlog.md#window-preview-checks)
+**v0.4.0** 新增 18 种基础控件和标记绑定。窗口机制沿用已在 Android 上测试过的 v0.3.5。[控件测试记录](evidence/phase4-checks.json) · [Android 窗口测试](docs/qa-and-backlog.md#window-preview-checks)
 
 ## 本地检查
 
@@ -44,7 +44,8 @@ home:Add(label)
 luau tests/core.luau
 luau tests/theme.luau
 luau tests/window.luau
-luau-analyze src tests examples
+luau tests/components.luau
+luau-analyze src tests examples/foundation-preview.client.luau examples/window-preview.client.luau examples/reopen-logo.server.luau examples/theme-preview.client.luau
 ```
 
-[更新日志](CHANGELOG.md) · [第三阶段构建记录](phase3-manifest.json)
+[更新日志](CHANGELOG.md) · [第四阶段构建记录](phase4-manifest.json)

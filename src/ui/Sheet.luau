@@ -32,8 +32,15 @@ function Sheet.new(workspace, options, owner)
         _workspace = workspace, _scope = scope, _owner = owner, _options = options,
         _overlay = overlay, _card = card, _shape = shape, _heading = heading,
         _close = close, _body = body, _controls = { close },
-        _container = Container.new(body, scope), _previous = workspace._guiService.SelectedObject,
+        _previous = workspace._guiService.SelectedObject,
     }, Sheet)
+    self._container = Container.new(body, scope, {
+        context = {
+            workspace = workspace, owner = owner,
+            theme = function() return if owner then owner:_theme() else workspace.Themes:Get() end,
+            canInteract = function() return workspace:_top() == self end,
+        },
+    })
     scope:Give(close.Activated:Connect(function()
         if workspace:_top() == self then self:Close() end
     end))

@@ -17,9 +17,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-001",
     "mobileAcceptance": "Wrap long ID text in one-column card.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 2,
@@ -39,9 +42,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-002",
     "mobileAcceptance": "Reflow text at 160% with hierarchy visible.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 3,
@@ -61,9 +67,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-003",
     "mobileAcceptance": "Maintain section context after collapse.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 4,
@@ -83,9 +92,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-004",
     "mobileAcceptance": "Wrap long paragraph without horizontal scroll.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 5,
@@ -105,9 +117,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-005",
     "mobileAcceptance": "Render allowed spans and escape untrusted markup.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 6,
@@ -149,9 +164,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-007",
     "mobileAcceptance": "Remain legible beneath poster at font scale 160%.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 8,
@@ -171,9 +189,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-008",
     "mobileAcceptance": "Keep label from intersecting strokes after rotation.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 9,
@@ -193,9 +214,12 @@
     "fallback": "optional label or Fey symbol",
     "testId": "COMP-009",
     "mobileAcceptance": "Preserve text when icon is unavailable.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": "R-08"
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": "R-08",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 10,
@@ -320,9 +344,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-015",
     "mobileAcceptance": "Keep numeric value and unit readable together.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 16,
@@ -364,9 +391,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-017",
     "mobileAcceptance": "Wrap quote and author on narrow width.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 18,
@@ -406,9 +436,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-019",
     "mobileAcceptance": "Tap full target once and preserve scroll gesture.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 20,
@@ -429,9 +462,12 @@
     "fallback": "optional label or Fey symbol",
     "testId": "COMP-020",
     "mobileAcceptance": "Keep accessible name and hit area when icon fails.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": "R-08"
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": "R-08",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 21,
@@ -542,9 +578,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-025",
     "mobileAcceptance": "Tap whole row and announce boolean via label/state marker.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 26,
@@ -580,9 +619,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-027",
     "mobileAcceptance": "Tap label row with one state change.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 28,
@@ -599,9 +641,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-028",
     "mobileAcceptance": "Select without clearing unrelated group.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 29,
@@ -618,9 +663,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-029",
     "mobileAcceptance": "Maintain one enabled selection by stable ID.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 30,
@@ -678,9 +726,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-032",
     "mobileAcceptance": "Truncate overlong tag safely.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 33,
@@ -700,9 +751,12 @@
     "fallback": "focusable/textual layout if applicable",
     "testId": "COMP-033",
     "mobileAcceptance": "Scale badges without obscuring label.",
-    "status": "NOT_IMPLEMENTED",
-    "testedEnvironments": [],
-    "issue": null
+    "status": "PASS_WITH_LIMITATION",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "ordinal": 34,

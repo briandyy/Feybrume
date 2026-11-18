@@ -1,6 +1,6 @@
 {
   "phase": 3,
-  "version": "0.3.4-window",
+  "version": "0.3.5-window",
   "testedAt": "2026-11-18",
   "environment": {
     "toolchain": "Official Luau CLI 0.747 and Rojo 7.7.1",
@@ -57,7 +57,7 @@
     {
       "command": "luau tests/window.luau",
       "status": "PASS",
-      "passed": 29,
+      "passed": 31,
       "cases": [
         "mobile and desktop breakpoints honor width, height, and input separately",
         "breakpoints reject invalid order and allow overrides",
@@ -78,6 +78,8 @@
         "bubble reaches the right side of the device safe viewport without entering the top bar by default",
         "reopen style merges overrides and validates images, size and shape",
         "window applies bubble customization live and keeps its old style on invalid edits",
+        "full-width launcher reaches the physical edge while movement controls stay device aligned",
+        "CDN logo data must be bounded RGBA pixels with an exact length",
         "tab outlines have clearance from scrollbar and clipping boundaries",
         "grid columns and bottom navigation account for spacing",
         "gesture ignores another pointer and distinguishes a tap",
@@ -91,9 +93,10 @@
       ]
     },
     {
-      "command": "luau-analyze src tests examples",
+      "command": "luau-analyze first-party src, tests and examples",
       "status": "PASS",
-      "diagnostics": 0
+      "diagnostics": 0,
+      "excluded": "Upstream PNG decoder bundle. The bundle is compiled and exercised with the CDN PNG."
     },
     {
       "command": "luau-compile --null src tests examples",
@@ -107,19 +110,28 @@
     {
       "command": "rojo build window-preview.project.json and exact XML source verification",
       "status": "PASS",
-      "name": "Feybrume_Phase_3_Window_Preview_v0.3.4.rbxlx",
-      "sha256": "462ca3f198717b910d1eb1b082acd035bac5a2943eda7effab36e806c16a0238",
-      "bytes": 304509,
-      "moduleScripts": 37,
+      "name": "Feybrume_Phase_3_Window_Preview_v0.3.5.rbxlx",
+      "sha256": "f3e5d4f7c709b12e6de08637185fa6151c33e089638fe71145e260c07aa58b5a",
+      "bytes": 351247,
+      "moduleScripts": 38,
       "localScripts": 1,
       "mapping": "window-preview.project.json",
-      "screenOrientation": "Sensor"
+      "screenOrientation": "Sensor",
+      "serverScripts": 1
     },
     {
       "command": "Verify current place has no serialized UI styling classes or RoundedCorner8 selector",
       "status": "PASS",
       "stylingInstances": 0,
       "roundedCorner8References": 0
+    },
+    {
+      "command": "Fetch the approved CDN PNG and compare Luau decoder RGBA bytes against Pillow",
+      "status": "PASS",
+      "width": 72,
+      "height": 72,
+      "rgbaBytes": 20736,
+      "rgbaSha256": "436021b0a0eb012c72c9a56be93ec033b71fc1f321a463218f0e0e1c946d3707"
     }
   ],
   "roblox": {
@@ -136,7 +148,9 @@
       "WIN-06",
       "WIN-07",
       "WIN-08",
-      "WIN-09"
+      "WIN-09",
+      "WIN-10",
+      "WIN-11"
     ],
     "smokeTest": "examples/window-preview.client.luau"
   },
@@ -260,6 +274,20 @@
         "YouTube metadata and permitted handoff"
       ]
     }
+  },
+  "phase3WindowPreviewRetest": {
+    "version": "0.3.4-window",
+    "testedBy": "Project owner",
+    "studioControllerEmulator": "Gamepad behavior confirmed working",
+    "androidVisualLayout": "No visual layout bugs reported",
+    "androidPhysicalRightEdge": "Bubble still stopped short of the physical right edge"
+  },
+  "phase3BubbleEdgeAndCdn": {
+    "version": "0.3.5-window",
+    "luau": "PASS",
+    "studio": "IMPLEMENTED_UNTESTED",
+    "android": "IMPLEMENTED_UNTESTED",
+    "scope": "Full-width launcher option and HTTPS PNG logos from an experience resolver"
   },
   "ownerWindowPreviewRetests": [
     {

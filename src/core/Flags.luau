@@ -38,7 +38,7 @@ function Flags:Bind(namespace, name, options)
     local alive = true
     local registry = self
     local handle = table.freeze({
-        Set = function(_, value, source)
+        Set = function(_, value, source, silent)
             if not alive then return Result.Err(Error.Create("DISPOSED")) end
             local normalized = schema:Normalize(value)
             if not normalized.ok then return normalized end
@@ -46,11 +46,17 @@ function Flags:Bind(namespace, name, options)
             return registry._store:Batch(function(transaction)
                 if not alive then error(Error.Create("DISPOSED"), 0) end
                 transaction:Set(key, normalized.value)
-            end, source)
+            end, source, silent)
         end,
         Get = function()
             if not alive or registry._store._destroyed then return Result.Err(Error.Create("DISPOSED")) end
             return Result.Ok(registry._store:Get(key))
+        end,
+        Observe = function(_, callback)
+            assert(alive, "Flag is no longer bound")
+            return registry._store:Observe({ key }, function(snapshot, event)
+                if alive then callback(snapshot[key], event.previous[key], event) end
+            end)
         end,
         Unbind = function()
             if not alive then return end
@@ -92,6 +98,45 @@ function Flags:Export(namespace)
         end
     end
     return table.freeze(values)
+end
+
+function Flags:Snapshot(namespace)
+    local values = {}
+    for key, slot in pairs(self._bindings) do
+        if slot.namespace == namespace then values[slot.name] = self._store:Get(key) end
+    end
+    return table.freeze(values)
+end
+
+function Flags:ObserveNamespace(namespace, callback)
+    local prefix = tostring(#namespace) .. ":" .. namespace
+    return self._store:Observe(nil, function(_, event)
+        for key in pairs(event.changed) do
+            if key:sub(1, #prefix) == prefix and self._bindings[key] then
+                callback(self:Snapshot(namespace), event)
+                return
+            end
+        end
+    end)
+end
+
+function Flags:Restore(namespace, values, silent)
+    if type(values) ~= "table" or getmetatable(values) ~= nil then
+        return Result.Err(Error.Create("INVALID_ARGUMENT"))
+    end
+    local changes = {}
+    for name, value in pairs(values) do
+        local key = keyFor(namespace, name)
+        local slot = key and self._bindings[key]
+        if slot and slot.persist then
+            local normalized = slot.schema:Normalize(value)
+            if not normalized.ok then return normalized end
+            changes[key] = normalized.value
+        end
+    end
+    return self._store:Batch(function(transaction)
+        for key, value in pairs(changes) do transaction:Set(key, value) end
+    end, "restore", silent)
 end
 
 return table.freeze(Flags)

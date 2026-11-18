@@ -1,6 +1,6 @@
 # Media and audio
 
-Media resolution checks source syntax, policy and backend capability. Loading then checks asset permissions, readiness and playback independently. This document describes the Phase 7 source and playback contracts. The window layer already supplies native hosts for `Background`, `Overlay`, `TopbarLeading`, `TopbarTrailing`, and `StatusBar`. The current reopen button's Roblox asset ID is a native shorthand for images. URL, CDN/R2, local and YouTube resolution are part of the wider [media plan](#source-and-handle-contracts).
+Media resolution checks source syntax, policy and backend capability. Loading then checks asset permissions, readiness and playback independently. This document describes the Phase 7 source and playback contracts. The window layer supplies native hosts for `Background`, `Overlay`, `TopbarLeading`, `TopbarTrailing`, and `StatusBar`. The Phase 3 reopen button supports Roblox assets and a scoped HTTPS pixel resolver, demonstrated with an allowlisted CDN PNG. [Reopen button setup](window.md#customize-the-reopen-button)
 
 | Source | Images and animation | Video and audio | Acceptance |
 |---|---|---|---|

@@ -1,0 +1,148 @@
+{
+  "phase": 4,
+  "version": "0.4.0-foundation",
+  "date": "2026-11-18",
+  "timezone": "Asia/Kuala_Lumpur",
+  "status": "PASS_WITH_LIMITATION",
+  "checks": {
+    "suites": {
+      "core": {
+        "file": "tests/core.luau",
+        "passed": 20,
+        "cases": [
+          "services cache misses and retry after invalidation",
+          "capability changes only fire on transition",
+          "scope cleanup is reverse order, exactly once and isolated",
+          "removing a key or closing a child detaches it from the parent",
+          "signal dispatch handles once, disconnect, recursion and errors",
+          "signal wait preserves nil arguments and clears timers",
+          "promise cancellation propagates and discards a late result",
+          "pending descendants are cancelled with their parent",
+          "promise await timeout leaves the task pending",
+          "diagnostic ring redacts before storing and sending to subscribers",
+          "schema defaults, nested normalization and patch rejection",
+          "store rolls back failed writes, yielded callbacks and thrown errors",
+          "observers see one revision per batch and writes are queued",
+          "computed values are atomic, topological and cycle checked",
+          "flags use namespaces, shared schema identity and explicit persistence",
+          "serializer is stable, bounds output and sanitizes migrations",
+          "debounce and throttle honor scope disposal and trailing values",
+          "explicit cleanup repeatedly returns owned counts to baseline",
+          "waits from synchronous callbacks are rejected without scheduling a timer",
+          "redaction does not invoke properties on thrown objects"
+        ]
+      },
+      "theme": {
+        "file": "tests/theme.luau",
+        "passed": 11,
+        "cases": [
+          "all 40 presets load with frozen tokens and distinct geometry",
+          "registry changes publish token deltas and skip identical selections",
+          "custom themes derive new colors and preserve base presets",
+          "override precedence, focus and mobile target minimum",
+          "all presets, variants and states meet contrast over solid surfaces",
+          "transparent fills use their real backdrop and contrast can warn",
+          "native font resolver tries preferred face, theme family and fallback",
+          "font fallback handles rejected and throwing load probes without repeating them",
+          "native font test can yield before selecting fallback",
+          "reduced motion is honored for every profile",
+          "transition cancels old work, skips no-op and releases scope resources"
+        ]
+      },
+      "window": {
+        "file": "tests/window.luau",
+        "passed": 31,
+        "cases": [
+          "mobile and desktop breakpoints honor width, height, and input separately",
+          "breakpoints reject invalid order and allow overrides",
+          "clamping fits a rectangle smaller than the configured minimum",
+          "chrome fits full labels and refreshes cached widths when the label or text scale changes",
+          "compact layout keeps the original floating request for restoration",
+          "left and right docking never overlaps at supported widths",
+          "resize preserves the loaded origin and obeys min max and safe area",
+          "edge targets distinguish left right top and free drop",
+          "keyboard contraction leaves an undocked window and sheet reachable",
+          "landscape sheet centers instead of covering the full bottom row",
+          "floating bubble stays clear of movement and neighboring bubbles",
+          "floating bubble can fall back to the other edge",
+          "free bubbles keep a center drop and preserve relative position through rotation",
+          "free bubbles move the shortest distance around occupied regions",
+          "short touch layouts use a rail or bottom bar and keep their layout after input changes",
+          "launcher can sit beside the Roblox controls at the top of the device safe area",
+          "bubble reaches the right side of the device safe viewport without entering the top bar by default",
+          "reopen style merges overrides and validates images, size and shape",
+          "window applies bubble customization live and keeps its old style on invalid edits",
+          "full-width launcher reaches the physical edge while movement controls stay device aligned",
+          "CDN logo data must be bounded RGBA pixels with an exact length",
+          "tab outlines have clearance from scrollbar and clipping boundaries",
+          "grid columns and bottom navigation account for spacing",
+          "gesture ignores another pointer and distinguishes a tap",
+          "drag remains a drag after returning to origin and supports owner cancellation",
+          "focus restores a visible descendant and falls back when hidden",
+          "gamepad focus stays in its scope and prefers the same row or column",
+          "gamepad opens the tab list once on release and leaves other buttons alone",
+          "window title and appearance can be updated atomically at runtime",
+          "set bounds updates the floating restore request without undocking",
+          "header slots reserve title space on touch-sized windows"
+        ]
+      },
+      "components": {
+        "file": "tests/components.luau",
+        "passed": 14,
+        "cases": [
+          "all 18 foundation catalog entries have a container factory and a validated model",
+          "display values update and reset with real types and unsupported actions fail",
+          "rich text accepts simple spans and escapes tags, attributes, and incomplete markup",
+          "icon sources accept Roblox IDs and preserve the no-icon fallback",
+          "interactive variants keep minimum touch height across all supported sizes",
+          "invalid property patches preserve the current name, visibility, and handler",
+          "button actions fire once and ignore hidden, disabled, locked, and loading controls",
+          "a toggle and a checkbox change on release with one change event per activation",
+          "radio choice IDs are stable, disabled choices fail, and independent groups stay independent",
+          "shared flags synchronize both controls, with namespace collision and silent change behavior",
+          "restores persisted flags in one transaction and rolls back incompatible values",
+          "conditional UI reacts to flags and reports bad predicates without blocking good updates",
+          "callback failures reach diagnostics and destruction cancels a pending debounce",
+          "disposal disconnects bound controls, returns ownership to baseline, and blocks new edits"
+        ]
+      }
+    },
+    "passed": 76,
+    "analysis": {
+      "status": "PASS",
+      "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
+    },
+    "compile": {
+      "status": "PASS",
+      "scope": "src, tests, examples including the vendored decoder"
+    },
+    "build": {
+      "status": "PASS",
+      "tool": "Rojo 7.7.1",
+      "place": {
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.0.rbxlx",
+        "sha256": "53758a664598b75ff2fe6b1c6d23295fafc334f20c00bb0c545485491680e9c8",
+        "bytes": 353307,
+        "moduleScripts": 41,
+        "localScripts": 1,
+        "serverScripts": 0,
+        "screenOrientation": "Sensor",
+        "mapping": "foundation-preview.project.json"
+      },
+      "phase3WindowPreviewBuild": "PASS",
+      "embeddedSource": "All 41 ModuleScripts and the preview LocalScript matched the repository byte for byte."
+    }
+  },
+  "nativeAcceptance": {
+    "studioDesktop": "IMPLEMENTED_UNTESTED",
+    "studioControllerEmulator": "IMPLEMENTED_UNTESTED",
+    "androidPortrait": "IMPLEMENTED_UNTESTED",
+    "androidLandscape": "IMPLEMENTED_UNTESTED",
+    "smokeSteps": "docs/components.md#try-the-preview"
+  },
+  "limits": [
+    "Flag snapshots live in session memory. SaveManager is scheduled for Phase 9.",
+    "The preview uses native text and has no external dependencies.",
+    "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
+  ]
+}

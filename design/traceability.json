@@ -2,62 +2,77 @@
   {
     "featureId": "component.Label",
     "publicAPI": ":Label(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-001",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.Heading",
     "publicAPI": ":Heading(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-002",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.Subheading",
     "publicAPI": ":Subheading(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-003",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.Paragraph",
     "publicAPI": ":Paragraph(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-004",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.RichText",
     "publicAPI": ":RichText(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-005",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.MarkdownLite",
@@ -74,38 +89,47 @@
   {
     "featureId": "component.Caption",
     "publicAPI": ":Caption(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-007",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.TextDivider",
     "publicAPI": ":TextDivider(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-008",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.IconText",
     "publicAPI": ":IconText(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "approved asset or local primitive",
     "fallback": "optional label or Fey symbol",
     "testCase": "COMP-009",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-08"
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-08",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.CopyText",
@@ -170,14 +194,17 @@
   {
     "featureId": "component.Statistic",
     "publicAPI": ":Statistic(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-015",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.KPI",
@@ -194,14 +221,17 @@
   {
     "featureId": "component.Quote",
     "publicAPI": ":Quote(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-017",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.CodeBlock",
@@ -218,26 +248,32 @@
   {
     "featureId": "component.Button",
     "publicAPI": ":Button(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-019",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.IconButton",
     "publicAPI": ":IconButton(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "approved asset or local primitive",
     "fallback": "optional label or Fey symbol",
     "testCase": "COMP-020",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-08"
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-08",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.SplitButton",
@@ -290,14 +326,17 @@
   {
     "featureId": "component.Toggle",
     "publicAPI": ":Toggle(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-025",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.TriStateToggle",
@@ -314,38 +353,47 @@
   {
     "featureId": "component.Checkbox",
     "publicAPI": ":Checkbox(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-027",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.Radio",
     "publicAPI": ":Radio(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-028",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.RadioGroup",
     "publicAPI": ":RadioGroup(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-029",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.SegmentedControl",
@@ -374,26 +422,32 @@
   {
     "featureId": "component.Tag",
     "publicAPI": ":Tag(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-032",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.Badge",
     "publicAPI": ":Badge(props)",
-    "sourceEvidence": "design/components.json",
-    "implementationFile": null,
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/Components.luau",
     "runtimeRequirement": "Roblox GUI / PlayerGui",
     "fallback": "focusable/textual layout if applicable",
     "testCase": "COMP-033",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": null
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "featureId": "component.HyperlinkButton",
@@ -4216,5 +4270,35 @@
     "robloxStatus": "IMPLEMENTED_UNTESTED",
     "issue": "R-01",
     "earliestPhase": 3
+  },
+  {
+    "featureId": "foundation.handles",
+    "publicAPI": "Set; Get; SetProps; Reset; Activate; Destroy",
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/ui/ControlBase.luau",
+    "runtimeRequirement": "Luau",
+    "fallback": "structured errors and native text",
+    "testCase": "FOUNDATION-HANDLES",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
+  },
+  {
+    "featureId": "foundation.flags",
+    "publicAPI": "Workspace:ExportFlags(); Workspace:RestoreFlags()",
+    "sourceEvidence": "evidence/phase4-checks.json",
+    "implementationFile": "src/core/Flags.luau",
+    "runtimeRequirement": "Luau",
+    "fallback": "session memory",
+    "testCase": "FOUNDATION-FLAGS",
+    "testedEnvironments": [
+      "Luau CLI 0.747, control model and touch layout fixtures"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": null,
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   }
 ]

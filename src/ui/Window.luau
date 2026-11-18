@@ -1,4 +1,5 @@
 local Container = require(if script then script.Parent.Container else "./Container")
+local Components = require(if script then script.Parent.Components else "./Components")
 local Factory = require(if script then script.Parent.Parent.engine.Factory else "../engine/Factory")
 local Layout = require(if script then script.Parent.Parent.engine.Layout else "../engine/Layout")
 local Input = require(if script then script.Parent.Parent.engine.Input else "../engine/Input")
@@ -91,11 +92,11 @@ function Window.new(workspace, options)
     self._bubbleIcon = Factory.Create("ImageLabel", self._bubble, {
         Name = "Icon", BackgroundTransparency = 1, Active = false, Selectable = false,
         AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
-        ScaleType = Enum.ScaleType.Fit, Image = bubble.image or "",
+        ScaleType = Enum.ScaleType.Fit,
     })
     self._bubbleIconCorner = Factory.Create("UICorner", self._bubbleIcon)
     scope:Give(self._bubbleIcon:GetPropertyChangedSignal("IsLoaded"):Connect(function() self:_refreshBubbleImage() end))
-    self:_refreshBubbleImage()
+    self:_applyBubbleImage(bubble.image)
     self._chrome = { self._hide, self._max, self._more, self._resize }
     scope:Give(self._hide.Activated:Connect(function() if self:_canInteract() then self:Hide() end end))
     scope:Give(self._max.Activated:Connect(function()
@@ -388,9 +389,16 @@ function Window:Tab(options)
     Factory.Padding(page, 6)
     Factory.List(page, 8)
     local button = scope:Give(Factory.Button(self._tabScroll, options.title or options.id))
-    local tab = setmetatable({
+    local tab
+    local context = {
+        workspace = self._workspace, owner = self,
+        theme = function() return self:_theme() end,
+        canInteract = function() return self:_canInteract() and self._activeTab == tab and page.Visible end,
+    }
+    tab = setmetatable({
         Id = options.id, _window = self, _page = page, _button = button, _scope = scope,
-        _disabled = options.disabled == true, _container = Container.new(page, scope):Section({ name = "Content" }),
+        _disabled = options.disabled == true,
+        _container = Container.new(page, scope, { context = context }):Section({ name = "Content" }),
     }, Tab)
     table.insert(self._tabs, tab)
     scope:Give(button.Activated:Connect(function()
@@ -510,8 +518,49 @@ end
 function Window:_refreshBubbleImage()
     if self._destroyed then return end
     local appearance, icon = self._bubbleStyle, self._bubbleIcon
-    icon.Visible = appearance.image ~= false
-    self._bubble.Text = if appearance.image and icon.IsLoaded then "" else appearance.label
+    local hasImage = self._bubbleEditable ~= nil
+        or (appearance.image and not ReopenStyle.IsImageUrl(appearance.image) and icon.IsLoaded)
+    icon.Visible = hasImage == true
+    self._bubble.Text = if hasImage then "" else appearance.label
+end
+
+function Window:_applyBubbleImage(source)
+    local icon = self._bubbleIcon
+    if self._bubbleEditable then
+        icon.ImageContent = Content.none
+        self._bubbleEditable:Destroy()
+        self._bubbleEditable = nil
+    end
+    local request = {}
+    self._bubbleImageRequest = request
+    local remote = ReopenStyle.IsImageUrl(source)
+    icon.Image = if source and not remote then source else ""
+    self:_refreshBubbleImage()
+    local workspace = self._workspace
+    local resolve = remote and workspace._settings.resolveReopenImage
+    if not resolve then return end
+
+    task.defer(function()
+        if self._destroyed or self._bubbleImageRequest ~= request then return end
+        local ok, image = pcall(resolve, source)
+        if self._destroyed or self._bubbleImageRequest ~= request or not ok
+            or not ReopenStyle.IsPixelImage(image) then return end
+        local editable
+        local rendered = pcall(function()
+            local size = Vector2.new(image.width, image.height)
+            editable = workspace.Runtime.Services:Get("AssetService"):CreateEditableImage({ Size = size })
+            if editable then
+                editable:WritePixelsBuffer(Vector2.zero, size, image.pixels)
+                icon.ImageContent = Content.fromObject(editable)
+            end
+        end)
+        if not rendered then
+            if editable then editable:Destroy() end
+            return
+        end
+        self._bubbleEditable = editable
+        self:_refreshBubbleImage()
+    end)
 end
 
 function Window:_styleBubble(size)
@@ -528,10 +577,9 @@ function Window:SetReopenBubble(options)
     self:_assertLive()
     local appearance = ReopenStyle.Merge(self._bubbleStyle, options)
     self._workspace._input:Cancel(self)
+    local changed = self._bubbleStyle.image ~= appearance.image
     self._bubbleStyle = appearance
-    local image = appearance.image or ""
-    if self._bubbleIcon.Image ~= image then self._bubbleIcon.Image = image end
-    self:_refreshBubbleImage()
+    if changed then self:_applyBubbleImage(appearance.image) else self:_refreshBubbleImage() end
     self._workspace:_placeBubbles()
 end
 
@@ -564,6 +612,7 @@ function Window:SetTheme(id)
     self._themeId = id
     self:_reflow()
     self._workspace:_placeBubbles()
+    self._workspace._componentChanged:Fire(self)
     return true
 end
 
@@ -633,6 +682,10 @@ function Window:Destroy()
         workspace._guiService.SelectedObject = nil
     end
     self._scope:Destroy()
+    if self._bubbleEditable then
+        self._bubbleEditable:Destroy()
+        self._bubbleEditable = nil
+    end
     workspace:_forget(self)
 end
 
@@ -642,6 +695,10 @@ end
 
 function Tab:Section(options)
     return self._container:Section(options)
+end
+
+for kind in pairs(Components.Definitions) do
+    Tab[kind] = function(self, props) return Components.Create(self._container, kind, props) end
 end
 
 function Tab:MoveTo(index)

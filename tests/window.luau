@@ -5,6 +5,7 @@ local Workspace = require("../src/ui/Workspace")
 local Window = require("../src/ui/Window")
 local ReopenStyle = require("../src/ui/ReopenStyle")
 local Factory = require("../src/engine/Factory")
+local Viewport = require("../src/engine/Viewport")
 
 local count = 0
 local limits = { minWidth = 280, minHeight = 220, maxWidth = 1200, maxHeight = 900 }
@@ -260,7 +261,10 @@ test("reopen style merges overrides and validates images, size and shape", funct
     equal(iconRadius, 6)
     equal(ReopenStyle.Corner(ReopenStyle.Merge(custom, { shape = "circle" }), 76, 8), 0.5)
     equal(ReopenStyle.Merge(custom, { image = false }).image, false)
-    equal(pcall(ReopenStyle.Merge, custom, { image = "https://example.com/icon.png" }), false)
+    equal(ReopenStyle.Merge(custom, { image = "https://example.com/icon.png" }).image,
+        "https://example.com/icon.png")
+    equal(pcall(ReopenStyle.Merge, custom, { image = "http://example.com/icon.png" }), false)
+    equal(pcall(ReopenStyle.Merge, custom, { image = "https://example.com@other.test/icon.png" }), false)
     equal(pcall(ReopenStyle.Merge, custom, { size = 5 }), false)
     equal(pcall(ReopenStyle.Merge, custom, { shape = "triangle" }), false)
 end)
@@ -272,6 +276,7 @@ test("window applies bubble customization live and keeps its old style on invali
         _bubbleIcon = { Image = "", IsLoaded = false }, _bubble = {},
         _workspace = { _input = { Cancel = function() end }, _placeBubbles = function() placed += 1 end },
         _assertLive = function() end, _refreshBubbleImage = Window._refreshBubbleImage,
+        _applyBubbleImage = Window._applyBubbleImage,
     }
     Window.SetReopenBubble(window, { image = "14304828123", size = 84 })
     equal(window._bubbleIcon.Image, "rbxassetid://14304828123")
@@ -286,6 +291,29 @@ test("window applies bubble customization live and keeps its old style on invali
     Window.SetReopenBubble(window, { image = false })
     equal(window._bubble.Text, "UI")
     equal(window._bubbleIcon.Visible, false)
+end)
+
+test("full-width launcher reaches the physical edge while movement controls stay device aligned", function()
+    local device = Layout.Rect(0, -52, 780, 340)
+    local full, touch = Viewport.LauncherAreas(Layout.Rect(0, 0, 860, 400), device, -40, -60)
+    equal(touch.x, 40)
+    equal(touch.width, 780)
+    equal(full.y, 8)
+    equal(full.height, 340)
+    local chrome = { _bubbleArea = full, _launcherOffsetY = 60 }
+    local bounds, blocked = Workspace._bubbleBounds(chrome, { _bubbleStyle = {} })
+    local right = assert(Layout.FreeBubble(bounds, blocked, { x = 1, y = 0 }, 52))
+    equal(right.x + right.width, 860)
+    equal(right.y, 60)
+    local keyboard = Viewport.LauncherAreas(Layout.Rect(0, 0, 860, 200), device, -40, -60)
+    equal(keyboard.y + keyboard.height, 200)
+end)
+
+test("CDN logo data must be bounded RGBA pixels with an exact length", function()
+    equal(ReopenStyle.IsPixelImage({ width = 72, height = 72, pixels = buffer.create(72 * 72 * 4) }), true)
+    equal(ReopenStyle.IsPixelImage({ width = 72, height = 72, pixels = buffer.create(4) }), false)
+    equal(ReopenStyle.IsPixelImage({ width = 129, height = 1, pixels = buffer.create(129 * 4) }), false)
+    equal(ReopenStyle.IsPixelImage({ width = 0, height = 0, pixels = buffer.create(0) }), false)
 end)
 
 test("tab outlines have clearance from scrollbar and clipping boundaries", function()

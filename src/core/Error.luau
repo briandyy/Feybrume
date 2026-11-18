@@ -16,6 +16,8 @@ local messages = {
     DUPLICATE_THEME = "Theme ID already registered",
     FONT_UNAVAILABLE = "No compatible native font could be resolved",
     UNSUPPORTED_VERSION = "Unsupported data version",
+    UNSUPPORTED_OPERATION = "This control does not support that operation",
+    CONTROL_INACTIVE = "Control is hidden, disabled, locked, or loading",
 }
 
 local Error = {}

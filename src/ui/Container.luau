@@ -1,5 +1,6 @@
 local Factory = require(if script then script.Parent.Parent.engine.Factory else "../engine/Factory")
 local Layout = require(if script then script.Parent.Parent.engine.Layout else "../engine/Layout")
+local Components = require(if script then script.Parent.Components else "./Components")
 local Container = {}
 Container.__index = Container
 
@@ -8,6 +9,8 @@ function Container.new(root, scope, options)
     return setmetatable({
         _root = root, _scope = scope, _slots = options.slots or { Main = root },
         _gap = options.gap or 8, _order = 0, _owned = options.owned == true,
+        _context = options.context, _themeOverride = options.theme,
+        _styleOverrides = table.freeze(table.clone(options.style or {})), _controls = {},
     }, Container)
 end
 
@@ -28,6 +31,31 @@ function Container:Add(object, slot)
     object.LayoutOrder = self._order
     object.Parent = parent
     return object
+end
+
+function Container:_ownControl(view)
+    self._controls[view] = true
+    self._scope:Give(view, function(owned)
+        if owned._container == self then owned._model:Destroy() end
+    end, view)
+end
+
+function Container:_releaseControl(view)
+    self._controls[view] = nil
+    self._scope:Remove(view)
+end
+
+for kind in pairs(Components.Definitions) do
+    Container[kind] = function(self, props) return Components.Create(self, kind, props) end
+end
+
+local function childOptions(self, options, gap, slots)
+    local style = table.clone(self._styleOverrides)
+    for key, value in pairs(options.style or {}) do style[key] = value end
+    return {
+        slots = slots, gap = gap, owned = true, context = self._context,
+        theme = options.theme or self._themeOverride, style = style,
+    }
 end
 
 function Container:Grid(options)
@@ -62,7 +90,7 @@ function Container:Grid(options)
     scope:Give(grid:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(fitHeight))
     reflow()
     fitHeight()
-    return Container.new(frame, scope, { gap = gap, owned = true })
+    return Container.new(frame, scope, childOptions(self, options, gap))
 end
 
 function Container:HStack(options)
@@ -112,7 +140,7 @@ function Container:Section(options)
         slots[name] = slot
     end
     fitHeight()
-    return Container.new(shell, scope, { slots = slots, gap = self._gap, owned = true })
+    return Container.new(shell, scope, childOptions(self, options, self._gap, slots))
 end
 
 function Container:Destroy()

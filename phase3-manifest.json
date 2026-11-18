@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 3,
-  "version": "0.3.4-window",
+  "version": "0.3.5-window",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase2-manifest.json",
@@ -27,7 +27,8 @@
       "CreateWorkspace({ reopenMode = \"free\" | \"edge\", gamepadNavigation = boolean })",
       "Window({ touchDock = boolean })",
       "Workspace and Window reopenBubble options, plus Window:SetReopenBubble(options)",
-      "Window:SetProps(patch), Window:SetBounds(patch), and persistent TopbarLeading, TopbarTrailing and StatusBar slots"
+      "Window:SetProps(patch), Window:SetBounds(patch), and persistent TopbarLeading, TopbarTrailing and StatusBar slots",
+      "CreateWorkspace({ reopenEdge = \"device\" | \"screen\", resolveReopenImage = function }) and HTTPS sources in SetReopenBubble"
     ],
     "defaultBehaviorChanges": [
       "Free reopen placement, with edge mode available explicitly",
@@ -44,11 +45,12 @@
     "robloxStudio": "IMPLEMENTED_UNTESTED",
     "robloxMobile": "IMPLEMENTED_UNTESTED",
     "studioPreview": {
-      "name": "Feybrume_Phase_3_Window_Preview_v0.3.4.rbxlx",
-      "sha256": "462ca3f198717b910d1eb1b082acd035bac5a2943eda7effab36e806c16a0238",
-      "bytes": 304509,
-      "moduleScripts": 37,
+      "name": "Feybrume_Phase_3_Window_Preview_v0.3.5.rbxlx",
+      "sha256": "f3e5d4f7c709b12e6de08637185fa6151c33e089638fe71145e260c07aa58b5a",
+      "bytes": 351247,
+      "moduleScripts": 38,
       "localScripts": 1,
+      "serverScripts": 1,
       "mapping": "window-preview.project.json",
       "screenOrientation": "Sensor"
     },
@@ -72,35 +74,35 @@
   },
   "evidence": {
     "report": "evidence/phase3-checks.json",
-    "testsPassed": 60,
+    "testsPassed": 62,
     "traceability": "design/traceability.json",
     "limits": "docs/qa-and-backlog.md"
   },
   "files": [
     {
       "path": ".luaurc",
-      "bytes": 165,
-      "sha256": "ea348b7e5e061b262e9ece6c78cf839d62a9e75c6c4d8db0afc5586c46672add"
+      "bytes": 176,
+      "sha256": "78575500b3b881180d947c77df0593bf0449fc9897760dd43742d3599f72599a"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3351,
-      "sha256": "630a2db3785efd8bd4b33b3f21062c1010f3d8e2259014d662f82d60f01b0026"
+      "bytes": 3752,
+      "sha256": "4c67befbdef1c9ae7f98c60e62de9cfb7024e6ade991c06b2f9f5bbb487ec312"
     },
     {
       "path": "README.id.md",
-      "bytes": 1942,
-      "sha256": "af2ff22e97469733e265b9baf310e234321b6ebe3fbe64e82ae79b4045ce1d8e"
+      "bytes": 1072,
+      "sha256": "839bf2ac833ccd54fe9799bcd6f0fa0ce5819d136cacd318693c6d7a8a6b3c70"
     },
     {
       "path": "README.md",
-      "bytes": 1875,
-      "sha256": "49dc4a085b5a347558c3b1e71048cdc25b1a731d1cc2dbab344f08f3d6cffe3c"
+      "bytes": 975,
+      "sha256": "1946d5d0371e26e3277898acc6bb1ef5d0d843f470a3c69b37c18fd950a29ad2"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 1909,
-      "sha256": "06c35ee3c850581438412863deaea75e0eb3e3e177d009d54efc424b22b9b811"
+      "bytes": 1011,
+      "sha256": "d65439fb4c0168ea9fd2374bcc0c06213c484d1c4d3bde0ab5ed85290cac23a7"
     },
     {
       "path": "default.project.json",
@@ -169,18 +171,18 @@
     },
     {
       "path": "docs/id/window.md",
-      "bytes": 3741,
-      "sha256": "c9ac179ff58b7aa3e0a61249612675092bed993d7ce4da276a98eb80254ae07c"
+      "bytes": 4064,
+      "sha256": "c25b0ed221d447fa06494f2fddc4766337efacbd861c4a4987896b266a1f68a3"
     },
     {
       "path": "docs/index.md",
-      "bytes": 1169,
-      "sha256": "0876e1f0349d01602d7013641dbe0e34aaa85eac5173a1f029c934e9df7c7e7b"
+      "bytes": 1226,
+      "sha256": "71b4aa6c1943239455f7670f07480056988a0012c7c892465458099a0b8385db"
     },
     {
       "path": "docs/media.md",
-      "bytes": 6641,
-      "sha256": "90c79bf548a9197c7637de2facd796a820d7f3933cf620c3365a91a6e960bf50"
+      "bytes": 6634,
+      "sha256": "cf8846ae51fe6389aea3214ed81ad39eeda3b5f91f02b3fd6ecb124cbe5881ca"
     },
     {
       "path": "docs/mobile.md",
@@ -194,8 +196,8 @@
     },
     {
       "path": "docs/qa-and-backlog.md",
-      "bytes": 9113,
-      "sha256": "f274c1d5837802e9e8608084e153c83dd8b1b1c485fb6a35929c0d7e0295b95f"
+      "bytes": 10181,
+      "sha256": "07e6625ecfaf91fa349522cdb6bba40863a99590be80204b4041724e1847d0d9"
     },
     {
       "path": "docs/release-doc-map.md",
@@ -214,8 +216,8 @@
     },
     {
       "path": "docs/window.md",
-      "bytes": 11483,
-      "sha256": "721601412fae85a1dbb5bea8629e6db6f7e5e110f6015d13d2733ea0ace22dca"
+      "bytes": 12539,
+      "sha256": "23485cdaaf9ce28726df8a38e6d0cb080871db2799d641418c80f643b24d6176"
     },
     {
       "path": "docs/zh-CN/core.md",
@@ -239,8 +241,8 @@
     },
     {
       "path": "docs/zh-CN/window.md",
-      "bytes": 2922,
-      "sha256": "c2a1c2c4182257a77cdf0b38c6ced8189522382378a6135429e5e87ad7bf1115"
+      "bytes": 3090,
+      "sha256": "bc99ecdb32ab2a5dd49e37308d8c64d17fe6481521245d3106e6a14f684bb48e"
     },
     {
       "path": "evidence/font-license-samples.json",
@@ -264,8 +266,13 @@
     },
     {
       "path": "evidence/phase3-checks.json",
-      "bytes": 12448,
-      "sha256": "9755d20a343ca0a74e070f6fc0c782125dbdfacddb1a771328648eeb089fc6eb"
+      "bytes": 12284,
+      "sha256": "fe6fc06a279c5de74aacbd4cc1181a1a144d99dc3ef5b43f439a1e29796a75d8"
+    },
+    {
+      "path": "examples/reopen-logo.server.luau",
+      "bytes": 2058,
+      "sha256": "84220044ef654bc85ebcde036804b419f73668aad8c9da8358c894b6b1923065"
     },
     {
       "path": "examples/theme-preview.client.luau",
@@ -273,9 +280,14 @@
       "sha256": "eb669222b53a7d7a9ae6db322d216bd492dd43cea509b90a221c3a63361a6423"
     },
     {
+      "path": "examples/vendor/png.luau",
+      "bytes": 38899,
+      "sha256": "6d401c1f7590d4029b7cec860c4440e2f9d3d6ab6568020ab169d6f508fb3c83"
+    },
+    {
       "path": "examples/window-preview.client.luau",
-      "bytes": 10509,
-      "sha256": "d9f4294ea1140fff5ec4d491ec15141aed6e766d61d214f8b8bd87be7a36162f"
+      "bytes": 11704,
+      "sha256": "de42c2384b9f8a42db80e339015a6deff07a8d6feb7a121b540703656299420c"
     },
     {
       "path": "phase0-manifest.json",
@@ -439,8 +451,8 @@
     },
     {
       "path": "src/engine/Viewport.luau",
-      "bytes": 3063,
-      "sha256": "0cfea3fce8a18ce5b7e40cdad8d95e4d9e971a1add8e8590d43207f93bf1ebfd"
+      "bytes": 3894,
+      "sha256": "ba62e1d4ffb0e79d235f4ac3056798ece8fc1896f9d6bfa58f38673f7cdb87a0"
     },
     {
       "path": "src/init.luau",
@@ -454,8 +466,8 @@
     },
     {
       "path": "src/ui/ReopenStyle.luau",
-      "bytes": 2102,
-      "sha256": "9cf6846210f73367ff1fde9d18fc0d2a671d3abf6f6cef513d0c939580c44d02"
+      "bytes": 2968,
+      "sha256": "a1c3470721cedf26b98df8aedbc26ddab56f1d8427912ce0f7f896f71fdd07c2"
     },
     {
       "path": "src/ui/Sheet.luau",
@@ -464,8 +476,8 @@
     },
     {
       "path": "src/ui/Window.luau",
-      "bytes": 31139,
-      "sha256": "d6ff32412d0346ff536ccc7bcb83b85e18abc25b40b15cd922187c790ecbf2a0"
+      "bytes": 32875,
+      "sha256": "cd97ddffd3659a8cd5d0c30eac47baeffc4eb03a144e58de94718d67a108d799"
     },
     {
       "path": "src/ui/WindowProps.luau",
@@ -474,8 +486,8 @@
     },
     {
       "path": "src/ui/Workspace.luau",
-      "bytes": 24373,
-      "sha256": "c16f81b83ee1cbf2294382914d2f872a48aa9b5f6468333a1435580f9f29ba52"
+      "bytes": 24944,
+      "sha256": "45e1e3baf8d421d6257268d517d6c67422b99976a041976837ab21f514f47da0"
     },
     {
       "path": "tests/FakeHost.luau",
@@ -494,8 +506,8 @@
     },
     {
       "path": "tests/window.luau",
-      "bytes": 21363,
-      "sha256": "4db8b6abdeaf796de2fa12ecd720b741c10af409950b1cc90efb34d7c23c38a7"
+      "bytes": 22983,
+      "sha256": "62227bcfc150d791c174fe89fbc2ba4d55849a637f163b0fb24ec03e331264aa"
     },
     {
       "path": "tooling/generate_themes.py",
@@ -509,8 +521,8 @@
     },
     {
       "path": "window-preview.project.json",
-      "bytes": 1265,
-      "sha256": "eec4efd47ca5b2cc270fe1c6142ef8f6d024dceaf09ca41a4aba2cd2958df5d2"
+      "bytes": 1501,
+      "sha256": "87b316557851f12f25db9df5d19aea9c3ee343e457a742e5b0d8934e6a4d819c"
     }
   ]
 }

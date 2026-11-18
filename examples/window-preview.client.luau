@@ -1,6 +1,20 @@
 local storage = game:GetService("ReplicatedStorage")
 local Fey = require(storage:WaitForChild("Feybrume"))
-local workspace = Fey:CreateWorkspace({ theme = "cosmic" })
+local exampleLogo = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f680.png"
+local logoStatus, requestedLogo
+local workspace = Fey:CreateWorkspace({
+    theme = "cosmic",
+    reopenEdge = "screen",
+    resolveReopenImage = function(url)
+        local remote = storage:WaitForChild("FeybrumePreviewLogo", 5)
+        if not remote then return nil end
+        local image, message = remote:InvokeServer(url)
+        if logoStatus and requestedLogo == url then
+            logoStatus.Text = message or "PNG fetched. Hide the window to see the logo."
+        end
+        return image
+    end,
+})
 local window = workspace:Window({ id = "workbench", title = "Feybrume Workbench", width = 650, height = 465, reopenLabel = "UI" })
 
 local swatches = { cozy = "memoir", dark = "cosmic", teal = "cultivation" }
@@ -192,34 +206,47 @@ end)
 local showImage = false
 imageButton = button(bubbleSettings, "Bubble image: off", function()
     showImage = not showImage
+    requestedLogo = nil
+    logoStatus.Text = if showImage then "Roblox sample image." else "Bubble label restored."
     -- Public trapezoid image from Roblox Creator Hub's UI implementation tutorial.
     window:SetReopenBubble({ image = if showImage then 14304828123 else false })
     imageButton.Text = if showImage then "Bubble image: on" else "Bubble image: off"
 end)
 
-local imageId = Instance.new("TextBox")
-imageId.Size = UDim2.new(1, 0, 0, 52)
-imageId.PlaceholderText = "Custom Roblox image ID"
-imageId.Font = Enum.Font.SourceSans
-imageId.TextSize = 16
-imageId.Text = ""
-imageId.ClearTextOnFocus = false
-imageId.BorderSizePixel = 0
+local imageSource = Instance.new("TextBox")
+imageSource.Size = UDim2.new(1, 0, 0, 52)
+imageSource.PlaceholderText = "PNG URL or Roblox image ID"
+imageSource.Font = Enum.Font.SourceSans
+imageSource.TextSize = 16
+imageSource.Text = ""
+imageSource.ClearTextOnFocus = false
+imageSource.BorderSizePixel = 0
 local preferencesTheme = workspace.Themes:Get()
-imageId.BackgroundColor3 = Color3.fromHex(preferencesTheme.tokens.input:sub(2))
-imageId.PlaceholderColor3 = Color3.fromHex(preferencesTheme.tokens.placeholder:sub(2))
-paint(imageId, "body")
-preferences:Add(imageId)
-imageId.FocusLost:Connect(function()
-    local id = imageId.Text:match("^%s*([1-9]%d*)%s*$")
-    if id then
-        window:SetReopenBubble({ image = id })
+imageSource.BackgroundColor3 = Color3.fromHex(preferencesTheme.tokens.input:sub(2))
+imageSource.PlaceholderColor3 = Color3.fromHex(preferencesTheme.tokens.placeholder:sub(2))
+paint(imageSource, "body")
+preferences:Add(imageSource)
+logoStatus = paragraph(preferences, "Try the CDN logo or enter a registered PNG URL.")
+local function applyLogo(source)
+    local ok = pcall(window.SetReopenBubble, window, { image = source })
+    if ok then
+        if source ~= requestedLogo then
+            logoStatus.Text = if source:match("^https://") then "Fetching PNG…" else "Roblox image selected."
+        end
+        requestedLogo = source
         showImage = true
         imageButton.Text = "Bubble image: on"
-    elseif imageId.Text ~= "" then
-        imageId.Text = ""
-        imageId.PlaceholderText = "Enter a Roblox image ID"
+    else
+        logoStatus.Text = "Enter an HTTPS image URL or Roblox image ID."
     end
+end
+imageSource.FocusLost:Connect(function()
+    local source = imageSource.Text:match("^%s*(.-)%s*$")
+    if source ~= "" then applyLogo(source) end
+end)
+button(bubbleSettings, "Try CDN logo", function()
+    imageSource.Text = exampleLogo
+    applyLogo(exampleLogo)
 end)
 
 local slots = window:Tab({ id = "slots", title = "Slots" })

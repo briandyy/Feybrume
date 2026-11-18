@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0-foundation
+
+- Add 18 foundation controls to tabs and containers, including labels, actions, toggles, and radio groups.
+- Bind controls to shared flags, restore snapshots in a single transaction, and update conditional visibility on flag changes.
+- Add a Studio preview with synced toggles and a restore preset.
+
+## 0.3.5-window
+
+- Add an opt-in physical left and right edge for the reopen button. Keep the window and the default reopen position below the Roblox top bar.
+- Accept HTTPS image sources for the reopen button through an experience-supplied pixel resolver. The preview fetches an approved CDN PNG server-side and draws it with EditableImage.
+- Record v0.3.4 Android and Controller Emulator feedback.
+
 ## 0.3.4-window
 
 - Update window titles, subtitles, typography, panel opacity, corner radius, padding, header height, sidebar width, and snap distance at runtime.
