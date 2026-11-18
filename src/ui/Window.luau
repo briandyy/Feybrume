@@ -84,7 +84,6 @@ function Window.new(workspace, options)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1, ClipsDescendants = true })
     local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
     body.Active = true
-    self._body = body
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3, ClipsDescendants = true })
     self._titleLogo = nativeImage(body, "TitleLogo")
     self._heading = Factory.Label(body, props.title, props.titleSize)
@@ -96,6 +95,12 @@ function Window.new(workspace, options)
         StatusBar = newFrame(body, "StatusBar", { ClipsDescendants = true }),
     }
     self._grip = newFrame(body, "DragHandle")
+    self._footerGrip = newFrame(body, "FooterDragHandle", { Visible = false })
+    self._footerMark = newFrame(self._footerGrip, "Mark", {
+        AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+        Size = UDim2.fromOffset(24, 2), BackgroundTransparency = 0.4,
+    })
+    Factory.Create("UICorner", self._footerMark, { CornerRadius = UDim.new(0, 1) })
     self._actionRail = newFrame(body, "WindowActions")
     Factory.Create("UICorner", self._actionRail, { CornerRadius = UDim.new(0, 10) })
     self._hide = newButton(body, "")
@@ -157,14 +162,14 @@ function Window.new(workspace, options)
     scope:Give(self._bubbleIcon:GetPropertyChangedSignal("IsLoaded"):Connect(function() self:_refreshBubbleImage() end))
     self:_applyBubbleImage(bubble.image)
     self._chrome = { self._hide, self._max, self._more, self._resize }
-    scope:Give(self._hide.Activated:Connect(function() if self:_canInteract() then self:Hide() end end))
-    scope:Give(self._max.Activated:Connect(function()
-        if self:_canInteract() then
+    scope:Give(self._hide.Activated:Connect(function(input) if self:_canInteract(input) then self:Hide() end end))
+    scope:Give(self._max.Activated:Connect(function(input)
+        if self:_canInteract(input) then
             self:Dock(if self._placement == "floating" then "fullscreen" else "floating")
         end
     end))
-    scope:Give(self._more.Activated:Connect(function()
-        self:_showTabs()
+    scope:Give(self._more.Activated:Connect(function(input)
+        if self:_canInteract(input) then self:_showTabs() end
     end))
     scope:Give(self._resize.Activated:Connect(function(input)
         if self:_canInteract() and not Input.IsPointerActivation(input) then
@@ -172,7 +177,7 @@ function Window.new(workspace, options)
         end
     end))
     scope:Give(body.InputBegan:Connect(function(input)
-        if self:_canInteract() and Input.IsPointerActivation(input) then workspace:_raise(self) end
+        if Input.IsPointerActivation(input) and self:_canInteract(input) then workspace:_raise(self) end
     end))
     scope:Give(self._bubble.Activated:Connect(function(input)
         if not Input.IsPointerActivation(input) and not workspace:_hasModal() then self:Show() end
@@ -187,8 +192,16 @@ function Window.new(workspace, options)
     return self
 end
 
-function Window:_canInteract()
+function Window:_pointerAllowed(position)
+    local workspace = self._workspace
+    local origin = workspace._origin
+    return Layout.WindowPointerAllowed(position.X - origin.X, position.Y - origin.Y,
+        workspace._windowArea.y, workspace._topbarLane)
+end
+
+function Window:_canInteract(input)
     return not self._destroyed and self._open and not self._workspace:_hasModal()
+        and (not Input.IsPointerActivation(input) or self:_pointerAllowed(input.Position))
 end
 
 function Window:_theme()
@@ -311,15 +324,10 @@ function Window:_reflow()
     local theme, scale = self:_theme(), workspace._settings.fontScale
     Factory.Rect(self._shell, rect.x, rect.y, rect.width, rect.height)
     local props = self._props
-    local bodyRect = Layout.WindowControls(rect, workspace._windowArea, workspace._deviceArea, workspace._topbarLane)
     self._shell.BackgroundColor3 = Factory.Hex(theme.palette.surface)
     self._shell.BackgroundTransparency = 1 - props.backgroundOpacity
     self._edge.Color = Factory.Hex(theme.tokens.essentialStroke)
     self._shape.CornerRadius = UDim.new(0, props.cornerRadius or theme.radius)
-    -- The shell is visual only. Roblox keeps the top strip; Feybrume hit targets live in the inner rectangle.
-    for _, layer in ipairs({ self._body, self._background, self._overlay }) do
-        Factory.Rect(layer, bodyRect.x, bodyRect.y, bodyRect.width, bodyRect.height)
-    end
     self._heading.Text = props.title
     self._heading.TextColor3 = Factory.Hex(theme.tokens.onSurface)
     self._heading.TextSize = math.round(props.titleSize * scale)
@@ -328,7 +336,7 @@ function Window:_reflow()
     self._subtitle.TextColor3 = Factory.Hex(theme.tokens.textMuted or theme.tokens.onSurface)
     self._subtitle.TextSize = math.round(13 * scale)
 
-    local w, h = bodyRect.width, bodyRect.height
+    local w, h = rect.width, rect.height
     local target = workspace:_target(theme)
     local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
@@ -380,19 +388,29 @@ function Window:_reflow()
     Factory.Rect(rightSlot, pad + headingWidth - trailing, pad, trailing, slotHeight)
     leftSlot.Visible, rightSlot.Visible = leading > 0, trailing > 0
     local gripX = if leading > 0 then titleStart else 0
-    Factory.Rect(self._grip, gripX, 0, titleEnd - gripX, bar)
-    self._grip.Visible = self._canDrag and not fillCompact
+    local gripWidth = math.max(0, titleEnd - gripX)
+    Factory.Rect(self._grip, gripX, 0, gripWidth, bar)
+    self._grip.Visible = self._canDrag and not fillCompact and gripWidth > 0
 
     local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
     local body = Layout.WindowBody(w, h, y, pad, gripSize)
     local bodyW, remaining = body.width, body.height
+    local footerHeight = math.max(0, h - y - remaining)
+    local footerWidth = math.max(0, math.min(96, w - 2 * (gripSize + pad)))
+    self._footerGrip.Visible = floating and self._canDrag and footerHeight > 0 and footerWidth >= 24
+        and (gripWidth == 0 or Layout.WindowNeedsDragHandle(Layout.Rect(rect.x + gripX, rect.y, gripWidth, bar),
+            workspace._windowArea.y, workspace._topbarLane))
+    if self._footerGrip.Visible then
+        Factory.Rect(self._footerGrip, (w - footerWidth) / 2, h - footerHeight, footerWidth, footerHeight)
+        self._footerMark.BackgroundColor3 = self._heading.TextColor3
+    end
     local statusH = math.min(props.statusBarHeight, math.max(0, remaining - target - gap))
     local bodyH = remaining - statusH - (if statusH > 0 then gap else 0)
     local status = self._layoutSlots.StatusBar
     Factory.Rect(status, pad, y + remaining - statusH, bodyW, statusH)
     status.Visible = statusH > 0
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
-    local contentX, contentY = rect.x + bodyRect.x, rect.y + bodyRect.y
+    local contentX, contentY = rect.x, rect.y
     self._bubbleExclusions = { Layout.Rect(contentX, contentY, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
         self._nav.Visible = false
@@ -457,8 +475,8 @@ end
 
 function Window:_bindGestures()
     local workspace, input = self._workspace, self._workspace._input
-    input:Bind(self._scope, self._grip, self, function(position, native)
-        if not self:_canInteract() or not self._canDrag or not self._rect then return nil end
+    local function startMove(position, native)
+        if not self:_canInteract(native) or not self._canDrag or not self._rect then return nil end
         workspace:_raise(self)
         local before = self._rect
         local restorePlacement = self._placement
@@ -490,9 +508,11 @@ function Window:_bindGestures()
                 end
             end,
         }
-    end)
-    input:Bind(self._scope, self._resize, self, function()
-        if not self:_canInteract() or not self._resize.Visible then return nil end
+    end
+    input:Bind(self._scope, self._grip, self, startMove)
+    input:Bind(self._scope, self._footerGrip, self, startMove)
+    input:Bind(self._scope, self._resize, self, function(_, native)
+        if not self:_canInteract(native) or not self._resize.Visible then return nil end
         workspace:_raise(self)
         local rect = self._rect
         return { drag = function(dx, dy)
@@ -551,7 +571,7 @@ function Window:Tab(options)
     local context = {
         workspace = self._workspace, owner = self,
         theme = function() return self:_theme() end,
-        canInteract = function() return self:_canInteract() and self._activeTab == tab and page.Visible end,
+        canInteract = function(input) return self:_canInteract(input) and self._activeTab == tab and page.Visible end,
     }
     tab = setmetatable({
         Id = options.id, _window = self, _page = page, _button = button, _scope = scope,
@@ -559,8 +579,8 @@ function Window:Tab(options)
         _container = Container.new(page, scope, { context = context }):Section({ name = "Content" }),
     }, Tab)
     table.insert(self._tabs, tab)
-    scope:Give(button.Activated:Connect(function()
-        if self:_canInteract() then self:SelectTab(tab.Id) end
+    scope:Give(button.Activated:Connect(function(input)
+        if self:_canInteract(input) then self:SelectTab(tab.Id) end
     end))
     scope:Give(button.SelectionGained:Connect(function() self:_styleChrome() end))
     scope:Give(button.SelectionLost:Connect(function() self:_styleChrome() end))
@@ -642,10 +662,10 @@ function Window:BindContextMenu(target, items, options)
         end
     end
     scope:Give(target.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton2 then open() end
+        if input.UserInputType == Enum.UserInputType.MouseButton2 and self:_pointerAllowed(input.Position) then open() end
     end))
     workspace._input:Bind(scope, target, self, function(_, input)
-        if input.UserInputType ~= Enum.UserInputType.Touch or not self:_canInteract() then return nil end
+        if input.UserInputType ~= Enum.UserInputType.Touch or not self:_canInteract(input) then return nil end
         local timer
         local function cancel()
             if timer then

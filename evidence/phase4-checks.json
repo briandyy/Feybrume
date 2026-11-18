@@ -1,6 +1,6 @@
 {
   "phase": 4,
-  "version": "0.4.6-foundation",
+  "version": "0.4.7-foundation",
   "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 41,
+        "passed": 42,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -71,8 +71,9 @@
           "floating windows reach each playable edge and can always move back",
           "oversized launch requests fit and center below the Roblox top bar with room to drag",
           "opening positions use fitted window sizes, allow coordinates, and default to center",
-          "a wide panel reaches the physical corners even when Roblox blocks part of the top strip",
-          "a window can put its controls at the top inside the free Roblox lane",
+          "moving to a physical edge keeps the floating window dimensions",
+          "window pointer input leaves the occupied Roblox top bar alone",
+          "the footer handle appears when the native top bar makes the title hard to grab",
           "compact window actions keep the icons inside two large, separate touch targets",
           "a centered brand avoids action buttons, and chrome props merge safely",
           "resize stops before a floating window loses its travel in a short viewport",
@@ -117,7 +118,7 @@
         ]
       }
     },
-    "passed": 86,
+    "passed": 87,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -130,9 +131,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.6.rbxlx",
-        "sha256": "dbed97fa414e55ba0dba2371730ec3d9bf35467741ace4268204a40ed99a4503",
-        "bytes": 377382,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.7.rbxlx",
+        "sha256": "b6f51fdec2384e65d730df4db30ca6ba4b479e0a08c4abbbaf279545795eb1ce",
+        "bytes": 378544,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -141,6 +142,10 @@
       },
       "phase3WindowPreviewBuild": "PASS",
       "embeddedSource": "All 41 ModuleScripts and the preview LocalScript matched the repository byte for byte."
+    },
+    "simulatedWindowDrag": {
+      "status": "PASS",
+      "scope": "Window gesture callbacks with mocked Roblox GUI primitives. Verified fixed child rectangles across physical edges for touch and pointer, top-bar input filtering, and footer recovery."
     }
   },
   "nativeAcceptance": {
@@ -156,10 +161,10 @@
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
   ],
   "review": {
-    "previousPublishedPreview": "0.4.5",
-    "previousPlaceVersion": 10,
-    "ownerObservation": "Both Studio and Android showed a stepped cutout near the Roblox top-bar buttons.",
-    "followup": "Use one continuous window surface and keep Feybrume hit targets outside the occupied top bar. Group the window actions on a smaller shared surface.",
+    "previousPublishedPreview": "0.4.6",
+    "previousPlaceVersion": 11,
+    "ownerObservation": "Android window content changed width or moved down when the floating frame crossed the physical edges and the Roblox top bar.",
+    "followup": "Lay out all visible content against the full frame, filter pointer events over occupied Roblox top-bar space, and expose a footer drag handle when the title bar is hard to grab.",
     "desktopAndMobileRetest": "IMPLEMENTED_UNTESTED"
   }
 }

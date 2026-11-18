@@ -160,15 +160,18 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
     return best
 end
 
-function Layout.WindowControls(rect, playable, device, lane)
-    local top = math.clamp(device.y - rect.y, 0, rect.height)
-    local left = math.clamp(device.x - rect.x, 0, rect.width)
-    local right = math.clamp(device.x + device.width - rect.x, left, rect.width)
-    local bottom = math.clamp(device.y + device.height - rect.y, top, rect.height)
-    local above = math.clamp(playable.y - rect.y, top, bottom)
-    local insideLane = lane and rect.x + left >= lane.x and rect.x + right <= lane.x + lane.width
-    local y = if insideLane then top else above
-    return Layout.Rect(left, y, right - left, bottom - y)
+function Layout.WindowPointerAllowed(x, y, top, lane)
+    return y >= top or (lane ~= nil and x >= lane.x and x < lane.x + lane.width
+        and y >= lane.y and y < lane.y + lane.height)
+end
+
+function Layout.WindowNeedsDragHandle(grip, top, lane)
+    local right, bottom = grip.x + grip.width, grip.y + grip.height
+    if bottom - math.max(grip.y, top) >= math.min(16, grip.height) then return false end
+    if not lane then return true end
+    local freeWidth = math.min(right, lane.x + lane.width) - math.max(grip.x, lane.x)
+    local freeHeight = math.min(bottom, lane.y + lane.height) - math.max(grip.y, lane.y)
+    return freeWidth < math.min(24, grip.width) or freeHeight < math.min(16, grip.height)
 end
 
 function Layout.WindowActionRail(maximum, hide, compact)

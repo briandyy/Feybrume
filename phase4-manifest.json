@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 4,
-  "version": "0.4.6-foundation",
+  "version": "0.4.7-foundation",
   "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase3-manifest.json",
@@ -50,7 +50,7 @@
       "Set fillCompact = true to fill narrow screens automatically.",
       "The opening position defaults to center. Override with initialPosition, x or y.",
       "Max, Restore and Hide default to themed icon buttons.",
-      "The background stays continuous behind the Roblox top bar. Feybrume hit targets stay outside the occupied region."
+      "The window content moves with its frame behind Roblox’s top bar. A footer handle appears when the title bar is hard to grab."
     ]
   },
   "documentation": [
@@ -62,9 +62,9 @@
   "runtimeBuild": {
     "status": "PASS_WITH_LIMITATION",
     "preview": {
-      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.6.rbxlx",
-      "sha256": "dbed97fa414e55ba0dba2371730ec3d9bf35467741ace4268204a40ed99a4503",
-      "bytes": 377382,
+      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.7.rbxlx",
+      "sha256": "b6f51fdec2384e65d730df4db30ca6ba4b479e0a08c4abbbaf279545795eb1ce",
+      "bytes": 378544,
       "moduleScripts": 41,
       "localScripts": 1,
       "serverScripts": 0,
@@ -81,8 +81,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 5919,
-      "sha256": "424ea03df0743d339498da6abd912ae140c08cfdbcb814e91e819bfaeacada88"
+      "bytes": 6171,
+      "sha256": "c45bdf0792f8abdd5b660d5a05abcfc513afd817893569c6bef2644632ca1991"
     },
     {
       "path": "README.id.md",
@@ -136,8 +136,8 @@
     },
     {
       "path": "docs/components.md",
-      "bytes": 7582,
-      "sha256": "0e8876a020a87fa52af8f13974116280a8f61de44035dcd0b31f3f1a58f5b3d8"
+      "bytes": 7830,
+      "sha256": "1a67e83af1dceca9afbeb4ebaffc8678e35444bf57667352ff16553af316a802"
     },
     {
       "path": "docs/core.md",
@@ -176,8 +176,8 @@
     },
     {
       "path": "docs/id/window.md",
-      "bytes": 4870,
-      "sha256": "961add1f3de76475d0293b17bebc671c0062a44e8db93eaacbb5493c222bacbc"
+      "bytes": 4847,
+      "sha256": "1500b390a8632fbaccf6a23aef1137303c27bcdb6956dde351159282ad2d7127"
     },
     {
       "path": "docs/index.md",
@@ -221,8 +221,8 @@
     },
     {
       "path": "docs/window.md",
-      "bytes": 14243,
-      "sha256": "f6cbb7a46e5b1f81bf58d2c730501821c1bb7358572edaf5e9448647ba64fe39"
+      "bytes": 14212,
+      "sha256": "cdca1ca852aba04300baff32055090becde0f9de9210c34f01166e4daacecd92"
     },
     {
       "path": "docs/zh-CN/core.md",
@@ -276,8 +276,8 @@
     },
     {
       "path": "evidence/phase4-checks.json",
-      "bytes": 9521,
-      "sha256": "daf86b9c095b37b91c31e1ba2c6d5659d95a4a280d5a883bcd61806e45282c80"
+      "bytes": 9916,
+      "sha256": "9b8917373a1753a26bf1482a1d405b8a45c08e4f4a2df7406dee799dc879ddc9"
     },
     {
       "path": "examples/foundation-preview.client.luau",
@@ -436,8 +436,8 @@
     },
     {
       "path": "src/engine/Layout.luau",
-      "bytes": 14129,
-      "sha256": "8ea799d53468b1af9a9bedf9cc7b85d2217d04d24f0c74f3145266ecd8201ae2"
+      "bytes": 14220,
+      "sha256": "bfe9fe79c4fd384371709b71700607834265cf83373d24b489696e568149a383"
     },
     {
       "path": "src/engine/Motion.luau",
@@ -476,8 +476,8 @@
     },
     {
       "path": "src/engine/Viewport.luau",
-      "bytes": 4952,
-      "sha256": "e4f7752e46755239fd20df3c43e50e5c2e60001606a911f69d8d3913feb935d1"
+      "bytes": 4784,
+      "sha256": "3105f09753407590ff563d97501f5609f94bc53a81eaaf47c5b761002b3f0c06"
     },
     {
       "path": "src/init.luau",
@@ -496,8 +496,8 @@
     },
     {
       "path": "src/ui/ControlBase.luau",
-      "bytes": 15337,
-      "sha256": "2fc03a3412d08717372a2defa1ebe284df896ba28dbec9992ab194adf817c098"
+      "bytes": 15349,
+      "sha256": "daa9d893f68472956f02ee420087ed3901f892ba6179a972c1f2f1f0e727ab76"
     },
     {
       "path": "src/ui/ControlSpec.luau",
@@ -506,8 +506,8 @@
     },
     {
       "path": "src/ui/ControlView.luau",
-      "bytes": 22955,
-      "sha256": "8da48853553b31086eb3d9c682272b682926e485dab291d511e5a698405517fe"
+      "bytes": 22977,
+      "sha256": "997b651955ade09b1d468785f2a2e469c3470e8013fab919016dc819adca5e2f"
     },
     {
       "path": "src/ui/ReopenStyle.luau",
@@ -521,8 +521,8 @@
     },
     {
       "path": "src/ui/Window.luau",
-      "bytes": 42963,
-      "sha256": "46a22b278d7fb663a67e6bd2544b31789c739c7ac504c9145bfd942b55ba5c09"
+      "bytes": 44186,
+      "sha256": "131b1c0a904a0d8bcafca3fc02fc7197797ef03cacfb5d2ff06a86eef5f8a9be"
     },
     {
       "path": "src/ui/WindowProps.luau",
@@ -531,8 +531,8 @@
     },
     {
       "path": "src/ui/Workspace.luau",
-      "bytes": 26983,
-      "sha256": "9cc35c9250349921ccdabc92ad3940710bfa882165f1c85629cd7cae6328b1bb"
+      "bytes": 26965,
+      "sha256": "3847e6efdf902db1027f4b82bb13cb224a3e2012e38592a4107a8e7cab5ac71b"
     },
     {
       "path": "tests/FakeHost.luau",
@@ -556,8 +556,8 @@
     },
     {
       "path": "tests/window.luau",
-      "bytes": 31099,
-      "sha256": "b41f04cfd389cc38b9ae81572d9c2eba37f7e432dc658a7acf3376180b30d7a8"
+      "bytes": 31416,
+      "sha256": "cff6b8e3886489ea3077883a03bb231e4280521e4b7e4b79f6961f3b516e8f46"
     },
     {
       "path": "tooling/generate_themes.py",

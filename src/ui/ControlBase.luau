@@ -173,12 +173,12 @@ function ControlBase:Reset(options)
     return self:Set(self._spec.default, options)
 end
 
-function ControlBase:_activate(choice, source)
+function ControlBase:_activate(choice, source, input)
     if self._destroyed then return failure("DISPOSED") end
     local definition = self._spec.definition
     if definition.model == "display" then return failure("UNSUPPORTED_OPERATION") end
     if not self._visible or self._disabled or self._locked or self._props.loading
-        or (self._view and not self._view:CanInteract()) then return failure("CONTROL_INACTIVE") end
+        or (self._view and not self._view:CanInteract(input)) then return failure("CONTROL_INACTIVE") end
     if definition.model == "value" then
         local value
         if definition.group then

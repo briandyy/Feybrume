@@ -188,9 +188,9 @@ local function row(scope, parent, order, interactive, choice, model)
         model:_render()
     end
     if interactive then
-        scope:Give(face.Activated:Connect(function()
+        scope:Give(face.Activated:Connect(function(input)
             state("pressed", false)
-            model:_activate(if choice then choice.id else nil, "user")
+            model:_activate(if choice then choice.id else nil, "user", input)
         end))
         scope:Give(face.MouseEnter:Connect(function() state("hovered", true) end))
         scope:Give(face.MouseLeave:Connect(function()
@@ -387,8 +387,8 @@ function ControlView:Render(model)
     if self._divider then self._divider.BackgroundColor3 = self._main.face.Edge.Color end
 end
 
-function ControlView:CanInteract()
-    return self._container._context.canInteract()
+function ControlView:CanInteract(input)
+    return self._container._context.canInteract(input)
 end
 
 function ControlView:GetSlot(name)

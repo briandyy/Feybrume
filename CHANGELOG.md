@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.7-foundation
+
+- Keep the title, buttons, tabs, and content in place within the window when dragging across screen insets.
+- Keep the native Roblox top bar available and show a footer drag handle when too little of the title bar can be grabbed.
+
 ## 0.4.6-foundation
 
 - Keep the window silhouette continuous behind Roblox Core UI. Place interactive controls and slots outside the occupied top-bar area.

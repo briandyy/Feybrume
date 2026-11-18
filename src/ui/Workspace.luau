@@ -175,7 +175,7 @@ end
 function Workspace:_refresh()
     if self._destroyed then return end
     local root
-    self._area, self._profile, self._origin, self._windowArea, root, self._topbarLane, self._windowTravel, self._deviceArea =
+    self._area, self._profile, self._origin, self._windowArea, root, self._topbarLane, self._windowTravel =
         Viewport.Read(self._userInput, self._guiService, self._settings.breakpoints)
     Factory.Rect(self._root, root.x, root.y, root.width, root.height)
     self._bubbleArea, self._launcherOffsetX, self._launcherOffsetY, self._topbarObstacles, self._touchArea =

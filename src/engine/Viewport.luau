@@ -29,13 +29,11 @@ function Viewport.Read(input, gui, breakpoints)
     local root = Layout.Rect(origin.X - screen.Min.X, origin.Y - screen.Min.Y, core.Width, core.Height)
     local travel = Layout.KeyboardArea(
         Layout.Rect(screen.Min.X - origin.X, screen.Min.Y - origin.Y, screen.Width, screen.Height), keyboard)
-    local interactive = Layout.KeyboardArea(
-        Layout.Rect(device.Min.X - origin.X, device.Min.Y - origin.Y, device.Width, device.Height), keyboard)
     local preferred = input.PreferredInput
     local kind = if preferred == Enum.PreferredInput.Touch then "touch"
         elseif preferred == Enum.PreferredInput.Gamepad then "gamepad" else "pointer"
     return Layout.Inset(area, 8), Layout.Profile(core.Width, core.Height, kind, breakpoints, input.TouchEnabled),
-        origin, area, root, lane, travel, interactive
+        origin, area, root, lane, travel
 end
 
 function Viewport.LauncherAreas(visible, device, originX, originY)
