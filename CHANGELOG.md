@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2-foundation
+
+- Show the active page title in the condensed tab picker.
+- Let floating windows reach each screen edge. Keep interactive chrome inside the safe area.
+- Place an adaptive, icon-only resize grip in the lower-right corner.
+- Make drag-to-dock opt-in with `dockable = true` for mouse and `touchDock = true` for touch.
+
 ## 0.4.1-foundation
 
 - Move touch resize into the window header so pages use the full width. Use a narrower automatic sidebar on short touch screens.

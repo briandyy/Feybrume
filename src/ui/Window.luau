@@ -52,7 +52,8 @@ function Window.new(workspace, options)
     self._shape = Factory.Create("UICorner", shell)
     self._edge = Factory.Create("UIStroke", shell)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
-    local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
+    local body = newFrame(shell, "Chrome", { ZIndex = 2 })
+    self._body = body
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
     self._heading = Factory.Label(body, props.title, props.titleSize)
     self._heading.Font = Enum.Font.SourceSansBold
@@ -72,17 +73,17 @@ function Window.new(workspace, options)
     self._more.Name = "TabLauncher"
     self._more.ZIndex = 2
     self._pages = newFrame(body, "Pages", { ClipsDescendants = true })
-    self._resize = newButton(body, "Resize")
+    self._resize = newButton(body, "")
     self._resize.Name = "Resize"
-    self._resizeMark = newFrame(self._resize, "ResizeMark", {
+    local resizeMark = newFrame(self._resize, "ResizeMark", {
         AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
-        Size = UDim2.fromOffset(18, 18), Visible = false,
+        Size = UDim2.fromOffset(18, 18),
     })
     self._resizeLines = {
-        newFrame(self._resizeMark, "Horizontal", {
+        newFrame(resizeMark, "Horizontal", {
             Position = UDim2.fromOffset(3, 14), Size = UDim2.fromOffset(13, 2), BackgroundTransparency = 0,
         }),
-        newFrame(self._resizeMark, "Vertical", {
+        newFrame(resizeMark, "Vertical", {
             Position = UDim2.fromOffset(14, 3), Size = UDim2.fromOffset(2, 13), BackgroundTransparency = 0,
         }),
     }
@@ -141,7 +142,7 @@ function Window:_styleChrome()
     local theme, profile, selected = self:_theme(), workspace._profile, workspace._guiService.SelectedObject
     for _, button in ipairs(self._chrome) do
         Factory.StyleButton(button, theme, profile, { focused = selected == button },
-            if profile.compactChrome then "ghost" elseif button == self._resize then "outline" else "soft",
+            if profile.compactChrome or button == self._resize then "ghost" else "soft",
             workspace._settings.fontScale)
     end
     for _, tab in ipairs(self._tabs) do
@@ -177,8 +178,10 @@ function Window:_reflow()
         local centered = Layout.Center(area, initial.width, initial.height)
         self._requested = Layout.Rect(initial.x or centered.x, initial.y or centered.y, centered.width, centered.height)
     end
-    local rect = Layout.Window(self._requested, area, profile, self._placement, self._limits,
-        self._options.fillCompact ~= false)
+    local fillCompact = profile.narrow and self._options.fillCompact == true
+    local floating = self._placement == "floating" and not fillCompact
+    local rect = Layout.Window(self._requested, if floating then workspace._screenArea else area, profile,
+        self._placement, self._limits, fillCompact)
     self._rect = rect
     self._shell.Visible = self._open
     if not self._open then return end
@@ -198,7 +201,9 @@ function Window:_reflow()
     self._subtitle.TextColor3 = Factory.Hex(theme.tokens.textMuted or theme.tokens.onSurface)
     self._subtitle.TextSize = math.round(13 * scale)
 
-    local w, h = rect.width, rect.height
+    local content = Layout.WindowContent(rect, workspace._chromeArea)
+    Factory.Rect(self._body, content.x, content.y, content.width, content.height)
+    local w, h = content.width, content.height
     local target = workspace:_target(theme)
     local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
@@ -206,31 +211,25 @@ function Window:_reflow()
     local titleH = self._heading.TextSize + 4
     local bar = math.min(h, math.max(target, titleH + subtitleH, props.topbarHeight - 2 * pad) + 2 * pad)
     self._max.Text = if self._placement == "floating" then "Max" else "Restore"
-    self._resize.Text = if profile.compactChrome then "" else "Resize"
-    self._resizeMark.Visible = profile.compactChrome
     for _, line in ipairs(self._resizeLines) do line.BackgroundColor3 = self._heading.TextColor3 end
     self:_styleChrome()
     local minimumWidth = target + (if profile.compactChrome then 2 else 14)
-    local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
-    local headerResize = resizable and profile.compactChrome
     local hideW = math.min(w, workspace:_buttonWidth(self._hide, minimumWidth))
     local maxW = workspace:_buttonWidth(self._max, minimumWidth)
-    local resizeSpace = if headerResize then target + gap else 0
-    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + resizeSpace + 4 * pad)
+    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
     local buttonY = math.max(0, (bar - target) / 2)
     Factory.Rect(self._hide, math.max(0, w - pad - hideW), buttonY, hideW, target)
     Factory.Rect(self._max, w - pad - hideW - maxW - gap, buttonY, maxW, target)
     self._max.Visible = maxVisible
 
     local standardButtons = hideW + (if maxVisible then maxW + gap else 0)
-    self._resize.Visible = resizable
-    if headerResize then
-        Factory.Rect(self._resize, math.max(0, w - pad - standardButtons - resizeSpace), buttonY, target, target)
-    elseif resizable then
-        local resizeW = math.min(w, workspace:_buttonWidth(self._resize, target + 16))
-        Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
+    local gripSize = if self._canResize and floating then math.min(Layout.ResizeGrip(profile), w, math.max(0, h - bar)) else 0
+    self._resize.Visible = gripSize > 0
+    if gripSize > 0 then
+        local inset = 3
+        Factory.Rect(self._resize, math.max(0, w - gripSize - inset), math.max(bar, h - gripSize - inset), gripSize, gripSize)
     end
-    local headingWidth = math.max(0, w - 3 * pad - standardButtons - resizeSpace)
+    local headingWidth = math.max(0, w - 3 * pad - standardButtons)
     local leading, trailing = Layout.HeaderAdornmentWidths(headingWidth, props.topbarLeadingWidth, props.topbarTrailingWidth)
     local titleX = pad + (if leading > 0 then leading + gap else 0)
     local titleWidth = headingWidth - (titleX - pad) - (if trailing > 0 then trailing + gap else 0)
@@ -245,10 +244,10 @@ function Window:_reflow()
     leftSlot.Visible, rightSlot.Visible = leading > 0, trailing > 0
     local gripX = if leading > 0 then titleX else 0
     Factory.Rect(self._grip, gripX, 0, titleX + titleWidth - gripX, bar)
-    self._grip.Visible = self._canDrag and not (profile.narrow and self._options.fillCompact ~= false)
+    self._grip.Visible = self._canDrag and not fillCompact
 
     local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
-    local body = Layout.WindowBody(w, h, y, pad, resizable, profile.compactChrome, target)
+    local body = Layout.WindowBody(w, h, y, pad, gripSize)
     local bodyW, remaining = body.width, body.height
     local statusH = math.min(props.statusBarHeight, math.max(0, remaining - target - gap))
     local bodyH = remaining - statusH - (if statusH > 0 then gap else 0)
@@ -256,7 +255,8 @@ function Window:_reflow()
     Factory.Rect(status, pad, y + remaining - statusH, bodyW, statusH)
     status.Visible = statusH > 0
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
-    self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
+    local contentX, contentY = rect.x + content.x, rect.y + content.y
+    self._bubbleExclusions = { Layout.Rect(contentX, contentY, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
         self._nav.Visible = false
         Factory.Rect(self._pages, pad, y, bodyW, bodyH)
@@ -267,14 +267,14 @@ function Window:_reflow()
             local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(railLimit, math.floor(bodyW * 0.29))
             local rail = math.min(math.max(0, bodyW - gap), math.max(target, preferredRail))
             table.insert(self._bubbleExclusions,
-                Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
+                Layout.Rect(contentX + (if mode == "left" then pad else pad + bodyW - rail), contentY + y, rail, bodyH))
             self:_layoutTabs(mode, rail, target)
             Factory.Rect(self._nav, if mode == "left" then pad else pad + bodyW - rail, y, rail, bodyH)
             Factory.Rect(self._pages, if mode == "left" then pad + rail + gap else pad, y, bodyW - rail - gap, bodyH)
         else
             local navH = target + 2 * Layout.TabPadding
             local navY = if mode == "bottom" then y + math.max(0, bodyH - navH) else y
-            table.insert(self._bubbleExclusions, Layout.Rect(rect.x + pad, rect.y + navY, bodyW, navH))
+            table.insert(self._bubbleExclusions, Layout.Rect(contentX + pad, contentY + navY, bodyW, navH))
             self:_layoutTabs(mode, bodyW, target)
             Factory.Rect(self._nav, pad, navY, bodyW, navH)
             Factory.Rect(self._pages, pad, if mode == "bottom" then y else y + navH + gap, bodyW, bodyH - navH - gap)
@@ -304,7 +304,7 @@ function Window:_layoutTabs(mode, width, step)
         end
     end
     self._more.Visible = overflow
-    self._more.Text = if visible == 0 then "Tabs" else "More"
+    self._more.Text = Layout.TabLauncherLabel(visible, if self._activeTab then self._activeTab._button.Text else nil)
     if overflow then
         local rect = Layout.TabBounds(width, step, visible, slots, false)
         Factory.Rect(self._more, rect.x, rect.y, rect.width, rect.height)
@@ -326,12 +326,13 @@ function Window:_bindGestures()
         local before = self._rect
         local restorePlacement = self._placement
         local wasDocked = restorePlacement ~= "floating"
-        local snap = self._options.dockable ~= false
-            and (native.UserInputType ~= Enum.UserInputType.Touch or self._options.touchDock == true)
+        local snap = if native.UserInputType == Enum.UserInputType.Touch
+            then self._options.dockable ~= false and self._options.touchDock == true
+            else self._options.dockable == true
         local changed = false
         return {
             drag = function(dx, dy)
-                local origin, area = workspace._origin, workspace._area
+                local origin, area = workspace._origin, workspace._screenArea
                 if wasDocked and not changed then
                     local requested = Layout.Clamp(self._requested, area)
                     local fraction = math.clamp(((position.X - origin.X) - before.x) / math.max(1, before.width), 0, 1)
@@ -345,7 +346,7 @@ function Window:_bindGestures()
             end,
             finish = function(pointer)
                 if snap then
-                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._area, self._props.snapDistance))
+                    self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._screenArea, self._props.snapDistance))
                 else
                     workspace:_placeBubbles()
                 end
@@ -357,7 +358,7 @@ function Window:_bindGestures()
         workspace:_raise(self)
         local rect = self._rect
         return { drag = function(dx, dy)
-            self._requested = Layout.Resize(rect, workspace._area, dx, dy, self._limits)
+            self._requested = Layout.Resize(rect, workspace._screenArea, dx, dy, self._limits)
             self:_reflow()
         end, finish = function() workspace:_placeBubbles() end }
     end)

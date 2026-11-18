@@ -1,6 +1,6 @@
 {
   "phase": 4,
-  "version": "0.4.1-foundation",
+  "version": "0.4.2-foundation",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 32,
+        "passed": 35,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -68,7 +68,10 @@
           "free bubbles keep a center drop and preserve relative position through rotation",
           "free bubbles move the shortest distance around occupied regions",
           "short touch layouts use a rail or bottom bar and keep their layout after input changes",
-          "touch resize keeps the full content width and height inside the window padding",
+          "floating windows reach all four screen edges, with no off-screen position",
+          "the title and controls stay inside safe insets when the window frame reaches a screen edge",
+          "resize grip adapts to phone, tablet, and desktop while preserving content width",
+          "a condensed tab launcher identifies the active page by title",
           "launcher can sit beside the Roblox controls at the top of the device safe area",
           "bubble reaches the right side of the device safe viewport without entering the top bar by default",
           "reopen style merges overrides and validates images, size and shape",
@@ -108,7 +111,7 @@
         ]
       }
     },
-    "passed": 77,
+    "passed": 80,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -121,9 +124,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.1.rbxlx",
-        "sha256": "bb343f040fb236094c9a7bcee34dbf1563ad37a0c748e2f091e0fc3d8a8bfc1c",
-        "bytes": 361158,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.2.rbxlx",
+        "sha256": "9df36570e14ccf54d843167b578baf7e1a765783c11bcdf864224fc4ba7ea2c8",
+        "bytes": 362587,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -147,10 +150,10 @@
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
   ],
   "review": {
-    "previousPublishedPreview": "0.4.0",
-    "previousPlaceVersion": 5,
-    "previousOwnerObservation": "Android landscape shows an unused resize column and oversized tab chrome.",
-    "followup": "Title-bar resize, full content width, quieter chrome, and individual control visuals.",
-    "androidRetest": "IMPLEMENTED_UNTESTED"
+    "previousPublishedPreview": "0.4.1",
+    "previousPlaceVersion": 6,
+    "ownerObservation": "The condensed tab picker hides the active page name. The Android resize grip should be smaller and at the bottom-right.",
+    "followup": "Current page labels, flush screen edges with safe chrome, and a responsive icon-only resize grip.",
+    "desktopAndMobileRetest": "IMPLEMENTED_UNTESTED"
   }
 }

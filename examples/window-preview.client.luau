@@ -114,7 +114,7 @@ end
 
 local home = window:Tab({ id = "home", title = "Home" })
 heading(home, "Window controls")
-paragraph(home, "Drag the title to move. Drag the lower-right handle to resize.")
+paragraph(home, "Drag the title to move. Drag the bottom-right corner icon to resize.")
 local actions = home:Section({ name = "Actions" }):Grid({ columns = 2, minWidth = 145, rowHeight = 52 })
 button(actions, "Open sheet", openSheet)
 button(actions, "Dock left", function() window:Dock("left") end)

@@ -1,27 +1,34 @@
 local Layout = require(if script then script.Parent.Layout else "./Layout")
 local Viewport = {}
 
-local function available(root, input)
-    local size, origin = root.AbsoluteSize, root.AbsolutePosition
-    local area = Layout.Rect(0, 0, size.X, size.Y)
-    if input.OnScreenKeyboardVisible then
-        local keyboard = input.OnScreenKeyboardPosition
-        local keyboardSize = input.OnScreenKeyboardSize
-        if keyboardSize.X > 0 and keyboardSize.Y > 0 then
-            area = Layout.KeyboardArea(area,
-                Layout.Rect(keyboard.X - origin.X, keyboard.Y - origin.Y, keyboardSize.X, keyboardSize.Y))
-        end
-    end
-    return area
+local function keyboardBounds(input, origin)
+    if not input.OnScreenKeyboardVisible then return nil end
+    local keyboard, size = input.OnScreenKeyboardPosition, input.OnScreenKeyboardSize
+    if size.X <= 0 or size.Y <= 0 then return nil end
+    return Layout.Rect(keyboard.X - origin.X, keyboard.Y - origin.Y, size.X, size.Y)
 end
 
-function Viewport.Read(root, input, breakpoints)
+local function available(root, input)
     local size = root.AbsoluteSize
+    return Layout.KeyboardArea(Layout.Rect(0, 0, size.X, size.Y), keyboardBounds(input, root.AbsolutePosition))
+end
+
+function Viewport.Read(input, gui, breakpoints)
+    local screen = gui:GetInsetArea(Enum.ScreenInsets.None)
+    local core = gui:GetInsetArea(Enum.ScreenInsets.CoreUISafeInsets)
+    local device = gui:GetInsetArea(Enum.ScreenInsets.DeviceSafeInsets)
+    local origin = core.Min
+    local keyboard = keyboardBounds(input, origin)
+    local safe = Layout.Rect(0, 0, core.Width, core.Height)
+    local full = Layout.Rect(screen.Min.X - origin.X, screen.Min.Y - origin.Y, screen.Width, screen.Height)
+    local chrome = Layout.Rect(device.Min.X - origin.X, 0, device.Width, device.Max.Y - origin.Y)
     local preferred = input.PreferredInput
     local kind = if preferred == Enum.PreferredInput.Touch then "touch"
         elseif preferred == Enum.PreferredInput.Gamepad then "gamepad" else "pointer"
-    return Layout.Inset(available(root, input), 8),
-        Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), root.AbsolutePosition
+    return Layout.Inset(Layout.KeyboardArea(safe, keyboard), 8),
+        Layout.Profile(core.Width, core.Height, kind, breakpoints, input.TouchEnabled), origin,
+        Layout.KeyboardArea(full, keyboard), Layout.KeyboardArea(chrome, keyboard),
+        Layout.Rect(-full.x, -full.y, core.Width, core.Height)
 end
 
 function Viewport.LauncherAreas(visible, device, originX, originY)

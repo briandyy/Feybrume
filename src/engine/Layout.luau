@@ -200,9 +200,25 @@ function Layout.FreeBubble(area: Rectangle, reserved: { Rectangle }, anchor: Anc
     return best
 end
 
-function Layout.WindowBody(width, height, top, padding, resize, compact, target)
-    local footer = if resize and not compact then target + padding else 0
+function Layout.WindowContent(window, safe)
+    local x = math.clamp(safe.x - window.x, 0, window.width)
+    local y = math.clamp(safe.y - window.y, 0, window.height)
+    local right = math.clamp(safe.x + safe.width - window.x, x, window.width)
+    local bottom = math.clamp(safe.y + safe.height - window.y, y, window.height)
+    return Layout.Rect(x, y, right - x, bottom - y)
+end
+
+function Layout.ResizeGrip(profile)
+    if not profile.touchLayout then return 24 end
+    return if profile.narrow or profile.compactChrome then 30 else 40
+end
+
+function Layout.WindowBody(width, height, top, padding, footer)
     return Layout.Rect(padding, top, math.max(0, width - 2 * padding), math.max(0, height - top - padding - footer))
+end
+
+function Layout.TabLauncherLabel(visible, activeTitle)
+    return if visible > 0 then "More" else (activeTitle or "Tabs")
 end
 
 function Layout.Navigation(profile, requested, width, height, target, count)

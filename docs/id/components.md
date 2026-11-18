@@ -49,6 +49,6 @@ rojo build foundation-preview.project.json -o Feybrume-Foundation.rbxlx
 
 1. Buka file di Studio dan tekan **F5**. Tekan **Record lap** dan cek jumlah lap bertambah sekali.
 2. Tekan **Load hard preset**. Difficulty berubah ke **Hard**, tips hilang, dan **Hard mode reminder** tampil aktif. Buka tab **Guide** dan cek toggle tips ikut berubah.
-3. Di Controller Emulator, pindahkan fokus pakai D-pad dan aktifkan kontrol dengan **A**. Di HP, uji menekan seluruh baris dan putar layar. Di landscape, seret ikon resize di title bar dan cek konten tetap memakai lebar sampai mendekati tepi kanan. Pastikan tab, nilai, dan kontrol masih bisa diakses.
+3. Di Controller Emulator, pindahkan fokus pakai D-pad dan aktifkan kontrol dengan **A**. Di HP, uji menekan seluruh baris dan putar layar. Di landscape, seret ikon resize di pojok kanan bawah dan cek konten tetap memakai lebar sampai mendekati tepi kanan. Pastikan tab, nilai, dan kontrol masih bisa diakses.
 
 [Source demo](../../examples/foundation-preview.client.luau) · [Hasil tes CLI dan status tes perangkat](../../evidence/phase4-checks.json)

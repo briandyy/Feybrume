@@ -32,7 +32,7 @@ section:Add(message)
 | `tab:Section(options)` | Create a section. Use `section:Add(guiObject, slot?)`, `GetSlot(name)`, `Grid({ columns, minWidth, rowHeight, gap })`, and `HStack(options)`. A grid reduces its column count as the viewport narrows. |
 | `window:OpenContextMenu(items, options)` | Open a scoped menu. Items provide `label` and a callback. `BindContextMenu(target, items, options)` connects right-click and touch hold to the same menu and returns an unbind function. Provide a separate clickable action for keyboard access. |
 
-Window options use `movable`, `resizable`, and `dockable` to enable default gestures, and `fillCompact = false` to request a floating layout at narrow widths. The header is the drag target. The resize grip is separate from page scrolling. Dropping a floating window with a mouse near the top, left or right edge docks it. Touch drag can dock when `touchDock = true`. The `Dock` method is available for explicit actions on all inputs. Use Max/Restore or `Dock("floating")` to restore the floating request.
+Drag the title bar to move a floating window flush to any screen edge. The interactive chrome stays inside the device and Roblox safe areas. Drag the bottom-right corner icon to resize. Set `movable = false` or `resizable = false` to disable the gestures. Use `fillCompact = true` for a full-window layout at narrow widths. Set `dockable = true` for mouse drag-to-dock or `touchDock = true` for touch. Use Max/Restore or `Dock("floating")` to restore the floating request.
 
 Tabs and sections expose Leading, Main, Trailing, Footer, Background and Overlay slots. A window provides window-sized Background and Overlay slots plus the active page's other slots. Use native GuiObjects for content. Passing ownership to a section lets its scope remove that content on teardown. `section:Destroy()` releases the section and any nested grids or child sections.
 
@@ -93,10 +93,10 @@ rojo build window-preview.project.json -o Feybrume_Phase_3_Window_Preview.rbxlx
 ## Test the Studio preview
 
 1. Install [window-preview.client.luau](../examples/window-preview.client.luau) as a LocalScript under StarterPlayerScripts in a place containing the Feybrume modules, or open the packaged Phase 3 place. Press **F5**.
-2. Drag the title and the lower-right **Resize** grip. Drop near a screen edge, or use **Dock left** and **Dock right**. Confirm the window stays reachable. Use **Floating layout** or **Restore** to restore it. Verify the full **Resize** and **Restore** labels stay readable.
+2. Drag the title to each screen edge and pull it back. Resize from the icon in the bottom-right corner. Use **Dock left**, **Dock right**, or **Max** to dock. Use **Floating layout** or **Restore** to return to a floating window.
 3. Open **Preferences**, hide the window, then tap the **UI** bubble. The tab should still be active. Drag **UI** to the middle and confirm it stays there, then tap it. Choose **Open second window** on Preferences. Hiding that window exposes its **2** bubble.
 4. Open **Open sheet**, then the nested sheet. Close the top sheet and confirm the first one returns. Scroll to the text field and check that the action stays reachable when the keyboard appears.
-5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs remain reachable from the side or bottom and rotation preserves the active page. On short touch layouts, drag the corner-shaped resize handle in the title bar.
+5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs remain reachable from the side or bottom and rotation preserves the active page. Check that the lower-right resize grip fits the device. With a condensed tab picker, verify the launcher shows the selected tab title.
 
 6. In Controller Emulator, select **Navigation: drawer** under Preferences. Focus **Tabs** with D-pad, then press A to open the list. Select a tab with A. Open a nested sheet and press B once to check focus restoration.
 7. In **Preferences**, change the launcher size, shape, and image scale. Toggle the sample image or enter a Roblox image ID. Hide the window to check the updated launcher and drag it toward the right safe edge.

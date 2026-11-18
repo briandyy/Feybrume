@@ -94,13 +94,15 @@ function Workspace.new(options)
     }, Workspace)
     local screen = scope:Give(Factory.Create("ScreenGui", parent, {
         Name = options.name or "FeybrumeWorkspace", ResetOnSpawn = false,
-        ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets, ClipToDeviceSafeArea = true,
+        ScreenInsets = Enum.ScreenInsets.None, ClipToDeviceSafeArea = false,
+        SafeAreaCompatibility = Enum.SafeAreaCompatibility.None,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
         DisplayOrder = options.displayOrder or 10,
     }))
     self._screen = screen
     self._bubbleArea = self._area
-    self._root = Factory.Frame(screen, "SafeArea", { Size = UDim2.fromScale(1, 1) })
+    local surface = Factory.Frame(screen, "ScreenBounds", { Size = UDim2.fromScale(1, 1) })
+    self._root = Factory.Frame(surface, "SafeArea")
     self._windowsLayer = Factory.Frame(self._root, "Windows", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
     local fullWidth = config.reopenEdge == "screen"
     local launcher = scope:Give(Factory.Create("ScreenGui", parent, {
@@ -123,7 +125,7 @@ function Workspace.new(options)
         self._input:Cancel()
         self:_refresh()
     end
-    Viewport.Observe(scope, self._root, input, refreshBounds)
+    Viewport.Observe(scope, surface, input, refreshBounds)
     scope:Give(self._bubblesLayer:GetPropertyChangedSignal("AbsoluteSize"):Connect(refreshBounds))
     scope:Give(self._bubblesLayer:GetPropertyChangedSignal("AbsolutePosition"):Connect(refreshBounds))
     scope:Give(guiService:GetPropertyChangedSignal("TopbarInset"):Connect(refreshBounds))
@@ -172,7 +174,10 @@ end
 
 function Workspace:_refresh()
     if self._destroyed then return end
-    self._area, self._profile, self._origin = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
+    local safeFrame
+    self._area, self._profile, self._origin, self._screenArea, self._chromeArea, safeFrame =
+        Viewport.Read(self._userInput, self._guiService, self._settings.breakpoints)
+    Factory.Rect(self._root, safeFrame.x, safeFrame.y, safeFrame.width, safeFrame.height)
     self._bubbleArea, self._launcherOffsetX, self._launcherOffsetY, self._topbarObstacles, self._touchArea =
         Viewport.ReadLauncher(self._bubblesLayer, self._userInput, self._guiService, self._settings.reopenEdge == "screen")
     for _, window in ipairs(self._windows) do window:_reflow() end
