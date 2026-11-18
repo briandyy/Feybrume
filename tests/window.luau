@@ -1,6 +1,7 @@
 local Layout = require("../src/engine/Layout")
 local Gesture = require("../src/engine/Gesture")
 local Focus = require("../src/engine/Focus")
+local Factory = require("../src/engine/Factory")
 
 local count = 0
 local limits = { minWidth = 280, minHeight = 220, maxWidth = 1200, maxHeight = 900 }
@@ -56,6 +57,28 @@ test("clamping fits a rectangle smaller than the configured minimum", function()
     contained(rect, area)
     equal(rect.width, 230)
     equal(rect.height, 158)
+end)
+
+test("chrome fits full labels and refreshes cached widths when the label or text scale changes", function()
+    local calls, multiplier = 0, 1
+    local button = { Text = "Max", TextSize = 14, Font = "SourceSans" }
+    local function measure(text, size, font)
+        calls += 1
+        assert(font == button.Font)
+        return #text * size * 0.6 * multiplier
+    end
+    equal(Factory.ButtonWidth(button, measure, "medium", 52), 52)
+    button.Text = "Restore"
+    equal(Factory.ButtonWidth(button, measure, "medium", 52), 75)
+    equal(Factory.ButtonWidth(button, measure, "medium", 52), 75)
+    equal(calls, 2)
+    button.TextSize = 20
+    equal(Factory.ButtonWidth(button, measure, "medium", 52), 100)
+    multiplier = 1.25
+    equal(Factory.ButtonWidth(button, measure, "largest", 52), 121)
+    button.Font = "BuilderSans"
+    equal(Factory.ButtonWidth(button, measure, "largest", 52), 121)
+    equal(calls, 5)
 end)
 
 test("compact layout keeps the original floating request for restoration", function()

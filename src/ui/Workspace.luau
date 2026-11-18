@@ -55,12 +55,17 @@ function Workspace.new(options)
     local parent = hostParent(runtime, options.parent)
     assert(parent:IsA("PlayerGui"), "The workspace parent must be a PlayerGui")
     local guiService, actions = runtime.Services:Get("GuiService"), runtime.Services:Get("ContextActionService")
+    local textService = runtime.Services:Get("TextService")
+    local unconstrainedText = Vector2.new(math.huge, math.huge)
     local scope = runtime.Scope:Fork()
     local themes = scope:Give(Theme.new({ clock = runtime.Clock, initial = options.theme }))
     workspaceCount += 1
     local self = setmetatable({
         Runtime = runtime, Themes = themes, _scope = scope, _ownsRuntime = ownsRuntime, _settings = config,
         _guiService = guiService, _actions = actions, _userInput = input, _windows = {}, _modal = {},
+        _measureText = function(text, size, font)
+            return textService:GetTextSize(text, size, font, unconstrainedText).X
+        end,
         _area = Layout.Rect(0, 0, 0, 0), _profile = Layout.Profile(0, 0, "pointer", config.breakpoints),
         _actionName = "FeybrumeSheet" .. tostring(workspaceCount),
     }, Workspace)
@@ -84,6 +89,7 @@ function Workspace.new(options)
         self:_refresh()
     end)
     scope:Give(input.TextBoxFocused:Connect(function() Viewport.RevealFocused(self._root, input) end))
+    scope:Give(guiService:GetPropertyChangedSignal("PreferredTextSize"):Connect(function() self:_refresh() end))
     scope:Give(guiService:GetPropertyChangedSignal("SelectedObject"):Connect(function()
         local top = self:_top()
         if top then
@@ -108,6 +114,10 @@ function Workspace:_target(theme)
     return if self._profile.touch or self._profile.narrow then
         math.max(44, theme.touch.minimumHitTarget, math.ceil(16 * self._settings.fontScale) + 12)
         else math.max(36, math.ceil(16 * self._settings.fontScale) + 12)
+end
+
+function Workspace:_buttonWidth(button, minimum)
+    return Factory.ButtonWidth(button, self._measureText, self._guiService.PreferredTextSize, minimum)
 end
 
 function Workspace:_assertLive()

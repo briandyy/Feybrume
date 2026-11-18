@@ -93,8 +93,6 @@ function Sheet:_reflow()
     local header = step + pad * 2
     local footer = if self._done then step + pad * 2 else 0
     Factory.Rect(self._card, rect.x, rect.y, rect.width, rect.height)
-    Factory.Rect(self._heading, pad, pad, rect.width - 3 * pad - step - 18, step)
-    Factory.Rect(self._close, rect.width - pad - step - 18, pad, step + 18, step)
     Factory.Rect(self._body, pad, header, rect.width - 2 * pad, rect.height - header - pad - footer)
     if self._done then Factory.Rect(self._done, pad, rect.height - step - pad, rect.width - 2 * pad, step) end
     self._card.BackgroundColor3 = Factory.Hex(theme.tokens.popup)
@@ -106,6 +104,9 @@ function Sheet:_reflow()
         Factory.StyleButton(button, theme, profile, { focused = workspace._guiService.SelectedObject == button },
             if button == self._done then "solid" else "soft", workspace._settings.fontScale)
     end
+    local closeWidth = math.min(rect.width, workspace:_buttonWidth(self._close, step + 18))
+    Factory.Rect(self._heading, pad, pad, rect.width - 3 * pad - closeWidth, step)
+    Factory.Rect(self._close, math.max(0, rect.width - pad - closeWidth), pad, closeWidth, step)
 end
 
 function Sheet:Close()

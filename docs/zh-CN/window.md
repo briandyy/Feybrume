@@ -14,4 +14,4 @@
 
 在 **Help** 标签页可右键点击或长按标题来打开菜单，也可以点击 **Open actions**。**Preferences** 中的 **Move reopen bubble** 可切换浮动按钮的位置。
 
-Luau CLI 已测试布局计算、手势识别与焦点恢复规则。仍需在 Studio 和真机中验证实际交互。[完整 API（英文）](../window.md) · [测试记录](../../evidence/phase3-checks.json)
+确认 **Resize** 和 **Restore** 两个按钮都显示完整文字。Luau CLI 已测试布局计算、手势识别与焦点恢复规则。仍需在 Studio 和真机中验证实际交互。[完整 API（英文）](../window.md) · [测试记录](../../evidence/phase3-checks.json)

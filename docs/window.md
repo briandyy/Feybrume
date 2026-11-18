@@ -53,7 +53,7 @@ rojo build window-preview.project.json -o Feybrume_Phase_3_Window_Preview.rbxlx
 ## Test the Studio preview
 
 1. Install [window-preview.client.luau](../examples/window-preview.client.luau) as a LocalScript under StarterPlayerScripts in a place containing the Feybrume modules, or open the packaged Phase 3 place. Press **F5**.
-2. Drag the title and the lower-right **Resize** grip. Drop near a screen edge, or use **Dock left** and **Dock right**. Confirm the window stays reachable. Use **Floating layout** to restore it.
+2. Drag the title and the lower-right **Resize** grip. Drop near a screen edge, or use **Dock left** and **Dock right**. Confirm the window stays reachable. Use **Floating layout** or **Restore** to restore it. Verify the full **Resize** and **Restore** labels stay readable.
 3. Open **Preferences**, hide the window, then tap the **UI** bubble. The tab should still be active. The **2** bubble opens an independent second window.
 4. Open **Open sheet**, then the nested sheet. Close the top sheet and confirm the first one returns. Scroll to the text field and check that the action stays reachable when the keyboard appears.
 5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs move from a bottom bar to the Tabs drawer when space is short and switching layout preserves the active page.

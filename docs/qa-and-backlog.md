@@ -1,6 +1,6 @@
 # QA, risks, and roadmap
 
-PASS records executed checks. PASS_WITH_LIMITATION indicates narrower evidence than the target. IMPLEMENTED_UNTESTED indicates working source awaiting the named environment. BLOCKED records a missing prerequisite. FAIL records a failed check. NOT_IMPLEMENTED identifies planned work. Phase 1 core and Phase 2 theme tests run in Luau CLI with an injected host. The desktop Phase 2 preview passed a user retest. Phase 3 has CLI window tests and awaits Studio and device interaction checks. [Core evidence](../evidence/phase1-checks.json) · [Theme evidence](../evidence/phase2-checks.json) · [Window evidence](../evidence/phase3-checks.json) · [Traceability](../design/traceability.json)
+PASS records executed checks. PASS_WITH_LIMITATION indicates narrower evidence than the target. IMPLEMENTED_UNTESTED indicates working source awaiting the named environment. BLOCKED records a missing prerequisite. FAIL records a failed check. NOT_IMPLEMENTED identifies planned work. Phase 1 core and Phase 2 theme tests run in Luau CLI with an injected host. The desktop Phase 2 preview passed a user retest. The v0.3.0 window preview rendered in desktop Studio and the iPhone XR emulator. The v0.3.1 label fix awaits a Studio retest. [Core evidence](../evidence/phase1-checks.json) · [Theme evidence](../evidence/phase2-checks.json) · [Window evidence](../evidence/phase3-checks.json) · [Traceability](../design/traceability.json)
 
 | Area | Release weight | Acceptance evidence |
 |---|---:|---|
@@ -48,6 +48,8 @@ The runtime baseline uses a native ModuleScript, canonical schema names, a 48-un
 
 | ID | Status | Scope and impact |
 |---|---|---|
+| WIN-04 | IMPLEMENTED_UNTESTED | Check full Resize and Restore labels in the patched Studio preview and with larger text. The button sizing and cache tests pass in Luau CLI. |
+| STUDIO-01 | REPORTED | Roblox Studio emitted a RoundedCorner8 type-cast warning in Edit mode. The packaged place contains no styling rules or references to that selector. Play Output was clean in the reported session. |
 | WIN-01 | IMPLEMENTED_UNTESTED | Verify drag, resize, dock and rotation in Studio. The geometry and gesture model passes in CLI. |
 | WIN-02 | IMPLEMENTED_UNTESTED | Check real Android and iOS keyboard, cutouts, game controls and bubble clearance. Custom experiences can configure reserved rectangles. |
 | WIN-03 | IMPLEMENTED_UNTESTED | Verify keyboard and gamepad focus, nested dismissal and lifecycle under native Roblox input events. The focus model passes in CLI. |

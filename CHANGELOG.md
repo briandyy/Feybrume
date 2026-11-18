@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1-window
+
+- Fit the full Resize, Restore, Hide and Close labels to Roblox text measurements, including changes to the player's preferred text size.
+- Record the v0.3.0 Studio smoke test and the editor warning investigation.
+
 ## 0.3.0-window
 
 - Mount responsive Roblox windows with tabs, drag, resize, docking and reopen buttons.

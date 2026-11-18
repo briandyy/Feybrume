@@ -1,5 +1,6 @@
 local StyleResolver = require(if script then script.Parent.StyleResolver else "./StyleResolver")
 local Factory = {}
+local buttonMeasurements = setmetatable({}, { __mode = "k" })
 
 function Factory.Create(className, parent, properties)
     local node = Instance.new(className)
@@ -81,6 +82,18 @@ function Factory.StyleButton(node, theme, profile, states, variant, fontScale)
     node.Edge.Enabled = style.focus ~= nil or style.borderWidth > 0
     node.Edge.Thickness = if style.focus then style.focus.width else style.borderWidth
     node.Edge.Color = Factory.Hex(if style.focus then style.focus.outer else style.stroke)
+end
+
+function Factory.ButtonWidth(button, measure, preferredSize, minimum)
+    local text, size, font = button.Text, button.TextSize, button.Font
+    local measured = buttonMeasurements[button]
+    if not measured or measured.text ~= text or measured.size ~= size or measured.font ~= font
+        or measured.preferredSize ~= preferredSize then
+        local width = measure(text, size, font)
+        measured = { text = text, size = size, font = font, preferredSize = preferredSize, width = width }
+        buttonMeasurements[button] = measured
+    end
+    return math.max(minimum, math.ceil(measured.width) + 16)
 end
 
 return table.freeze(Factory)

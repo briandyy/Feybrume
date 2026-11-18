@@ -138,13 +138,15 @@ function Window:_reflow()
     local target = workspace:_target(theme)
     local gap, pad = 8, 12
     local bar = math.min(h, target + 2 * pad)
-    local hideW = target + 14
-    local maxVisible = not profile.narrow and w >= 280
-    Factory.Rect(self._hide, math.max(0, w - pad - hideW), pad, hideW, target)
-    Factory.Rect(self._max, w - pad - 2 * hideW - gap, pad, hideW, target)
-    self._max.Visible = maxVisible
     self._max.Text = if self._placement == "floating" then "Max" else "Restore"
-    local headingWidth = w - 3 * pad - hideW - (if maxVisible then hideW + gap else 0)
+    self:_styleChrome()
+    local hideW = math.min(w, workspace:_buttonWidth(self._hide, target + 14))
+    local maxW = workspace:_buttonWidth(self._max, target + 14)
+    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
+    Factory.Rect(self._hide, math.max(0, w - pad - hideW), pad, hideW, target)
+    Factory.Rect(self._max, w - pad - hideW - maxW - gap, pad, maxW, target)
+    self._max.Visible = maxVisible
+    local headingWidth = w - 3 * pad - hideW - (if maxVisible then maxW + gap else 0)
     Factory.Rect(self._heading, pad, pad, headingWidth, target)
     Factory.Rect(self._grip, 0, 0, headingWidth + pad, bar)
     self._grip.Visible = self._canDrag and not (profile.narrow and self._options.fillCompact ~= false)
@@ -152,7 +154,10 @@ function Window:_reflow()
     local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
     local footerH = if resizable then target + pad else 0
     self._resize.Visible = resizable
-    Factory.Rect(self._resize, w - pad - target - 16, h - target - 4, target + 16, target)
+    if resizable then
+        local resizeW = math.min(w, workspace:_buttonWidth(self._resize, target + 16))
+        Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
+    end
     local y = bar
     local bodyW, bodyH = math.max(0, w - 2 * pad), math.max(0, h - bar - pad - footerH)
     local mode = if self._navigation == "auto" then profile.navigation else self._navigation
@@ -174,7 +179,6 @@ function Window:_reflow()
             Factory.Rect(self._pages, pad, if mode == "bottom" then y else y + navH + gap, bodyW, bodyH - navH - gap)
         end
     end
-    self:_styleChrome()
 end
 
 function Window:_layoutTabs(mode, width, step)
