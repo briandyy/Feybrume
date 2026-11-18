@@ -17,6 +17,15 @@ local function checked(handle, errorValue)
 end
 
 checked(controls:Heading({ text = "Training setup" }))
+checked(controls:Caption({ text = "Pick a level and adjust your practice preferences." }))
+local tips = checked(controls:Toggle({
+    name = "Show training tips", description = "Show guidance before you record a lap.",
+    flag = "tips", default = true, persist = true, shared = true,
+}))
+local hardControl = checked(controls:Checkbox({
+    name = "Hard mode reminder", flag = "reminder", persist = true,
+    enabledIf = function(flags) return flags.difficulty == "hard" end,
+}))
 local mode = checked(controls:RadioGroup({
     name = "Difficulty", flag = "difficulty", persist = true, default = "standard",
     options = {
@@ -25,20 +34,14 @@ local mode = checked(controls:RadioGroup({
         { id = "hard", name = "Hard" },
     },
 }))
-local tips = checked(controls:Toggle({
-    name = "Show training tips", flag = "tips", default = true, persist = true, shared = true,
-}))
 checked(controls:Paragraph({
     text = "Pick a difficulty, then use Record lap to count a practice run.",
     visibleIf = function(flags) return flags.tips == true end,
 }))
 local laps = checked(controls:Statistic({ name = "Practice count", default = 0, unit = "laps" }))
-local hardControl = checked(controls:Checkbox({
-    name = "Hard mode reminder", flag = "reminder", persist = true,
-    enabledIf = function(flags) return flags.difficulty == "hard" end,
-}))
 local status = checked(controls:Label({ text = "Ready" }))
-checked(controls:Button({
+local actions = controls:Grid({ columns = 2, minWidth = 138, rowHeight = 52, gap = 8 })
+checked(actions:Button({
     name = "Record lap", variant = "solid",
     onClick = function()
         local count = laps:Get().value + 1
@@ -46,7 +49,7 @@ checked(controls:Button({
         status:Set("Lap " .. count .. " recorded on " .. mode:Get().value)
     end,
 }))
-checked(controls:Button({
+checked(actions:Button({
     name = "Load hard preset", variant = "outline",
     onClick = function()
         local result = workspace:RestoreFlags({ difficulty = "hard", tips = false, reminder = true })
@@ -63,7 +66,12 @@ checked(controls:Button({
 }))
 
 checked(audience:Subheading({ text = "Quick guide" }))
-checked(audience:RichText({ text = "<b>Record lap</b> counts a run. <i>Load hard preset</i> changes the setup." }))
+local labels = audience:HStack({ columns = 2, minWidth = 86, rowHeight = 30, gap = 8 })
+checked(labels:Tag({ text = "Practice" }))
+checked(labels:Badge({ text = "Guide" }))
+checked(audience:RichText({
+    text = '<font color="#BBA8FF"><b>Record lap</b></font> counts a run.<br/><i>Load hard preset</i> changes the setup.',
+}))
 checked(audience:TextDivider({ text = "Shared preferences" }))
 checked(audience:Toggle({
     name = "Show training tips", flag = "tips", default = true, persist = true, shared = true,
@@ -80,10 +88,6 @@ checked(audience:IconButton({
         workspace:SetTheme(theme)
     end,
 }))
-local labels = audience:Grid({ columns = 2, minWidth = 100, rowHeight = 50 })
-checked(labels:Tag({ text = "Practice" }))
-checked(labels:Badge({ text = "Guide" }))
-
 tips:OnChanged(function(value, _, source)
     if source == "user" then status:Set(if value then "Training tips on" else "Training tips off") end
 end)

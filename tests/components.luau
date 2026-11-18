@@ -96,6 +96,10 @@ verify("rich text accepts simple spans and escapes tags, attributes, and incompl
     local html = '<b>Ready</b> & <font color="#fff">bad</font><br /><i>open'
     equal(ControlSpec.SafeRichText(html), '<b>Ready</b> &amp; &lt;font color="#fff"&gt;bad&lt;/font&gt;<br/><i>open</i>')
     equal(ControlSpec.SafeRichText("</b><i>unfinished<"), "&lt;/b&gt;<i>unfinished&lt;</i>")
+    equal(ControlSpec.SafeRichText([[<font color='#bba8ff'><b>Accent</b></font>]]),
+        [[<font color="#BBA8FF"><b>Accent</b></font>]])
+    equal(ControlSpec.SafeRichText([[<font color="#BBA8FF" size="90">Ignored</font>]]),
+        [[&lt;font color="#BBA8FF" size="90"&gt;Ignored&lt;/font&gt;]])
 end)
 
 verify("icon sources accept Roblox IDs and preserve the no-icon fallback", function()

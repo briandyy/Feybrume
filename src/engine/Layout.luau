@@ -200,6 +200,11 @@ function Layout.FreeBubble(area: Rectangle, reserved: { Rectangle }, anchor: Anc
     return best
 end
 
+function Layout.WindowBody(width, height, top, padding, resize, compact, target)
+    local footer = if resize and not compact then target + padding else 0
+    return Layout.Rect(padding, top, math.max(0, width - 2 * padding), math.max(0, height - top - padding - footer))
+end
+
 function Layout.Navigation(profile, requested, width, height, target, count)
     if requested ~= "auto" then return requested end
     if count <= 1 then return "hidden" end

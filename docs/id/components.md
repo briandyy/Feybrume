@@ -26,7 +26,7 @@ section:Button({
 - **Aksi** mencakup Button dan IconButton. Beri `onClick` untuk menjalankan fungsi game.
 - **Pilihan** mencakup Toggle, Checkbox, Radio, dan RadioGroup. RadioGroup menyimpan ID opsi yang aktif. Toggle dan Checkbox menyimpan boolean.
 
-Panggil `Get()` untuk membaca `result.value` setelah mengecek `result.ok`. Gunakan `Set` atau `Reset` untuk mengubah nilai, `SetProps` untuk mengganti tampilan, dan `OnChanged` untuk mendengar perubahan. `Hide`, `Disable`, dan `Lock` membatasi interaksi pemain. `Destroy` membersihkan GUI, koneksi, dan callback tertunda. Opsi dan metode untuk setiap komponen ada di [referensi lengkap](../components.md).
+Panggil `Get()` untuk membaca `result.value` setelah mengecek `result.ok`. Gunakan `Set` atau `Reset` untuk mengubah nilai, `SetProps` untuk mengganti tampilan, dan `OnChanged` untuk mendengar perubahan. `Hide`, `Disable`, dan `Lock` membatasi interaksi pemain. `Destroy` membersihkan GUI, koneksi, dan callback tertunda. RichText mendukung warna hex seperti `<font color="#BBA8FF">Tip</font>`. Opsi dan metode untuk setiap komponen ada di [referensi lengkap](../components.md).
 
 ## Konfigurasi antarkontrol
 
@@ -49,6 +49,6 @@ rojo build foundation-preview.project.json -o Feybrume-Foundation.rbxlx
 
 1. Buka file di Studio dan tekan **F5**. Tekan **Record lap** dan cek jumlah lap bertambah sekali.
 2. Tekan **Load hard preset**. Difficulty berubah ke **Hard**, tips hilang, dan **Hard mode reminder** tampil aktif. Buka tab **Guide** dan cek toggle tips ikut berubah.
-3. Di Controller Emulator, pindahkan fokus pakai D-pad dan aktifkan kontrol dengan **A**. Di HP, uji menekan seluruh baris dan putar layar. Pastikan tab, nilai, dan kontrol masih bisa diakses.
+3. Di Controller Emulator, pindahkan fokus pakai D-pad dan aktifkan kontrol dengan **A**. Di HP, uji menekan seluruh baris dan putar layar. Di landscape, seret ikon resize di title bar dan cek konten tetap memakai lebar sampai mendekati tepi kanan. Pastikan tab, nilai, dan kontrol masih bisa diakses.
 
 [Source demo](../../examples/foundation-preview.client.luau) · [Hasil tes CLI dan status tes perangkat](../../evidence/phase4-checks.json)

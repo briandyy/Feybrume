@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1-foundation
+
+- Move touch resize into the window header so pages use the full width. Use a narrower automatic sidebar on short touch screens.
+- Give toggle, checkbox, and radio controls their own indicators. Fit tags and badges to their text and distinguish headings, descriptions, and actions.
+- Support hex text color in RichText and refresh the foundation preview.
+
 ## 0.4.0-foundation
 
 - Add 18 foundation controls to tabs and containers, including labels, actions, toggles, and radio groups.

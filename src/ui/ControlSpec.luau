@@ -8,8 +8,8 @@ local textSchema = Schema.new({ type = "string", required = true, maxLength = 81
 local numberSchema = Schema.new({ type = "number", required = true })
 local boolSchema = Schema.new({ type = "boolean", required = true })
 local text = { model = "display", style = "ghost", role = "body", size = 16, schema = textSchema }
-local action = { model = "action", style = "soft", role = "button", size = 16 }
-local boolean = { model = "value", style = "soft", role = "body", size = 16, schema = boolSchema }
+local action = { model = "action", style = "soft", role = "button", size = 15 }
+local boolean = { model = "value", style = "soft", role = "body", size = 15, schema = boolSchema }
 local definitions = {}
 
 local function define(name, base, changes)
@@ -20,12 +20,12 @@ local function define(name, base, changes)
 end
 
 define("Label", text)
-define("Heading", text, { role = "heading", size = 24 })
-define("Subheading", text, { role = "heading", size = 19 })
+define("Heading", text, { role = "heading", size = 21 })
+define("Subheading", text, { role = "heading", size = 17 })
 define("Paragraph", text, { size = 15 })
 define("RichText", text, { rich = true })
-define("Caption", text, { role = "caption", size = 13 })
-define("TextDivider", text, { role = "caption", size = 13, divider = true })
+define("Caption", text, { role = "caption", size = 13, muted = true })
+define("TextDivider", text, { role = "caption", size = 13, divider = true, muted = true })
 define("IconText", text, { iconEmphasis = 4 })
 define("Statistic", text, { role = "heading", size = 25, schema = numberSchema, metric = true })
 define("Quote", text, { quote = true })
@@ -34,9 +34,9 @@ define("IconButton", action, { style = "outline", iconEmphasis = 6 })
 define("Toggle", boolean, { indicator = "toggle" })
 define("Checkbox", boolean, { indicator = "checkbox" })
 define("Radio", boolean, { indicator = "radio", selectOnly = true })
-define("RadioGroup", boolean, { indicator = "radio", group = true })
-define("Tag", text, { style = "outline", size = 13, compact = true })
-define("Badge", text, { style = "solid", size = 13, compact = true })
+define("RadioGroup", boolean, { indicator = "radio", group = true, style = "ghost" })
+define("Tag", text, { style = "outline", size = 12, compact = true })
+define("Badge", text, { style = "solid", size = 12, compact = true })
 ControlSpec.Definitions = table.freeze(definitions)
 
 local variants = {
@@ -213,8 +213,13 @@ function ControlSpec.SafeRichText(value)
     for first, token, last in value:gmatch("()(<[^<>]+>)()") do
         table.insert(output, escape(value:sub(cursor, first - 1)))
         local tag = token:match("^<([bius])>$")
-        local close = token:match("^</([bius])>$")
-        if tag and safeTags[tag] and #stack < 16 then
+        local close = token:match("^</([bius])>$") or token:match("^</(font)>$")
+        local color = token:match('^<font%s+color="(#%x%x%x%x%x%x)"%s*>$')
+            or token:match("^<font%s+color='(#%x%x%x%x%x%x)'%s*>$")
+        if color and #stack < 16 then
+            table.insert(stack, "font")
+            table.insert(output, '<font color="' .. color:upper() .. '">')
+        elseif tag and safeTags[tag] and #stack < 16 then
             table.insert(stack, tag)
             table.insert(output, token)
         elseif close and stack[#stack] == close then

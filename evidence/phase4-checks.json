@@ -1,6 +1,6 @@
 {
   "phase": 4,
-  "version": "0.4.0-foundation",
+  "version": "0.4.1-foundation",
   "date": "2026-11-18",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 31,
+        "passed": 32,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -68,6 +68,7 @@
           "free bubbles keep a center drop and preserve relative position through rotation",
           "free bubbles move the shortest distance around occupied regions",
           "short touch layouts use a rail or bottom bar and keep their layout after input changes",
+          "touch resize keeps the full content width and height inside the window padding",
           "launcher can sit beside the Roblox controls at the top of the device safe area",
           "bubble reaches the right side of the device safe viewport without entering the top bar by default",
           "reopen style merges overrides and validates images, size and shape",
@@ -107,7 +108,7 @@
         ]
       }
     },
-    "passed": 76,
+    "passed": 77,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -120,9 +121,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.0.rbxlx",
-        "sha256": "53758a664598b75ff2fe6b1c6d23295fafc334f20c00bb0c545485491680e9c8",
-        "bytes": 353307,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.1.rbxlx",
+        "sha256": "bb343f040fb236094c9a7bcee34dbf1563ad37a0c748e2f091e0fc3d8a8bfc1c",
+        "bytes": 361158,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -144,5 +145,12 @@
     "Flag snapshots live in session memory. SaveManager is scheduled for Phase 9.",
     "The preview uses native text and has no external dependencies.",
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
-  ]
+  ],
+  "review": {
+    "previousPublishedPreview": "0.4.0",
+    "previousPlaceVersion": 5,
+    "previousOwnerObservation": "Android landscape shows an unused resize column and oversized tab chrome.",
+    "followup": "Title-bar resize, full content width, quieter chrome, and individual control visuals.",
+    "androidRetest": "IMPLEMENTED_UNTESTED"
+  }
 }

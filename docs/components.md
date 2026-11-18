@@ -2,7 +2,7 @@
 
 [Bahasa Indonesia](id/components.md)
 
-Feybrume v0.4.0 adds the 18 controls scheduled for Phase 4. Create them on a tab, section, grid, or sheet content container. Install the ModuleScript with the [Studio setup guide](core.md).
+Feybrume has 18 foundation controls. Create them on a tab, section, grid, or sheet content container. Install the ModuleScript with the [Studio setup guide](core.md).
 
 ```luau
 local storage = game:GetService("ReplicatedStorage")
@@ -64,7 +64,7 @@ In the table, `begin` and `showHelp` are callbacks supplied by your game. For a 
 | `onClick`, `onChanged`, `callbackTiming` | Synchronous callbacks. Optional timing supports debounce or throttle with `seconds`, `leading`, and `trailing`. |
 | `slot` | Initial container slot. Use a named slot that takes layout children. |
 
-Use `Get`, `Set`, `Reset`, and `Serialize` for values. `Set(value, { source = "programmatic", silent = true })` updates the view without change callbacks, including other controls bound to the same flag. It leaves the validation result available through `OnValidate`. Actions use `Activate` and report `UNSUPPORTED_OPERATION` for value methods. RichText supports the `b`, `i`, `u`, `s`, and line-break tags. Other markup renders as text.
+Use `Get`, `Set`, `Reset`, and `Serialize` for values. `Set(value, { source = "programmatic", silent = true })` updates the view without change callbacks, including other controls bound to the same flag. It leaves the validation result available through `OnValidate`. Actions use `Activate` and report `UNSUPPORTED_OPERATION` for value methods. RichText supports `b`, `i`, `u`, `s`, line breaks, and hex color spans such as `<font color="#BBA8FF">Tip</font>`. Other markup renders as text.
 
 Use `SetProps` for atomic appearance updates, with helpers `SetStyle`, `SetThemeOverride`, `SetFont`, `SetIcon`, `SetDescription`, and `SetTooltip`. Use `Show`/`Hide`, `Enable`/`Disable`, or `Lock`/`Unlock` to change access. `SetOrder`, `MoveUp`, `MoveDown`, and `MoveTo(container, slot)` reorder controls within a workspace. `Focus` and `Blur` work on interactive rows. `GetInstance` exposes the native root, and `GetSlot` gives access to Leading, Main, Trailing, Footer, Background, and Overlay. `Destroy` unbinds the flag and closes owned subscriptions, timers, and GUI.
 
@@ -91,5 +91,5 @@ rojo build foundation-preview.project.json -o Feybrume-Foundation.rbxlx
 
 - In Studio, press **F5**, record a lap, and load the hard preset. **Difficulty**, **Show training tips**, and **Hard mode reminder** should update together.
 - In the Controller Emulator, use D-pad to reach a row and **A** to activate it. Verify a disabled row is skipped.
-- On a phone in a published test place, try the full row tap target in portrait and landscape. Turn tips off on Setup and check that Guide shows the same state. Rotate with the window open and make sure the selection survives.
-- Version 0.4.0 was compiled and checked with Luau CLI and Rojo. Native Studio and phone interaction still require the checks above. [Test record](../evidence/phase4-checks.json)
+- On a phone in a published test place, try the full row tap target in portrait and landscape. Turn tips off on Setup and check that Guide shows the same state. Drag the resize grip in the title bar in landscape. Check that the scrolling page reaches the right padding and that the selection survives rotation.
+- Version 0.4.1 was compiled and checked with Luau CLI and Rojo. Native Studio and phone interaction still require the checks above. [Test record](../evidence/phase4-checks.json)

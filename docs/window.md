@@ -96,7 +96,7 @@ rojo build window-preview.project.json -o Feybrume_Phase_3_Window_Preview.rbxlx
 2. Drag the title and the lower-right **Resize** grip. Drop near a screen edge, or use **Dock left** and **Dock right**. Confirm the window stays reachable. Use **Floating layout** or **Restore** to restore it. Verify the full **Resize** and **Restore** labels stay readable.
 3. Open **Preferences**, hide the window, then tap the **UI** bubble. The tab should still be active. Drag **UI** to the middle and confirm it stays there, then tap it. Choose **Open second window** on Preferences. Hiding that window exposes its **2** bubble.
 4. Open **Open sheet**, then the nested sheet. Close the top sheet and confirm the first one returns. Scroll to the text field and check that the action stays reachable when the keyboard appears.
-5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs remain reachable from the side or bottom and rotation preserves the active page. On short touch layouts, drag the corner-shaped resize handle.
+5. In Device Emulator try narrow portrait and short landscape, then repeat on a phone. Verify the tabs remain reachable from the side or bottom and rotation preserves the active page. On short touch layouts, drag the corner-shaped resize handle in the title bar.
 
 6. In Controller Emulator, select **Navigation: drawer** under Preferences. Focus **Tabs** with D-pad, then press A to open the list. Select a tab with A. Open a nested sheet and press B once to check focus restoration.
 7. In **Preferences**, change the launcher size, shape, and image scale. Toggle the sample image or enter a Roblox image ID. Hide the window to check the updated launcher and drag it toward the right safe edge.

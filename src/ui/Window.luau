@@ -141,13 +141,26 @@ function Window:_styleChrome()
     local theme, profile, selected = self:_theme(), workspace._profile, workspace._guiService.SelectedObject
     for _, button in ipairs(self._chrome) do
         Factory.StyleButton(button, theme, profile, { focused = selected == button },
-            if button == self._resize then "outline" else "soft",
+            if profile.compactChrome then "ghost" elseif button == self._resize then "outline" else "soft",
             workspace._settings.fontScale)
     end
     for _, tab in ipairs(self._tabs) do
-        Factory.StyleButton(tab._button, theme, profile, {
-            selected = tab == self._activeTab, disabled = tab._disabled, focused = selected == tab._button,
-        }, "soft", workspace._settings.fontScale)
+        local button = tab._button
+        local focused = selected == button
+        Factory.StyleButton(button, theme, profile, {
+            selected = tab == self._activeTab, disabled = tab._disabled, focused = focused,
+        }, if profile.compactChrome then "ghost" else "soft", workspace._settings.fontScale)
+        if profile.compactChrome then
+            button.Edge.Enabled = focused
+            button.Shape.CornerRadius = UDim.new(0, math.min(theme.radius, 8))
+            button.TextSize = math.round(14 * workspace._settings.fontScale)
+        end
+    end
+    if profile.compactChrome then
+        for _, button in ipairs(self._chrome) do
+            button.Edge.Enabled = selected == button
+            button.TextSize = math.round(14 * workspace._settings.fontScale)
+        end
     end
 end
 
@@ -187,7 +200,7 @@ function Window:_reflow()
 
     local w, h = rect.width, rect.height
     local target = workspace:_target(theme)
-    local gap = 8
+    local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
     local subtitleH = if props.subtitle == "" then 0 else self._subtitle.TextSize + 3
     local titleH = self._heading.TextSize + 4
@@ -198,15 +211,26 @@ function Window:_reflow()
     for _, line in ipairs(self._resizeLines) do line.BackgroundColor3 = self._heading.TextColor3 end
     self:_styleChrome()
     local minimumWidth = target + (if profile.compactChrome then 2 else 14)
+    local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
+    local headerResize = resizable and profile.compactChrome
     local hideW = math.min(w, workspace:_buttonWidth(self._hide, minimumWidth))
     local maxW = workspace:_buttonWidth(self._max, minimumWidth)
-    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
+    local resizeSpace = if headerResize then target + gap else 0
+    local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + resizeSpace + 4 * pad)
     local buttonY = math.max(0, (bar - target) / 2)
     Factory.Rect(self._hide, math.max(0, w - pad - hideW), buttonY, hideW, target)
     Factory.Rect(self._max, w - pad - hideW - maxW - gap, buttonY, maxW, target)
     self._max.Visible = maxVisible
 
-    local headingWidth = math.max(0, w - 3 * pad - hideW - (if maxVisible then maxW + gap else 0))
+    local standardButtons = hideW + (if maxVisible then maxW + gap else 0)
+    self._resize.Visible = resizable
+    if headerResize then
+        Factory.Rect(self._resize, math.max(0, w - pad - standardButtons - resizeSpace), buttonY, target, target)
+    elseif resizable then
+        local resizeW = math.min(w, workspace:_buttonWidth(self._resize, target + 16))
+        Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
+    end
+    local headingWidth = math.max(0, w - 3 * pad - standardButtons - resizeSpace)
     local leading, trailing = Layout.HeaderAdornmentWidths(headingWidth, props.topbarLeadingWidth, props.topbarTrailingWidth)
     local titleX = pad + (if leading > 0 then leading + gap else 0)
     local titleWidth = headingWidth - (titleX - pad) - (if trailing > 0 then trailing + gap else 0)
@@ -223,18 +247,9 @@ function Window:_reflow()
     Factory.Rect(self._grip, gripX, 0, titleX + titleWidth - gripX, bar)
     self._grip.Visible = self._canDrag and not (profile.narrow and self._options.fillCompact ~= false)
 
-    local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
-    local useGutter = resizable and profile.compactChrome
-    local footerH = if resizable and not useGutter then target + pad else 0
-    self._resize.Visible = resizable
-    if resizable then
-        local resizeW = math.min(w, if useGutter then target else workspace:_buttonWidth(self._resize, target + 16))
-        Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
-    end
     local y = math.min(h, bar + (if profile.compactChrome then 3 else 0))
-    local gutter = if useGutter then target + gap else 0
-    local bodyW = math.max(0, w - 2 * pad - gutter)
-    local remaining = math.max(0, h - y - pad - footerH)
+    local body = Layout.WindowBody(w, h, y, pad, resizable, profile.compactChrome, target)
+    local bodyW, remaining = body.width, body.height
     local statusH = math.min(props.statusBarHeight, math.max(0, remaining - target - gap))
     local bodyH = remaining - statusH - (if statusH > 0 then gap else 0)
     local status = self._layoutSlots.StatusBar
@@ -248,7 +263,8 @@ function Window:_reflow()
     else
         self._nav.Visible = true
         if mode == "left" or mode == "right" then
-            local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(136, math.floor(bodyW * 0.29))
+            local railLimit = if profile.compactChrome then 106 else 136
+            local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(railLimit, math.floor(bodyW * 0.29))
             local rail = math.min(math.max(0, bodyW - gap), math.max(target, preferredRail))
             table.insert(self._bubbleExclusions,
                 Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
@@ -386,7 +402,8 @@ function Window:Tab(options)
     local page = scope:Give(Factory.Scroll(self._pages, options.id))
     page.Size = UDim2.fromScale(1, 1)
     page.Visible = false
-    Factory.Padding(page, 6)
+    local inset = Factory.Padding(page, 6)
+    inset.PaddingRight = UDim.new(0, 8)
     Factory.List(page, 8)
     local button = scope:Give(Factory.Button(self._tabScroll, options.title or options.id))
     local tab
