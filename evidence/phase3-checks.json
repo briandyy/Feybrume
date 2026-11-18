@@ -109,7 +109,7 @@
     }
   ],
   "roblox": {
-    "studio": "IMPLEMENTED_UNTESTED",
+    "studio": "PASS_WITH_LIMITATION",
     "deviceEmulator": "IMPLEMENTED_UNTESTED",
     "desktopClient": "IMPLEMENTED_UNTESTED",
     "mobileClient": "IMPLEMENTED_UNTESTED",
@@ -142,15 +142,36 @@
         "id": "WIN-04",
         "symptom": "Resize and Restore labels truncated",
         "fix": "Measure button text and allocate sufficient width",
-        "retest": "IMPLEMENTED_UNTESTED"
+        "retest": "PASS_WITH_LIMITATION"
       },
       {
         "id": "STUDIO-01",
         "symptom": "Edit mode reported a RoundedCorner8 type-cast warning",
-        "status": "SOURCE_UNDETERMINED_IN_STUDIO",
+        "status": "NOT_REPRODUCED_WITH_PLUGINS_DISABLED",
         "serializedSelectorPresent": false,
         "report": "https://devforum.roblox.com/t/mcp-server-getconsoleoutput-broken/4659928"
       }
+    ]
+  },
+  "phase3StudioRetest": {
+    "version": "0.3.1-window",
+    "status": "PASS_WITH_LIMITATION",
+    "testedBy": "Project owner in desktop Roblox Studio",
+    "plugins": "All installed plugins disabled. The individual plugin involved was not isolated.",
+    "checks": [
+      {
+        "id": "WIN-04",
+        "result": "Resize and Restore labels shown in full in desktop preview photos"
+      },
+      {
+        "id": "STUDIO-01",
+        "result": "Owner reported clean Output in Edit and Play modes"
+      }
+    ],
+    "remainingChecks": [
+      "Larger text settings",
+      "Keyboard and gamepad focus",
+      "Physical mobile devices"
     ]
   }
 }

@@ -28,8 +28,8 @@
     "entry": "src/init.luau",
     "studioMapping": "default.project.json",
     "status": "PASS_WITH_LIMITATION",
-    "testedIn": "Luau CLI with injected fixtures and Rojo place source verification",
-    "robloxStudio": "IMPLEMENTED_UNTESTED",
+    "testedIn": "Luau CLI with injected fixtures and Rojo place source verification, plus project owner desktop Studio retest",
+    "robloxStudio": "PASS_WITH_LIMITATION",
     "robloxMobile": "IMPLEMENTED_UNTESTED",
     "studioPreview": {
       "name": "Feybrume_Phase_3_Window_Preview_v0.3.1.rbxlx",
@@ -181,8 +181,8 @@
     },
     {
       "path": "docs/qa-and-backlog.md",
-      "bytes": 9001,
-      "sha256": "fc266fe70551d6c84c1c9bb9a05abeaaac8a2872554537f5b19bd7e8cbb36c7b"
+      "bytes": 9023,
+      "sha256": "ac5f44b943c93c16d5fe9a4674db05217f8c54ab885af8b6fc273a2a31594556"
     },
     {
       "path": "docs/release-doc-map.md",
@@ -251,8 +251,8 @@
     },
     {
       "path": "evidence/phase3-checks.json",
-      "bytes": 6550,
-      "sha256": "c3be5de300c8954161e41c92a53138ef067d9337e6797f62174e1b23e0b9728c"
+      "bytes": 7207,
+      "sha256": "f0552bb3fccb96499222612ec66fde06427d2f1b0c991c640e181cef4f9a4a66"
     },
     {
       "path": "examples/theme-preview.client.luau",
