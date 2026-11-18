@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-11-18",
+  "timezone": "Asia/Kuala_Lumpur",
+  "sourceCommit": "7af0d90b4d532ffa4b041937b560c6df4e7b1e95",
+  "verifiedRenderedFamilies": 0,
+  "samples": [
+    {
+      "directory": "ofl/archivo",
+      "family": "Archivo",
+      "license": "OFL",
+      "reservedName": false,
+      "files": [
+        "Archivo[wdth,wght].ttf",
+        "Archivo-Italic[wdth,wght].ttf"
+      ],
+      "metadataBlob": "bf4c77c8a005b43d6216e07523cba1c76f2ceea1",
+      "noticeBlob": "8597481ebc941863ab228e79ea4305507cd73cc6",
+      "source": "https://github.com/google/fonts/tree/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/archivo",
+      "licenseSource": "https://github.com/google/fonts/blob/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/archivo/OFL.txt",
+      "auditStatus": "SAMPLED_UPSTREAM_ONLY",
+      "renderStatus": "NOT_IMPLEMENTED"
+    },
+    {
+      "directory": "ofl/opensans",
+      "family": "Open Sans",
+      "license": "OFL",
+      "reservedName": false,
+      "files": [
+        "OpenSans[wdth,wght].ttf",
+        "OpenSans-Italic[wdth,wght].ttf"
+      ],
+      "metadataBlob": "fba7c82e84575c36f42a9c12bc590b63d08ba2e2",
+      "noticeBlob": "d762c3c4629d0950bfcb101ea82dd52b4ebf3707",
+      "source": "https://github.com/google/fonts/tree/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/opensans",
+      "licenseSource": "https://github.com/google/fonts/blob/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/opensans/OFL.txt",
+      "auditStatus": "SAMPLED_UPSTREAM_ONLY",
+      "renderStatus": "NOT_IMPLEMENTED"
+    },
+    {
+      "directory": "ofl/share",
+      "family": "Share",
+      "license": "OFL",
+      "reservedName": true,
+      "files": [
+        "Share-Regular.ttf",
+        "Share-Italic.ttf",
+        "Share-Bold.ttf",
+        "Share-BoldItalic.ttf"
+      ],
+      "metadataBlob": "9288adeb2e8d880222ef91aab93328b2a4ed2e74",
+      "noticeBlob": "2ff09c1b7647c10aaa9c8a1eccd4970b5f1ae177",
+      "source": "https://github.com/google/fonts/tree/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/share",
+      "licenseSource": "https://github.com/google/fonts/blob/7af0d90b4d532ffa4b041937b560c6df4e7b1e95/ofl/share/OFL.txt",
+      "auditStatus": "SAMPLED_UPSTREAM_ONLY",
+      "renderStatus": "NOT_IMPLEMENTED"
+    }
+  ]
+}

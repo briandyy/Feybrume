@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "project": "Feybrume",
+  "phase": 0,
+  "designRevision": "0.0.0-phase0",
+  "date": "2026-11-18",
+  "timezone": "Asia/Kuala_Lumpur",
+  "specification": {
+    "filename": "Feybrume_Master_Prompt_v5_Research_Edition.md",
+    "sha256": "2b19d39a1175f933221b34caa9b22465e51bd2582bc84a669e5fa3b261964448"
+  },
+  "api": {
+    "publishedRuntimeChanges": [],
+    "baseline": "docs/architecture.md",
+    "componentInventory": "design/components.json",
+    "proposedNaming": [
+      "Viewport3D",
+      "ApprovedIcon"
+    ]
+  },
+  "runtimeBuild": {
+    "status": "NOT_IMPLEMENTED",
+    "target": "dist/Feybrume.lua",
+    "sha256": null,
+    "runtimeTestsExecuted": 0
+  },
+  "assets": {
+    "uploadedMedia": 0,
+    "verifiedRenderedFontFamilies": 0,
+    "verifiedIconGlyphs": 0,
+    "upstreamFontLicenseSamples": 3
+  },
+  "publication": {
+    "status": "REPOSITORY_CREATED",
+    "target": "briandyy/Feybrume",
+    "visibilityRequested": "public",
+    "issue": "R-13",
+    "branch": "main"
+  },
+  "knownRuntimeBugs": {
+    "triageStatus": "NOT_IMPLEMENTED",
+    "observations": []
+  },
+  "evidence": {
+    "performed": [
+      "design verification",
+      "official documentation inspection",
+      "source provenance sampling"
+    ],
+    "report": "evidence/phase0-checks.json"
+  },
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 628,
+      "sha256": "84afde2504d8f72a29d31c569754b32824c0e20c4e254b1df93299e2f6265abc"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1775,
+      "sha256": "f4dfbbf4d3173494834a443a7618c14933728c139cf534134ebc8bf633df4ab1"
+    },
+    {
+      "path": "design/auth-compatibility.json",
+      "bytes": 9563,
+      "sha256": "a1d365fc0c5f926a870ded0afeea15795e13fa3f24e4fc0e180623f2b394fc25"
+    },
+    {
+      "path": "design/components.json",
+      "bytes": 95426,
+      "sha256": "23a75dd60cb75e549a18fb24b60152e8f0da6b767d49b21d90b6afc0de0241c4"
+    },
+    {
+      "path": "design/themes.json",
+      "bytes": 82729,
+      "sha256": "aae922e914a00e00fe9d41ad66d6710659d94733b7e60de3dd705fdb05846ada"
+    },
+    {
+      "path": "design/traceability.json",
+      "bytes": 119701,
+      "sha256": "811a71d6e9085803f1845373317ba2fae5f9829ae43c6cb23fe53c7c71709a7a"
+    },
+    {
+      "path": "docs/architecture.md",
+      "bytes": 11342,
+      "sha256": "47c6e521b31ba6aa0899092050df8069838949495bd62fd22b87ddc6d0d96bcf"
+    },
+    {
+      "path": "docs/auth.md",
+      "bytes": 13917,
+      "sha256": "ba20001e1bbfecc38e7b134acb3a0644c77537cda999fbf459d84d6c9db334f7"
+    },
+    {
+      "path": "docs/design-system.md",
+      "bytes": 4058,
+      "sha256": "fcbc244b2b2419bac3348240b454dca9d4da7498ff9ea98e1eba74776158680d"
+    },
+    {
+      "path": "docs/index.md",
+      "bytes": 1427,
+      "sha256": "1d17e51b90fc8b96136f844f9a310ee7b4638fe7992e0434f69949739eaca1b8"
+    },
+    {
+      "path": "docs/media.md",
+      "bytes": 9464,
+      "sha256": "fa917259de6f7e8cb295392f746649382be03bde58b0913695bd5bac81025eb4"
+    },
+    {
+      "path": "docs/mobile.md",
+      "bytes": 7239,
+      "sha256": "f8b798fc28703d5cb6a5243a4abec54a315da6393e8fb9abdb0a1e74e267797f"
+    },
+    {
+      "path": "docs/module-contracts.md",
+      "bytes": 12476,
+      "sha256": "4281bab31f3096e4af59842e0f645848bd1c8e803cd46c459b132ddc2290a154"
+    },
+    {
+      "path": "docs/qa-and-backlog.md",
+      "bytes": 11067,
+      "sha256": "64f089eb94660c403083cd75894faa8db1077b4f8e008d0502a469be69761ef5"
+    },
+    {
+      "path": "docs/release-doc-map.md",
+      "bytes": 4259,
+      "sha256": "d32069d779d85adf4a5222e63b3ebd969d4256b38fb6ca05c380dbd57c38c84a"
+    },
+    {
+      "path": "docs/research.md",
+      "bytes": 9387,
+      "sha256": "fa623d6569cc137ad4dbc841176f7f8f7130b4d566ad8caf1b27868ff128d26e"
+    },
+    {
+      "path": "docs/typography.md",
+      "bytes": 8224,
+      "sha256": "42ca61317cdcc66a9c936409914cbdf2c4300bfad4744310244f5b03327d18e2"
+    },
+    {
+      "path": "evidence/font-license-samples.json",
+      "bytes": 2247,
+      "sha256": "f9f61c342e1736a1c35aeb3e77e3b25eedec27303c6fd4f02c2b451d8f857f22"
+    },
+    {
+      "path": "evidence/phase0-checks.json",
+      "bytes": 1081,
+      "sha256": "7079c8bde06d7cf37d6f4e5fd4c051cd8eefc4fc6edcc9a6e05c378367d07c00"
+    },
+    {
+      "path": "tooling/verify_phase0.py",
+      "bytes": 10786,
+      "sha256": "bc70a3e1cb9b23c4c09c1c4ad8b247fd11da2b6558e201d61d8cfc5c2f409e5d"
+    }
+  ]
+}

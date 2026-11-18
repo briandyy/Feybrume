@@ -1,0 +1,366 @@
+{
+  "checkedAt": "2026-11-18",
+  "providers": [
+    {
+      "id": "Luarmor",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "Panda",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "Vampauth",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "KeyVortex",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "Pelinda",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "SVAL",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "KeyAuth",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "AuthGG",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "OpenAuth",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "LuaProtect",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "CustomEndpoint",
+      "status": "NOT_IMPLEMENTED"
+    }
+  ],
+  "gateways": [
+    {
+      "name": "Work.ink",
+      "pairEvidence": {
+        "Luarmor": "D",
+        "Panda": "D",
+        "Vampauth": "D",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "B"
+      },
+      "notes": "[Work.ink key flow](https://blog.work.ink/using-the-key-system-to-make-money-with-your-software/), providerManaged / customBackend setelah bukti.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "LootLabs",
+      "pairEvidence": {
+        "Luarmor": "D",
+        "Panda": "D",
+        "Vampauth": "D",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "B"
+      },
+      "notes": "[Postback](https://help.lootlabs.gg/en/article/postback-api-1ndz3i2/), providerManaged / customBackend; periksa bukti dan schema.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Linkvertise",
+      "pairEvidence": {
+        "Luarmor": "D",
+        "Panda": "D",
+        "Vampauth": "D",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Rewards dan provider monetization di atas; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Platoboost",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "U",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "U",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "E"
+      },
+      "notes": "[Portal Plato](https://auth.platoboost.app/); identitas layanan key-link terpisah, belum ada pasangan vendor atau completion contract terbukti.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "AdMaven",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "B"
+      },
+      "notes": "[Content locker API](https://publishers-help.ad-maven.com/en/article/admaven-content-locker-api-documentation-11q0a5r/); cek callback terpisah dari link creation.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Boostelar",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "S",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "S",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Panda Revenue Mode mencantumkan, sidebar menandai Soon. Gerbang disabled sampai dashboard/test resmi.",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "Fly Inc / Rinku",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "S",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "S",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Keadaan dokumentasi Panda serupa Boostelar.",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "Lockr.so",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Short-Jambo",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Cuty.io",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "ShrinkEarn",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "ShrtFly",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "D",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "I",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Rekonise",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "U",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "U",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "E"
+      },
+      "notes": "[Release links](https://rekonise.com/features/release-links); externalLink. Klaim validasi internal tidak memberi Feybrume receipt API.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "MBoost",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "U",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "U",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "B"
+      },
+      "notes": "[Key system guide](https://docs.mboost.me/keysystem/guide/) mendokumentasikan polling status. Backend perlu bukti binding subject/session dan idempotency sebelum dapat memberi entitlement.",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "name": "Paster",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "U",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "U",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Identitas dan API belum terverifikasi.",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "BoostInk",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "U",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "U",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "U"
+      },
+      "notes": "Jangan diasumsikan sama dengan Boostelar atau Work.ink.",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "CustomGateway",
+      "pairEvidence": {
+        "Luarmor": "U",
+        "Panda": "E",
+        "Vampauth": "U",
+        "KeyVortex": "U",
+        "Pelinda": "E",
+        "SVAL": "U",
+        "KeyAuth": "U",
+        "AuthGG": "U",
+        "OpenAuth": "U",
+        "LuaProtect": "U",
+        "CustomEndpoint": "B"
+      },
+      "notes": "[Universal Link Panda](https://ads.pandauth.com/docs/for-developers/provider-universal-link) didokumentasikan sebagai URL shortener manual per step; completion assurance untuk pasangan arbitrer memerlukan bukti tersendiri. CustomBackend membutuhkan adapter yang bisa membuktikan receipt dan shared authority.",
+      "status": "NOT_IMPLEMENTED"
+    }
+  ],
+  "legend": {
+    "D": "documented provider option",
+    "S": "conflict or forthcoming",
+    "I": "inherited from Panda only with verified service",
+    "B": "backend candidate requires secure completion proof",
+    "E": "externalLinkOnly if permitted",
+    "U": "unverified and disabled"
+  },
+  "liveVerifiedPairs": 0
+}

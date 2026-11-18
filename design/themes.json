@@ -1,0 +1,3282 @@
+[
+  {
+    "id": "cultivation",
+    "themeNumber": 1,
+    "name": "Cultivation 仙",
+    "signature": true,
+    "palette": {
+      "background": "#0B1410",
+      "surface": "#15221B",
+      "accent": "#7ABF96",
+      "text": "#E7E5D8",
+      "stroke": "#2F5040"
+    },
+    "tokens": {
+      "selection": "#263D30",
+      "hover": "#1C2D24",
+      "pressed": "#2B4536",
+      "disabled": "#19271F",
+      "raised": "#1A2921",
+      "overlay": "#1B2B22",
+      "input": "#19271F",
+      "header": "#1B2B22",
+      "sidebar": "#192920",
+      "tooltip": "#1A2A21",
+      "popup": "#1A2A21",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#7ABF96",
+      "essentialStroke": "#547062",
+      "placeholder": "#979B90",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E7E5D8",
+      "onSelection": "#E7E5D8",
+      "onHover": "#E7E5D8",
+      "onPressed": "#E7E5D8",
+      "onDisabled": "#979B90",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "jade-gold",
+    "radius": 8,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "mist",
+    "ornament": "seam",
+    "motion": {
+      "profile": "slow",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Brush/serif titles + readable sans body; jade ink, thin gold seams, cloud/lotus silhouettes, understated mist, 8px corners; slow restrained reveal",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-01"
+  },
+  {
+    "id": "memoir",
+    "themeNumber": 2,
+    "name": "Memoir 忆",
+    "signature": true,
+    "palette": {
+      "background": "#E9E1D0",
+      "surface": "#F6F0E5",
+      "accent": "#996E62",
+      "text": "#342C27",
+      "stroke": "#CBBBA7"
+    },
+    "tokens": {
+      "selection": "#E6DACF",
+      "hover": "#EFE7DC",
+      "pressed": "#E2D3C8",
+      "disabled": "#F3EBE0",
+      "raised": "#F2EADF",
+      "overlay": "#F0E8DD",
+      "input": "#F3EBE0",
+      "header": "#F1E9DE",
+      "sidebar": "#F2EBDF",
+      "tooltip": "#F2EADF",
+      "popup": "#F1EADE",
+      "success": "#287B49",
+      "warning": "#986109",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#996E62",
+      "essentialStroke": "#94897A",
+      "placeholder": "#716A64",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#342C27",
+      "onSelection": "#342C27",
+      "onHover": "#342C27",
+      "onPressed": "#342C27",
+      "onDisabled": "#716A64",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "literary",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "editorial-left",
+    "radius": 5,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "ink",
+    "material": "parchment",
+    "ornament": "postage",
+    "motion": {
+      "profile": "optional-typewriter",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Literary serif, old book paper, subtle grain, postage-mark accents, warm shadow, 5px corners, typewriter reveal only if enabled",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-02"
+  },
+  {
+    "id": "noir",
+    "themeNumber": 3,
+    "name": "Noir",
+    "signature": true,
+    "palette": {
+      "background": "#09090C",
+      "surface": "#131319",
+      "accent": "#BD4256",
+      "text": "#ECEAEF",
+      "stroke": "#35333C"
+    },
+    "tokens": {
+      "selection": "#301B23",
+      "hover": "#1F161D",
+      "pressed": "#381D26",
+      "disabled": "#19151B",
+      "raised": "#1B151C",
+      "overlay": "#1D161D",
+      "input": "#19151B",
+      "header": "#1C161C",
+      "sidebar": "#1A151C",
+      "tooltip": "#1B151C",
+      "popup": "#1C151C",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#BD4256",
+      "essentialStroke": "#636269",
+      "placeholder": "#9A989E",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#ECEAEF",
+      "onSelection": "#ECEAEF",
+      "onHover": "#ECEAEF",
+      "onPressed": "#ECEAEF",
+      "onDisabled": "#9A989E",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "condensed",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "editorial-rail",
+    "radius": 3,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "rail"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "thin",
+    "material": "charcoal",
+    "ornament": "bevel",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Elegant condensed sans, editorial hierarchy, crimson only for action, charcoal bevels, dense atmospheric shadows, 3px corners",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-03"
+  },
+  {
+    "id": "cosmic",
+    "themeNumber": 4,
+    "name": "Cosmic ✦",
+    "signature": true,
+    "palette": {
+      "background": "#080B1D",
+      "surface": "#131936",
+      "accent": "#9477F7",
+      "text": "#F1F0FF",
+      "stroke": "#333A70"
+    },
+    "tokens": {
+      "selection": "#292957",
+      "hover": "#1C2044",
+      "pressed": "#2F2E60",
+      "disabled": "#181C3D",
+      "raised": "#191D3F",
+      "overlay": "#1B1F42",
+      "input": "#181C3D",
+      "header": "#1A1E41",
+      "sidebar": "#181D3E",
+      "tooltip": "#191E3F",
+      "popup": "#191E40",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#9477F7",
+      "essentialStroke": "#60658F",
+      "placeholder": "#9D9EB3",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F1F0FF",
+      "onSelection": "#F1F0FF",
+      "onHover": "#F1F0FF",
+      "onPressed": "#F1F0FF",
+      "onDisabled": "#9D9EB3",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "wide",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "violet-teal",
+    "radius": 12,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "luminous",
+    "material": "nebula",
+    "ornament": "stars",
+    "motion": {
+      "profile": "optional-drift",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Wide display/modern sans, violet→teal light, sparse star dots, nebula haze gradients, 12px corners, reduced motion switch",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-04"
+  },
+  {
+    "id": "feybrume-default",
+    "themeNumber": 5,
+    "name": "Feybrume Default",
+    "signature": false,
+    "palette": {
+      "background": "#11181C",
+      "surface": "#192429",
+      "accent": "#93BAAE",
+      "text": "#E8F0EC",
+      "stroke": "#354D50"
+    },
+    "tokens": {
+      "selection": "#2E3E40",
+      "hover": "#222E32",
+      "pressed": "#344546",
+      "disabled": "#1D292E",
+      "raised": "#1E2B2F",
+      "overlay": "#202D31",
+      "input": "#1D292E",
+      "header": "#202C30",
+      "sidebar": "#1E2A2F",
+      "tooltip": "#1F2B2F",
+      "popup": "#1F2C30",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#93BAAE",
+      "essentialStroke": "#5D7173",
+      "placeholder": "#99A2A2",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E8F0EC",
+      "onSelection": "#E8F0EC",
+      "onHover": "#E8F0EC",
+      "onPressed": "#E8F0EC",
+      "onDisabled": "#99A2A2",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "mist-frame",
+    "radius": 12,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "layered-glass",
+    "ornament": "fog-line",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Misty green-blue signature brand, subtle layered glass and refined motion, 12px corners",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-05"
+  },
+  {
+    "id": "brume",
+    "themeNumber": 6,
+    "name": "Brume",
+    "signature": false,
+    "palette": {
+      "background": "#DDE4E2",
+      "surface": "#EFF4F1",
+      "accent": "#507E78",
+      "text": "#263D3A",
+      "stroke": "#BDCCCA"
+    },
+    "tokens": {
+      "selection": "#D4E0DC",
+      "hover": "#E4ECE9",
+      "pressed": "#CCDAD6",
+      "disabled": "#E9F0ED",
+      "raised": "#E8EFEC",
+      "overlay": "#E5EDEA",
+      "input": "#E9F0ED",
+      "header": "#E6EEEA",
+      "sidebar": "#E8EFEC",
+      "tooltip": "#E7EEEB",
+      "popup": "#E7EEEB",
+      "success": "#287B49",
+      "warning": "#9A620A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#507E78",
+      "essentialStroke": "#828D8B",
+      "placeholder": "#616F6D",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#263D3A",
+      "onSelection": "#263D3A",
+      "onHover": "#263D3A",
+      "onPressed": "#263D3A",
+      "onDisabled": "#616F6D",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "soft-stack",
+    "radius": 20,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "outline",
+    "material": "flat-fog",
+    "ornament": "pill",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Cold fog, soft blur simulation, thin outlines, pill accents, calm transitions",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-06"
+  },
+  {
+    "id": "monochrome",
+    "themeNumber": 7,
+    "name": "Monochrome",
+    "signature": false,
+    "palette": {
+      "background": "#151515",
+      "surface": "#222222",
+      "accent": "#F3F3F3",
+      "text": "#FAFAFA",
+      "stroke": "#555555"
+    },
+    "tokens": {
+      "selection": "#464646",
+      "hover": "#313131",
+      "pressed": "#505050",
+      "disabled": "#292929",
+      "raised": "#2B2B2B",
+      "overlay": "#2F2F2F",
+      "input": "#292929",
+      "header": "#2D2D2D",
+      "sidebar": "#2B2B2B",
+      "tooltip": "#2C2C2C",
+      "popup": "#2C2C2C",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#F3F3F3",
+      "essentialStroke": "#6D6D6D",
+      "placeholder": "#A8A8A8",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#FAFAFA",
+      "onSelection": "#FAFAFA",
+      "onHover": "#FAFAFA",
+      "onPressed": "#FAFAFA",
+      "onDisabled": "#A8A8A8",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "high-clarity",
+    "radius": 0,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "filled",
+    "material": "flat",
+    "ornament": "grid",
+    "motion": {
+      "profile": "instant",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Pure neutral sans, maximum clarity, square/pill switch, minimal motion",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-07"
+  },
+  {
+    "id": "porcelain",
+    "themeNumber": 8,
+    "name": "Porcelain",
+    "signature": false,
+    "palette": {
+      "background": "#F5F5F0",
+      "surface": "#FFFFFF",
+      "accent": "#325B8E",
+      "text": "#26303E",
+      "stroke": "#D4DDE3"
+    },
+    "tokens": {
+      "selection": "#DCE3EC",
+      "hover": "#F1F4F7",
+      "pressed": "#D2DBE6",
+      "disabled": "#F8F9FB",
+      "raised": "#F6F8FA",
+      "overlay": "#F3F5F8",
+      "input": "#F8F9FB",
+      "header": "#F4F6F9",
+      "sidebar": "#F6F8FA",
+      "tooltip": "#F5F7FA",
+      "popup": "#F5F7F9",
+      "success": "#287B49",
+      "warning": "#A2670A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#325B8E",
+      "essentialStroke": "#8E9498",
+      "placeholder": "#6C727A",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#26303E",
+      "onSelection": "#26303E",
+      "onHover": "#26303E",
+      "onPressed": "#26303E",
+      "onDisabled": "#6C727A",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "airy-grid",
+    "radius": 16,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "line",
+    "material": "ceramic",
+    "ornament": "blue-inlay",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "White ceramics, delicate blue details, airy grid, 16px cards",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-08"
+  },
+  {
+    "id": "sumi-e",
+    "themeNumber": 9,
+    "name": "Sumi-e",
+    "signature": false,
+    "palette": {
+      "background": "#F1EEE5",
+      "surface": "#FFFDF5",
+      "accent": "#4E594E",
+      "text": "#222726",
+      "stroke": "#C9C5B8"
+    },
+    "tokens": {
+      "selection": "#E1E1D9",
+      "hover": "#F3F2E9",
+      "pressed": "#D8D9D0",
+      "disabled": "#F9F7EF",
+      "raised": "#F7F6ED",
+      "overlay": "#F4F3EB",
+      "input": "#F9F7EF",
+      "header": "#F5F4EC",
+      "sidebar": "#F8F6EE",
+      "tooltip": "#F7F5ED",
+      "popup": "#F6F5ED",
+      "success": "#287B49",
+      "warning": "#A2670A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#4E594E",
+      "essentialStroke": "#959288",
+      "placeholder": "#70726F",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#222726",
+      "onSelection": "#222726",
+      "onHover": "#222726",
+      "onPressed": "#222726",
+      "onDisabled": "#70726F",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "asymmetric-edge",
+    "radius": 2,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "ink",
+    "material": "paper",
+    "ornament": "brush",
+    "motion": {
+      "profile": "instant",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Japanese ink-wash feel, imperfect black brush accents, minimal ornament; non-CJK fallback respected",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-09"
+  },
+  {
+    "id": "jade-court",
+    "themeNumber": 10,
+    "name": "Jade Court",
+    "signature": false,
+    "palette": {
+      "background": "#0E221C",
+      "surface": "#18362A",
+      "accent": "#D3B978",
+      "text": "#E8F0D9",
+      "stroke": "#436452"
+    },
+    "tokens": {
+      "selection": "#384C37",
+      "hover": "#253F2F",
+      "pressed": "#41533B",
+      "disabled": "#1F3B2D",
+      "raised": "#203C2E",
+      "overlay": "#233E2F",
+      "input": "#1F3B2D",
+      "header": "#223D2E",
+      "sidebar": "#203C2D",
+      "tooltip": "#213C2E",
+      "popup": "#213D2E",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#D3B978",
+      "essentialStroke": "#658071",
+      "placeholder": "#99A996",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E8F0D9",
+      "onSelection": "#E8F0D9",
+      "onHover": "#E8F0D9",
+      "onPressed": "#E8F0D9",
+      "onDisabled": "#99A996",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "cut-corner",
+    "radius": 6,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "jade",
+    "ornament": "lattice",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Imperial jade/gold, lattice pattern, hard-cut decorative corners, medium transitions",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-10"
+  },
+  {
+    "id": "ashen-temple",
+    "themeNumber": 11,
+    "name": "Ashen Temple",
+    "signature": false,
+    "palette": {
+      "background": "#161617",
+      "surface": "#252222",
+      "accent": "#A99B81",
+      "text": "#E7E0D1",
+      "stroke": "#49413E"
+    },
+    "tokens": {
+      "selection": "#3B3732",
+      "hover": "#2E2A29",
+      "pressed": "#423D37",
+      "disabled": "#2A2625",
+      "raised": "#2B2726",
+      "overlay": "#2D2928",
+      "input": "#2A2625",
+      "header": "#2C2927",
+      "sidebar": "#2B2726",
+      "tooltip": "#2B2827",
+      "popup": "#2C2827",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#A99B81",
+      "essentialStroke": "#716B68",
+      "placeholder": "#9D988E",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E7E0D1",
+      "onSelection": "#E7E0D1",
+      "onHover": "#E7E0D1",
+      "onPressed": "#E7E0D1",
+      "onDisabled": "#9D988E",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "block-header",
+    "radius": 6,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "engraved",
+    "material": "stone",
+    "ornament": "erosion",
+    "motion": {
+      "profile": "slow",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Stone slate, warm smoke, ancient serif, subtle erosion texture",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-11"
+  },
+  {
+    "id": "vermilion-seal",
+    "themeNumber": 12,
+    "name": "Vermilion Seal",
+    "signature": false,
+    "palette": {
+      "background": "#F2E9DB",
+      "surface": "#F9F3E9",
+      "accent": "#C14C3A",
+      "text": "#3F302B",
+      "stroke": "#DDC6B8"
+    },
+    "tokens": {
+      "selection": "#EFD7CB",
+      "hover": "#F5E7DD",
+      "pressed": "#EDCEC2",
+      "disabled": "#F7EDE3",
+      "raised": "#F6EBE1",
+      "overlay": "#F6E9DE",
+      "input": "#F7EDE3",
+      "header": "#F6EADF",
+      "sidebar": "#F7ECE2",
+      "tooltip": "#F6EBE1",
+      "popup": "#F6EBE0",
+      "success": "#287B49",
+      "warning": "#9C630A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#C14C3A",
+      "essentialStroke": "#98897F",
+      "placeholder": "#756A64",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#3F302B",
+      "onSelection": "#3F302B",
+      "onHover": "#3F302B",
+      "onPressed": "#3F302B",
+      "onDisabled": "#756A64",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "stamp-row",
+    "radius": 4,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "filled",
+    "material": "paper",
+    "ornament": "seal",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Red seals, calligraphic framing, paper cards, compact stamps",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-12"
+  },
+  {
+    "id": "wisteria",
+    "themeNumber": 13,
+    "name": "Wisteria",
+    "signature": false,
+    "palette": {
+      "background": "#251C33",
+      "surface": "#352946",
+      "accent": "#C9A6F2",
+      "text": "#F4EDFF",
+      "stroke": "#675679"
+    },
+    "tokens": {
+      "selection": "#4E3E63",
+      "hover": "#3F3252",
+      "pressed": "#56446C",
+      "disabled": "#3A2D4C",
+      "raised": "#3C2F4E",
+      "overlay": "#3E3050",
+      "input": "#3A2D4C",
+      "header": "#3D304F",
+      "sidebar": "#3B2E4D",
+      "tooltip": "#3C2F4E",
+      "popup": "#3C2F4F",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#C9A6F2",
+      "essentialStroke": "#817390",
+      "placeholder": "#ABA3B9",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F4EDFF",
+      "onSelection": "#F4EDFF",
+      "onHover": "#F4EDFF",
+      "onPressed": "#F4EDFF",
+      "onDisabled": "#ABA3B9",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "rounded",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "round-panels",
+    "radius": 18,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "lavender-fog",
+    "ornament": "petals",
+    "motion": {
+      "profile": "optional-drift",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Hanging blossoms, lavender fog, rounded modern UI, drifting fade limited",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-13"
+  },
+  {
+    "id": "moonlit-lake",
+    "themeNumber": 14,
+    "name": "Moonlit Lake",
+    "signature": false,
+    "palette": {
+      "background": "#0F2130",
+      "surface": "#193448",
+      "accent": "#88C9D4",
+      "text": "#E6F2F4",
+      "stroke": "#406575"
+    },
+    "tokens": {
+      "selection": "#2C4D60",
+      "hover": "#213E52",
+      "pressed": "#315567",
+      "disabled": "#1D394D",
+      "raised": "#1E3B4E",
+      "overlay": "#203D50",
+      "input": "#1D394D",
+      "header": "#1F3C50",
+      "sidebar": "#1E3A4E",
+      "tooltip": "#1E3B4F",
+      "popup": "#1F3B4F",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#88C9D4",
+      "essentialStroke": "#607F8C",
+      "placeholder": "#98AAB3",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E6F2F4",
+      "onSelection": "#E6F2F4",
+      "onHover": "#E6F2F4",
+      "onPressed": "#E6F2F4",
+      "onDisabled": "#98AAB3",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "horizontal-sheen",
+    "radius": 10,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "line",
+    "material": "glass",
+    "ornament": "glint",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Cool moon reflections, horizontal glint, 10px radius, glass surfaces",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-14"
+  },
+  {
+    "id": "verdigris",
+    "themeNumber": 15,
+    "name": "Verdigris",
+    "signature": false,
+    "palette": {
+      "background": "#122A28",
+      "surface": "#214542",
+      "accent": "#9FC8B7",
+      "text": "#E8F6ED",
+      "stroke": "#476965"
+    },
+    "tokens": {
+      "selection": "#365B56",
+      "hover": "#2A4E4A",
+      "pressed": "#3D625C",
+      "disabled": "#254A46",
+      "raised": "#274B47",
+      "overlay": "#294D49",
+      "input": "#254A46",
+      "header": "#284C48",
+      "sidebar": "#264B47",
+      "tooltip": "#274B48",
+      "popup": "#274C48",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F38C9F",
+      "info": "#82C5FF",
+      "focus": "#9FC8B7",
+      "essentialStroke": "#758E8C",
+      "placeholder": "#9EB5AE",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E8F6ED",
+      "onSelection": "#E8F6ED",
+      "onHover": "#E8F6ED",
+      "onPressed": "#E8F6ED",
+      "onDisabled": "#9EB5AE",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "geometric",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "metal-frame",
+    "radius": 8,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "copper",
+    "ornament": "grid",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Oxidized copper, architectural grid, warm metal borders, crisp icons",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-15"
+  },
+  {
+    "id": "obsidian-vein",
+    "themeNumber": 16,
+    "name": "Obsidian Vein",
+    "signature": false,
+    "palette": {
+      "background": "#090C10",
+      "surface": "#161D24",
+      "accent": "#74A1C6",
+      "text": "#E9F0F7",
+      "stroke": "#2A3946"
+    },
+    "tokens": {
+      "selection": "#263340",
+      "hover": "#1D262F",
+      "pressed": "#2B3A48",
+      "disabled": "#19222A",
+      "raised": "#1A232B",
+      "overlay": "#1C252E",
+      "input": "#19222A",
+      "header": "#1B242D",
+      "sidebar": "#1A232B",
+      "tooltip": "#1B232C",
+      "popup": "#1B242C",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#74A1C6",
+      "essentialStroke": "#5D6972",
+      "placeholder": "#99A0A7",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E9F0F7",
+      "onSelection": "#E9F0F7",
+      "onHover": "#E9F0F7",
+      "onPressed": "#E9F0F7",
+      "onDisabled": "#99A0A7",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "stone-cut",
+    "radius": 6,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "engraved",
+    "material": "obsidian",
+    "ornament": "vein",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Jet-black stone with blue veins, restrained 6px geometry",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-16"
+  },
+  {
+    "id": "ember-archive",
+    "themeNumber": 17,
+    "name": "Ember Archive",
+    "signature": false,
+    "palette": {
+      "background": "#211814",
+      "surface": "#32241F",
+      "accent": "#E59461",
+      "text": "#F5E6DA",
+      "stroke": "#67483C"
+    },
+    "tokens": {
+      "selection": "#50372A",
+      "hover": "#3F2C24",
+      "pressed": "#593D2E",
+      "disabled": "#382821",
+      "raised": "#3A2922",
+      "overlay": "#3D2B23",
+      "input": "#382821",
+      "header": "#3C2A23",
+      "sidebar": "#3A2922",
+      "tooltip": "#3B2922",
+      "popup": "#3B2A22",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#E59461",
+      "essentialStroke": "#846B61",
+      "placeholder": "#AB9C93",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F5E6DA",
+      "onSelection": "#F5E6DA",
+      "onHover": "#F5E6DA",
+      "onPressed": "#F5E6DA",
+      "onDisabled": "#AB9C93",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "literary",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "archive-edge",
+    "radius": 6,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "filled",
+    "material": "copper",
+    "ornament": "book-spines",
+    "motion": {
+      "profile": "slow",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Burnished copper, library book spines, warm highlights, subtle ember accents",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-17"
+  },
+  {
+    "id": "saffron-dusk",
+    "themeNumber": 18,
+    "name": "Saffron Dusk",
+    "signature": false,
+    "palette": {
+      "background": "#2C201B",
+      "surface": "#3F2D25",
+      "accent": "#E9AC61",
+      "text": "#FFF0D8",
+      "stroke": "#755344"
+    },
+    "tokens": {
+      "selection": "#5C432F",
+      "hover": "#4B3629",
+      "pressed": "#644932",
+      "disabled": "#453127",
+      "raised": "#473328",
+      "overlay": "#493529",
+      "input": "#453127",
+      "header": "#483428",
+      "sidebar": "#463228",
+      "tooltip": "#473328",
+      "popup": "#483328",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#E9AC61",
+      "essentialStroke": "#8F7468",
+      "placeholder": "#B6A694",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#FFF0D8",
+      "onSelection": "#FFF0D8",
+      "onHover": "#FFF0D8",
+      "onPressed": "#FFF0D8",
+      "onDisabled": "#B6A694",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "soft-dusk",
+    "radius": 14,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "outline",
+    "material": "ochre",
+    "ornament": "horizon",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Sun-down ochre, softer rounded borders, warm evening ambience",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-18"
+  },
+  {
+    "id": "aurora-borealis",
+    "themeNumber": 19,
+    "name": "Aurora Borealis",
+    "signature": false,
+    "palette": {
+      "background": "#071D24",
+      "surface": "#112F3A",
+      "accent": "#62E5C5",
+      "text": "#E4FFFF",
+      "stroke": "#28636D"
+    },
+    "tokens": {
+      "selection": "#1F4E52",
+      "hover": "#173C44",
+      "pressed": "#235759",
+      "disabled": "#14353F",
+      "raised": "#153740",
+      "overlay": "#163A42",
+      "input": "#14353F",
+      "header": "#153942",
+      "sidebar": "#143740",
+      "tooltip": "#153841",
+      "popup": "#153841",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#62E5C5",
+      "essentialStroke": "#4A7C84",
+      "placeholder": "#94B0B4",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E4FFFF",
+      "onSelection": "#E4FFFF",
+      "onHover": "#E4FFFF",
+      "onPressed": "#E4FFFF",
+      "onDisabled": "#94B0B4",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "wide",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "curved-rail",
+    "radius": 24,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "rail"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "luminous",
+    "material": "glass",
+    "ornament": "ribbons",
+    "motion": {
+      "profile": "optional-drift",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Cyan green light ribbons, restrained bloom, curved pills, animated gradient optional",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-19"
+  },
+  {
+    "id": "deep-current",
+    "themeNumber": 20,
+    "name": "Deep Current",
+    "signature": false,
+    "palette": {
+      "background": "#081827",
+      "surface": "#122B40",
+      "accent": "#4FADCB",
+      "text": "#E5F7FF",
+      "stroke": "#28516C"
+    },
+    "tokens": {
+      "selection": "#1C4158",
+      "hover": "#16344A",
+      "pressed": "#1F485F",
+      "disabled": "#143045",
+      "raised": "#153146",
+      "overlay": "#163348",
+      "input": "#143045",
+      "header": "#153248",
+      "sidebar": "#153046",
+      "tooltip": "#153147",
+      "popup": "#153247",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#4FADCB",
+      "essentialStroke": "#55768B",
+      "placeholder": "#95A9B6",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E5F7FF",
+      "onSelection": "#E5F7FF",
+      "onHover": "#E5F7FF",
+      "onPressed": "#E5F7FF",
+      "onDisabled": "#95A9B6",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "vertical-depth",
+    "radius": 10,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "filled",
+    "material": "ocean",
+    "ornament": "ripple",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Ocean trenches, vertical depth gradients, ripple on confirm, 10px radius",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-20"
+  },
+  {
+    "id": "coral-bloom",
+    "themeNumber": 21,
+    "name": "Coral Bloom",
+    "signature": false,
+    "palette": {
+      "background": "#FFF0EC",
+      "surface": "#FFF9F6",
+      "accent": "#E67C80",
+      "text": "#4A343D",
+      "stroke": "#F0C6C5"
+    },
+    "tokens": {
+      "selection": "#FBE4E2",
+      "hover": "#FDF0EE",
+      "pressed": "#FADEDC",
+      "disabled": "#FEF5F2",
+      "raised": "#FEF3F1",
+      "overlay": "#FEF1EF",
+      "input": "#FEF5F2",
+      "header": "#FEF2F0",
+      "sidebar": "#FEF4F1",
+      "tooltip": "#FEF3F0",
+      "popup": "#FEF3F0",
+      "success": "#287B49",
+      "warning": "#A0660A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#D67377",
+      "essentialStroke": "#A68988",
+      "placeholder": "#7C6E72",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#4A343D",
+      "onSelection": "#4A343D",
+      "onHover": "#4A343D",
+      "onPressed": "#4A343D",
+      "onDisabled": "#7C6E72",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "rounded",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "soft-grid",
+    "radius": 20,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "filled",
+    "material": "ceramic",
+    "ornament": "petals",
+    "motion": {
+      "profile": "spring",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Warm coral petals, playful sophisticated buttons, light spring effect",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-21"
+  },
+  {
+    "id": "boreal-forest",
+    "themeNumber": 22,
+    "name": "Boreal Forest",
+    "signature": false,
+    "palette": {
+      "background": "#101D17",
+      "surface": "#1D3326",
+      "accent": "#91B67A",
+      "text": "#E4EFDB",
+      "stroke": "#365240"
+    },
+    "tokens": {
+      "selection": "#314934",
+      "hover": "#253C2C",
+      "pressed": "#375038",
+      "disabled": "#213829",
+      "raised": "#22392A",
+      "overlay": "#243B2B",
+      "input": "#213829",
+      "header": "#233A2B",
+      "sidebar": "#22392A",
+      "tooltip": "#23392A",
+      "popup": "#233A2A",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#91B67A",
+      "essentialStroke": "#667C6E",
+      "placeholder": "#98A896",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E4EFDB",
+      "onSelection": "#E4EFDB",
+      "onHover": "#E4EFDB",
+      "onPressed": "#E4EFDB",
+      "onDisabled": "#98A896",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "rounded",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "rounded-cards",
+    "radius": 16,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "engraved",
+    "material": "moss",
+    "ornament": "woodgrain",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Pines, moss and wood grain illusion, organic rounded cards",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-22"
+  },
+  {
+    "id": "everglass",
+    "themeNumber": 23,
+    "name": "Everglass",
+    "signature": false,
+    "palette": {
+      "background": "#E8F2F5",
+      "surface": "#F5FBFC",
+      "accent": "#409DA8",
+      "text": "#263B45",
+      "stroke": "#BDD8E0"
+    },
+    "tokens": {
+      "selection": "#D6EBEE",
+      "hover": "#E8F4F6",
+      "pressed": "#CDE6EA",
+      "disabled": "#EFF8F9",
+      "raised": "#EDF7F8",
+      "overlay": "#EAF5F7",
+      "input": "#EFF8F9",
+      "header": "#EBF6F7",
+      "sidebar": "#EDF7F8",
+      "tooltip": "#ECF6F8",
+      "popup": "#ECF6F8",
+      "success": "#287B49",
+      "warning": "#A0660A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#409DA8",
+      "essentialStroke": "#819398",
+      "placeholder": "#667379",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#263B45",
+      "onSelection": "#263B45",
+      "onHover": "#263B45",
+      "onPressed": "#263B45",
+      "onDisabled": "#667379",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "airy-overlay",
+    "radius": 18,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "line",
+    "material": "glass",
+    "ornament": "rim-light",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Clean aqua translucent glass, 18px corners, subtle rim light",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-23"
+  },
+  {
+    "id": "vanta",
+    "themeNumber": 24,
+    "name": "Vanta",
+    "signature": false,
+    "palette": {
+      "background": "#050505",
+      "surface": "#0D0D0E",
+      "accent": "#D9DBE0",
+      "text": "#F9F9FB",
+      "stroke": "#242429"
+    },
+    "tokens": {
+      "selection": "#303032",
+      "hover": "#1B1B1D",
+      "pressed": "#3A3A3C",
+      "disabled": "#141415",
+      "raised": "#161617",
+      "overlay": "#19191B",
+      "input": "#141415",
+      "header": "#18181A",
+      "sidebar": "#161617",
+      "tooltip": "#171718",
+      "popup": "#171718",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#D9DBE0",
+      "essentialStroke": "#5F5F63",
+      "placeholder": "#9F9FA1",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F9F9FB",
+      "onSelection": "#F9F9FB",
+      "onHover": "#F9F9FB",
+      "onPressed": "#F9F9FB",
+      "onDisabled": "#9F9FA1",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "condensed",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "strict-editorial",
+    "radius": 0,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "thin",
+    "material": "flat",
+    "ornament": "horizontal-rule",
+    "motion": {
+      "profile": "instant",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Absolute-black editorial, near-zero gradients, strict thin lines",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-24"
+  },
+  {
+    "id": "gothic-chapel",
+    "themeNumber": 25,
+    "name": "Gothic Chapel",
+    "signature": false,
+    "palette": {
+      "background": "#17121E",
+      "surface": "#261C2D",
+      "accent": "#B694C8",
+      "text": "#EEE4EF",
+      "stroke": "#554056"
+    },
+    "tokens": {
+      "selection": "#3E3047",
+      "hover": "#302438",
+      "pressed": "#46364F",
+      "disabled": "#2B2032",
+      "raised": "#2C2134",
+      "overlay": "#2F2336",
+      "input": "#2B2032",
+      "header": "#2E2336",
+      "sidebar": "#2C2134",
+      "tooltip": "#2D2234",
+      "popup": "#2D2235",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#B694C8",
+      "essentialStroke": "#776678",
+      "placeholder": "#A298A5",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#EEE4EF",
+      "onSelection": "#EEE4EF",
+      "onHover": "#EEE4EF",
+      "onPressed": "#EEE4EF",
+      "onDisabled": "#A298A5",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "tall-heading",
+    "radius": 12,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "engraved",
+    "material": "stone",
+    "ornament": "arch",
+    "motion": {
+      "profile": "slow",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Cathedral arches and stained-glass geometry, tall serif display, slow shadow",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-25"
+  },
+  {
+    "id": "royal-amethyst",
+    "themeNumber": 26,
+    "name": "Royal Amethyst",
+    "signature": false,
+    "palette": {
+      "background": "#1C1431",
+      "surface": "#2C2145",
+      "accent": "#B7A0FC",
+      "text": "#F4EEFF",
+      "stroke": "#594879"
+    },
+    "tokens": {
+      "selection": "#443764",
+      "hover": "#362A52",
+      "pressed": "#4B3D6D",
+      "disabled": "#31254B",
+      "raised": "#32274D",
+      "overlay": "#342950",
+      "input": "#31254B",
+      "header": "#34284F",
+      "sidebar": "#32264D",
+      "tooltip": "#33274E",
+      "popup": "#33274E",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#B7A0FC",
+      "essentialStroke": "#796B92",
+      "placeholder": "#A8A0B8",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F4EEFF",
+      "onSelection": "#F4EEFF",
+      "onHover": "#F4EEFF",
+      "onPressed": "#F4EEFF",
+      "onDisabled": "#A8A0B8",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "inset-panel",
+    "radius": 10,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "filled",
+    "material": "velvet",
+    "ornament": "gold-trim",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Velvet purple, gold optional, regal 10px edges, controlled glow",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-26"
+  },
+  {
+    "id": "blood-oath",
+    "themeNumber": 27,
+    "name": "Blood Oath",
+    "signature": false,
+    "palette": {
+      "background": "#1A0D11",
+      "surface": "#2B141C",
+      "accent": "#C34D64",
+      "text": "#F2E4E7",
+      "stroke": "#673341"
+    },
+    "tokens": {
+      "selection": "#451E28",
+      "hover": "#361821",
+      "pressed": "#4C212C",
+      "disabled": "#30161F",
+      "raised": "#32171F",
+      "overlay": "#341720",
+      "input": "#30161F",
+      "header": "#331720",
+      "sidebar": "#31161F",
+      "tooltip": "#32171F",
+      "popup": "#331720",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#C34D64",
+      "essentialStroke": "#855C67",
+      "placeholder": "#A6959A",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#F2E4E7",
+      "onSelection": "#F2E4E7",
+      "onHover": "#F2E4E7",
+      "onPressed": "#F2E4E7",
+      "onDisabled": "#A6959A",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "condensed",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "angular",
+    "radius": 4,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "filled",
+    "material": "lacquer",
+    "ornament": "angled-badge",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Crimson lacquer, angular cards, deliberate press interaction",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-27"
+  },
+  {
+    "id": "cobalt-grid",
+    "themeNumber": 28,
+    "name": "Cobalt Grid",
+    "signature": false,
+    "palette": {
+      "background": "#08152B",
+      "surface": "#112A4B",
+      "accent": "#5B9DEF",
+      "text": "#E8F2FF",
+      "stroke": "#37577A"
+    },
+    "tokens": {
+      "selection": "#1E3E67",
+      "hover": "#163256",
+      "pressed": "#21436F",
+      "disabled": "#142E51",
+      "raised": "#142F52",
+      "overlay": "#153155",
+      "input": "#142E51",
+      "header": "#153054",
+      "sidebar": "#142F52",
+      "tooltip": "#153053",
+      "popup": "#153053",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#5B9DEF",
+      "essentialStroke": "#5B7592",
+      "placeholder": "#96A6BB",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#E8F2FF",
+      "onSelection": "#E8F2FF",
+      "onHover": "#E8F2FF",
+      "onPressed": "#E8F2FF",
+      "onDisabled": "#96A6BB",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "mono",
+      "bodyRole": "mono",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "instrument-panel",
+    "radius": 0,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "line",
+    "material": "flat",
+    "ornament": "instrument-grid",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Technical instrument panel, grid hints, square corners and snap",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-28"
+  },
+  {
+    "id": "solar-flare",
+    "themeNumber": 29,
+    "name": "Solar Flare",
+    "signature": false,
+    "palette": {
+      "background": "#1B1410",
+      "surface": "#2D2219",
+      "accent": "#F7A745",
+      "text": "#FFF5DC",
+      "stroke": "#76532E"
+    },
+    "tokens": {
+      "selection": "#4F3920",
+      "hover": "#3B2B1C",
+      "pressed": "#593F23",
+      "disabled": "#34271B",
+      "raised": "#36281B",
+      "overlay": "#392A1C",
+      "input": "#34271B",
+      "header": "#38291B",
+      "sidebar": "#35281B",
+      "tooltip": "#37281B",
+      "popup": "#37291B",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#F7A745",
+      "essentialStroke": "#866847",
+      "placeholder": "#AFA592",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#FFF5DC",
+      "onSelection": "#FFF5DC",
+      "onHover": "#FFF5DC",
+      "onPressed": "#FFF5DC",
+      "onDisabled": "#AFA592",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "wide",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "halo-focus",
+    "radius": 12,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "luminous",
+    "material": "ember",
+    "ornament": "radiance",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Warm luminous gold/orange, radiant control focus, respect reduced motion",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-29"
+  },
+  {
+    "id": "neo-tokyo",
+    "themeNumber": 30,
+    "name": "Neo Tokyo",
+    "signature": false,
+    "palette": {
+      "background": "#0A1023",
+      "surface": "#161D34",
+      "accent": "#FF5FA7",
+      "text": "#EDF0FF",
+      "stroke": "#384469"
+    },
+    "tokens": {
+      "selection": "#3E2848",
+      "hover": "#26223C",
+      "pressed": "#492C4D",
+      "disabled": "#1E1F38",
+      "raised": "#202039",
+      "overlay": "#24213B",
+      "input": "#1E1F38",
+      "header": "#23213A",
+      "sidebar": "#202039",
+      "tooltip": "#21203A",
+      "popup": "#22203A",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#FF5FA7",
+      "essentialStroke": "#5E6886",
+      "placeholder": "#9BA0B2",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#EDF0FF",
+      "onSelection": "#EDF0FF",
+      "onHover": "#EDF0FF",
+      "onPressed": "#EDF0FF",
+      "onDisabled": "#9BA0B2",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "condensed",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "asymmetric-bar",
+    "radius": 4,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "luminous",
+    "material": "charcoal",
+    "ornament": "signage",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Magenta electric signage, angular digital typography, sharp border light",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-30"
+  },
+  {
+    "id": "terminal-green",
+    "themeNumber": 31,
+    "name": "Terminal Green",
+    "signature": false,
+    "palette": {
+      "background": "#061109",
+      "surface": "#102117",
+      "accent": "#81E894",
+      "text": "#DDF8E0",
+      "stroke": "#2F5E3D"
+    },
+    "tokens": {
+      "selection": "#23432C",
+      "hover": "#182F20",
+      "pressed": "#294D32",
+      "disabled": "#14281B",
+      "raised": "#152A1D",
+      "overlay": "#172D1E",
+      "input": "#14281B",
+      "header": "#162C1E",
+      "sidebar": "#15291C",
+      "tooltip": "#152B1D",
+      "popup": "#162B1D",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#81E894",
+      "essentialStroke": "#487154",
+      "placeholder": "#8FA694",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#DDF8E0",
+      "onSelection": "#DDF8E0",
+      "onHover": "#DDF8E0",
+      "onPressed": "#DDF8E0",
+      "onDisabled": "#8FA694",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "mono",
+      "bodyRole": "mono",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "terminal-lines",
+    "radius": 0,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 8,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "line",
+    "material": "flat",
+    "ornament": "pixel-frame",
+    "motion": {
+      "profile": "instant",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Retro terminal, monospace UI, pixel-ish outline, instant transitions",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-31"
+  },
+  {
+    "id": "circuit-sand",
+    "themeNumber": 32,
+    "name": "Circuit Sand",
+    "signature": false,
+    "palette": {
+      "background": "#E9E1D3",
+      "surface": "#FAF3E9",
+      "accent": "#64877A",
+      "text": "#353A34",
+      "stroke": "#C9C1B2"
+    },
+    "tokens": {
+      "selection": "#E0E1D6",
+      "hover": "#EFEBE1",
+      "pressed": "#D9DBD1",
+      "disabled": "#F5EFE5",
+      "raised": "#F3EEE4",
+      "overlay": "#F1EDE2",
+      "input": "#F5EFE5",
+      "header": "#F2EDE3",
+      "sidebar": "#F4EEE4",
+      "tooltip": "#F3EEE4",
+      "popup": "#F2EEE3",
+      "success": "#287B49",
+      "warning": "#9C630A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#64877A",
+      "essentialStroke": "#918B80",
+      "placeholder": "#6D6D67",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#353A34",
+      "onSelection": "#353A34",
+      "onHover": "#353A34",
+      "onPressed": "#353A34",
+      "onDisabled": "#6D6D67",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "geometric",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "diagram-grid",
+    "radius": 5,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "line",
+    "material": "paper",
+    "ornament": "circuit-trace",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Beige technology diagram aesthetic, geometric green, 5px radius",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-32"
+  },
+  {
+    "id": "chrome-mist",
+    "themeNumber": 33,
+    "name": "Chrome Mist",
+    "signature": false,
+    "palette": {
+      "background": "#D2D9E1",
+      "surface": "#EAF0F4",
+      "accent": "#5A779B",
+      "text": "#253240",
+      "stroke": "#AEBBCB"
+    },
+    "tokens": {
+      "selection": "#D2DBE5",
+      "hover": "#E0E8EE",
+      "pressed": "#CAD5E0",
+      "disabled": "#E5ECF1",
+      "raised": "#E4EBF0",
+      "overlay": "#E1E9EF",
+      "input": "#E5ECF1",
+      "header": "#E2E9EF",
+      "sidebar": "#E4EBF0",
+      "tooltip": "#E3EAF0",
+      "popup": "#E3EAF0",
+      "success": "#287B49",
+      "warning": "#986109",
+      "danger": "#BB4155",
+      "info": "#2466B8",
+      "focus": "#5A779B",
+      "essentialStroke": "#818A96",
+      "placeholder": "#636B74",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#FFFFFF",
+      "onSurface": "#253240",
+      "onSelection": "#253240",
+      "onHover": "#253240",
+      "onPressed": "#253240",
+      "onDisabled": "#636B74",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "metal-trim",
+    "radius": 10,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "thin",
+    "material": "metal",
+    "ornament": "sheen",
+    "motion": {
+      "profile": "snappy",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Brushed chrome, cool metallic reflection, high-clarity controls",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-33"
+  },
+  {
+    "id": "rosewater",
+    "themeNumber": 34,
+    "name": "Rosewater",
+    "signature": false,
+    "palette": {
+      "background": "#F9EBF0",
+      "surface": "#FFF6FA",
+      "accent": "#C87899",
+      "text": "#593A48",
+      "stroke": "#E5BACB"
+    },
+    "tokens": {
+      "selection": "#F6E1EA",
+      "hover": "#FBEDF3",
+      "pressed": "#F3DAE5",
+      "disabled": "#FDF2F7",
+      "raised": "#FDF0F6",
+      "overlay": "#FCEEF4",
+      "input": "#FDF2F7",
+      "header": "#FCEFF5",
+      "sidebar": "#FDF1F6",
+      "tooltip": "#FCF0F5",
+      "popup": "#FCF0F5",
+      "success": "#287B49",
+      "warning": "#A0660A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#C87899",
+      "essentialStroke": "#A78894",
+      "placeholder": "#7E6B74",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#593A48",
+      "onSelection": "#593A48",
+      "onHover": "#593A48",
+      "onPressed": "#593A48",
+      "onDisabled": "#7E6B74",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "literary",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "soft-elevation",
+    "radius": 18,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "filled",
+    "material": "parchment",
+    "ornament": "soft-edge",
+    "motion": {
+      "profile": "spring",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Pale rose, gentle editorial, soft rounded elevation, non-intrusive motion",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-34"
+  },
+  {
+    "id": "lavender-paper",
+    "themeNumber": 35,
+    "name": "Lavender Paper",
+    "signature": false,
+    "palette": {
+      "background": "#ECE8F7",
+      "surface": "#F8F5FF",
+      "accent": "#9279BE",
+      "text": "#403951",
+      "stroke": "#D2C9E5"
+    },
+    "tokens": {
+      "selection": "#E7E0F4",
+      "hover": "#F1ECFA",
+      "pressed": "#E2DAF1",
+      "disabled": "#F4F1FD",
+      "raised": "#F3EFFC",
+      "overlay": "#F2EEFB",
+      "input": "#F4F1FD",
+      "header": "#F2EEFB",
+      "sidebar": "#F4F0FC",
+      "tooltip": "#F3EFFC",
+      "popup": "#F3EFFC",
+      "success": "#287B49",
+      "warning": "#9D640A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#9279BE",
+      "essentialStroke": "#918B9E",
+      "placeholder": "#716C7B",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#403951",
+      "onSelection": "#403951",
+      "onHover": "#403951",
+      "onPressed": "#403951",
+      "onDisabled": "#716C7B",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "literary",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "notebook-header",
+    "radius": 8,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "outline",
+    "material": "paper",
+    "ornament": "rules",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Notebook lilac, ruled headers, refined sans/serif mix",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-35"
+  },
+  {
+    "id": "sepia-film",
+    "themeNumber": 36,
+    "name": "Sepia Film",
+    "signature": false,
+    "palette": {
+      "background": "#2B251E",
+      "surface": "#3A3228",
+      "accent": "#C6A474",
+      "text": "#F0E3D0",
+      "stroke": "#6F5D48"
+    },
+    "tokens": {
+      "selection": "#524535",
+      "hover": "#443A2D",
+      "pressed": "#594B39",
+      "disabled": "#3F362B",
+      "raised": "#40372B",
+      "overlay": "#42392D",
+      "input": "#3F362B",
+      "header": "#42382C",
+      "sidebar": "#40372B",
+      "tooltip": "#41372C",
+      "popup": "#41382C",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#C6A474",
+      "essentialStroke": "#897A69",
+      "placeholder": "#ABA090",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#F0E3D0",
+      "onSelection": "#F0E3D0",
+      "onHover": "#F0E3D0",
+      "onPressed": "#F0E3D0",
+      "onDisabled": "#ABA090",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "serif",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "film-strip",
+    "radius": 4,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "thin",
+    "material": "film",
+    "ornament": "frame-lines",
+    "motion": {
+      "profile": "slow",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Vintage film, fine grain, cinematic vignette, type and frames",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-36"
+  },
+  {
+    "id": "glacier",
+    "themeNumber": 37,
+    "name": "Glacier",
+    "signature": false,
+    "palette": {
+      "background": "#E7F4FA",
+      "surface": "#F5FCFF",
+      "accent": "#469CBF",
+      "text": "#244354",
+      "stroke": "#BBDCE8"
+    },
+    "tokens": {
+      "selection": "#D7ECF4",
+      "hover": "#E9F5FB",
+      "pressed": "#CEE7F1",
+      "disabled": "#EFF9FD",
+      "raised": "#EDF8FC",
+      "overlay": "#EAF6FB",
+      "input": "#EFF9FD",
+      "header": "#EBF7FB",
+      "sidebar": "#EEF8FC",
+      "tooltip": "#EDF7FC",
+      "popup": "#ECF7FC",
+      "success": "#287B49",
+      "warning": "#A2670A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#459ABD",
+      "essentialStroke": "#7D939B",
+      "placeholder": "#62747F",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#244354",
+      "onSelection": "#244354",
+      "onHover": "#244354",
+      "onPressed": "#244354",
+      "onDisabled": "#62747F",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "sans",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "flat-grid",
+    "radius": 12,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "outline",
+    "material": "flat-ice",
+    "ornament": "fine-edge",
+    "motion": {
+      "profile": "standard",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Ice-clear forms, blue clean outline, near-flat elevation",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-37"
+  },
+  {
+    "id": "clay-studio",
+    "themeNumber": 38,
+    "name": "Clay Studio",
+    "signature": false,
+    "palette": {
+      "background": "#F1E6DB",
+      "surface": "#FCF7F1",
+      "accent": "#AD8066",
+      "text": "#40332D",
+      "stroke": "#D5BFAE"
+    },
+    "tokens": {
+      "selection": "#EFE3D9",
+      "hover": "#F6EFE7",
+      "pressed": "#EBDDD2",
+      "disabled": "#F9F3EC",
+      "raised": "#F8F2EB",
+      "overlay": "#F7F0E9",
+      "input": "#F9F3EC",
+      "header": "#F8F0E9",
+      "sidebar": "#F9F2EB",
+      "tooltip": "#F8F1EA",
+      "popup": "#F8F1EA",
+      "success": "#287B49",
+      "warning": "#9F650A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#AD8066",
+      "essentialStroke": "#9B8B7F",
+      "placeholder": "#776E69",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#40332D",
+      "onSelection": "#40332D",
+      "onHover": "#40332D",
+      "onPressed": "#40332D",
+      "onDisabled": "#776E69",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "rounded",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "tactile-stack",
+    "radius": 20,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "filled",
+    "material": "ceramic",
+    "ornament": "tactile-edge",
+    "motion": {
+      "profile": "spring",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Handmade ceramics, tactile rounded clay buttons, calm spring",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-38"
+  },
+  {
+    "id": "midnight-ink",
+    "themeNumber": 39,
+    "name": "Midnight Ink",
+    "signature": false,
+    "palette": {
+      "background": "#0E1522",
+      "surface": "#1A273B",
+      "accent": "#A6C0E2",
+      "text": "#ECF3FE",
+      "stroke": "#40526B"
+    },
+    "tokens": {
+      "selection": "#324157",
+      "hover": "#243247",
+      "pressed": "#394960",
+      "disabled": "#1F2C41",
+      "raised": "#202E43",
+      "overlay": "#223045",
+      "input": "#1F2C41",
+      "header": "#222F44",
+      "sidebar": "#202D42",
+      "tooltip": "#212E43",
+      "popup": "#212F43",
+      "success": "#75D7A0",
+      "warning": "#F8C474",
+      "danger": "#F3889C",
+      "info": "#82C5FF",
+      "focus": "#A6C0E2",
+      "essentialStroke": "#627186",
+      "placeholder": "#9CA5B4",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#ECF3FE",
+      "onSelection": "#ECF3FE",
+      "onHover": "#ECF3FE",
+      "onPressed": "#ECF3FE",
+      "onDisabled": "#9CA5B4",
+      "infoOn": "#000000"
+    },
+    "typography": {
+      "headingRole": "literary",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "desk-layout",
+    "radius": 5,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 12,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.32,
+      "backdropAlpha": 0.64
+    },
+    "iconTreatment": "thin",
+    "material": "ink",
+    "ornament": "divider",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Blue-black writing desk, precise divider and literary typography",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-39"
+  },
+  {
+    "id": "celadon-dawn",
+    "themeNumber": 40,
+    "name": "Celadon Dawn",
+    "signature": false,
+    "palette": {
+      "background": "#DCE9DF",
+      "surface": "#F1F7EE",
+      "accent": "#5A9275",
+      "text": "#263D33",
+      "stroke": "#B7CDBF"
+    },
+    "tokens": {
+      "selection": "#D7E6D9",
+      "hover": "#E6F0E6",
+      "pressed": "#D0E1D3",
+      "disabled": "#ECF3EA",
+      "raised": "#EAF2E9",
+      "overlay": "#E8F1E7",
+      "input": "#ECF3EA",
+      "header": "#E9F1E7",
+      "sidebar": "#EBF3E9",
+      "tooltip": "#EAF2E8",
+      "popup": "#E9F2E8",
+      "success": "#287B49",
+      "warning": "#9D640A",
+      "danger": "#BD4256",
+      "info": "#2466B8",
+      "focus": "#5A9275",
+      "essentialStroke": "#829288",
+      "placeholder": "#627068",
+      "backdrop": "#000000",
+      "shadow": "#000000",
+      "accentOn": "#000000",
+      "onSurface": "#263D33",
+      "onSelection": "#263D33",
+      "onHover": "#263D33",
+      "onPressed": "#263D33",
+      "onDisabled": "#627068",
+      "infoOn": "#FFFFFF"
+    },
+    "typography": {
+      "headingRole": "rounded",
+      "bodyRole": "sans",
+      "nativeFallback": "BuilderSans",
+      "codeRole": "mono",
+      "editable": "native"
+    },
+    "geometry": "rounded-inputs",
+    "radius": 16,
+    "touch": {
+      "navigation": "bottom-with-overflow",
+      "minimumHitTarget": 48,
+      "sectionGap": 16,
+      "actionGap": 8
+    },
+    "desktop": {
+      "controlGap": 12,
+      "sectionGap": 16,
+      "navigation": "sidebar"
+    },
+    "elevation": {
+      "shadowAlpha": 0.14,
+      "backdropAlpha": 0.48
+    },
+    "iconTreatment": "outline",
+    "material": "jade",
+    "ornament": "organic-edge",
+    "motion": {
+      "profile": "calm",
+      "reduced": "instant",
+      "optionalDecorationsDefault": false
+    },
+    "fallback": {
+      "material": "opaque",
+      "ornament": "none",
+      "motion": "instant"
+    },
+    "brief": "Pale jade morning, organic rounded input states, low-noise visual system",
+    "status": "NOT_IMPLEMENTED",
+    "testCase": "THEME-40"
+  }
+]
