@@ -15,18 +15,22 @@ function Viewport.Read(root, input, breakpoints)
                 Layout.Rect(keyboard.X - origin.X, keyboard.Y - origin.Y, keyboardSize.X, keyboardSize.Y))
         end
     end
-    return Layout.Inset(area, 8), Layout.Profile(size.X, size.Y, kind, breakpoints), origin
+    return Layout.Inset(area, 8), Layout.Profile(size.X, size.Y, kind, breakpoints, input.TouchEnabled), origin, area
 end
 
 function Viewport.RevealFocused(root, service)
     local editor = service:GetFocusedTextBox()
     if not editor or not editor:IsDescendantOf(root) then return end
-    local scroll = editor:FindFirstAncestorWhichIsA("ScrollingFrame")
+    Viewport.Reveal(editor)
+end
+
+function Viewport.Reveal(object)
+    local scroll = object:FindFirstAncestorWhichIsA("ScrollingFrame")
     if not scroll then return end
     local padding = 6
-    local y = editor.AbsolutePosition.Y - scroll.AbsolutePosition.Y
+    local y = object.AbsolutePosition.Y - scroll.AbsolutePosition.Y
     local viewHeight = scroll.AbsoluteWindowSize.Y
-    local bottom = y + editor.AbsoluteSize.Y
+    local bottom = y + object.AbsoluteSize.Y
     local offset = 0
     if bottom > viewHeight - padding then offset = bottom - viewHeight + padding end
     if y < padding then offset = y - padding end

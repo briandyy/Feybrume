@@ -1,4 +1,6 @@
 local Layout = {}
+type Rectangle = { x: number, y: number, width: number, height: number }
+type Anchor = { x: number, y: number }
 local defaults = table.freeze({ micro = 360, compact = 480, phone = 640, tablet = 1000, short = 400 })
 
 function Layout.ValidateBreakpoints(value)
@@ -13,7 +15,7 @@ function Layout.ValidateBreakpoints(value)
     return table.freeze(result)
 end
 
-function Layout.Profile(width, height, input, breakpoints)
+function Layout.Profile(width, height, input, breakpoints, touchDevice)
     local limits = breakpoints or defaults
     local name
     if width < limits.micro then name = "micro"
@@ -23,8 +25,11 @@ function Layout.Profile(width, height, input, breakpoints)
     else name = "desktop" end
     local narrow = width <= limits.phone
     local short = height <= limits.short
+    local landscape = width > height
+    local touchLayout = input == "touch" or (touchDevice == true and (narrow or short))
     return {
-        name = name, narrow = narrow, short = short, landscape = width > height, touch = input == "touch",
+        name = name, narrow = narrow, short = short, landscape = landscape, touch = input == "touch",
+        touchLayout = touchLayout, compactChrome = touchLayout and short and landscape,
         navigation = if narrow then (if short then "drawer" else "bottom") else (if short then "drawer" else "left"),
     }
 end
@@ -117,6 +122,58 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
         end
     end
     return best
+end
+
+function Layout.BubbleAnchor(rect, area)
+    local travelX, travelY = area.width - rect.width, area.height - rect.height
+    return {
+        x = if travelX > 0 then math.clamp((rect.x - area.x) / travelX, 0, 1) else 0.5,
+        y = if travelY > 0 then math.clamp((rect.y - area.y) / travelY, 0, 1) else 0.5,
+    }
+end
+
+function Layout.FreeBubble(area: Rectangle, reserved: { Rectangle }, anchor: Anchor, requestedSize: number)
+    local size = math.min(requestedSize, area.width, area.height)
+    local maxX, maxY = area.x + area.width - size, area.y + area.height - size
+    local x = area.x + (maxX - area.x) * anchor.x
+    local y = area.y + (maxY - area.y) * anchor.y
+    local function available(rect)
+        for _, region in ipairs(reserved) do
+            if Layout.Intersects(rect, region) then return false end
+        end
+        return true
+    end
+    local requested = Layout.Rect(x, y, size, size)
+    if available(requested) then return requested end
+
+    local xs, ys = { x, area.x, maxX }, { y, area.y, maxY }
+    for _, region in ipairs(reserved) do
+        table.insert(xs, math.clamp(region.x - size, area.x, maxX))
+        table.insert(xs, math.clamp(region.x + region.width, area.x, maxX))
+        table.insert(ys, math.clamp(region.y - size, area.y, maxY))
+        table.insert(ys, math.clamp(region.y + region.height, area.y, maxY))
+    end
+    local best, distance
+    for _, nextX in ipairs(xs) do
+        for _, nextY in ipairs(ys) do
+            local cost = (nextX - x)^2 + (nextY - y)^2
+            if not distance or cost < distance then
+                local candidate = Layout.Rect(nextX, nextY, size, size)
+                if available(candidate) then best, distance = candidate, cost end
+            end
+        end
+    end
+    return best
+end
+
+function Layout.Navigation(profile, requested, width, height, target, count)
+    if requested ~= "auto" then return requested end
+    if count <= 1 then return "hidden" end
+    if profile.compactChrome then
+        if width >= 400 and height >= target * 2 + 24 then return "left" end
+        return "bottom"
+    end
+    return profile.navigation
 end
 
 function Layout.Columns(width, requested, minimum, gap)

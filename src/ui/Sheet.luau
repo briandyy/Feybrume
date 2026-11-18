@@ -89,9 +89,9 @@ function Sheet:_reflow()
     local theme = if owner then owner:_theme() else workspace.Themes:Get()
     local profile, area = workspace._profile, workspace._area
     local rect = Layout.Sheet(area, profile, self._options.width or 460, self._options.height or 390)
-    local step, pad = workspace:_target(theme), 12
+    local step, pad = workspace:_target(theme), if profile.compactChrome then 6 else 12
     local header = step + pad * 2
-    local footer = if self._done then step + pad * 2 else 0
+    local footer = if self._done then step + pad else 0
     Factory.Rect(self._card, rect.x, rect.y, rect.width, rect.height)
     Factory.Rect(self._body, pad, header, rect.width - 2 * pad, rect.height - header - pad - footer)
     if self._done then Factory.Rect(self._done, pad, rect.height - step - pad, rect.width - 2 * pad, step) end

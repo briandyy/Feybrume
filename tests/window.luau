@@ -174,6 +174,47 @@ test("floating bubble can fall back to the other edge", function()
     equal(Layout.Bubble(area, { area }, "left", 100, 52), nil)
 end)
 
+test("free bubbles keep a center drop and preserve relative position through rotation", function()
+    local portrait = Layout.Rect(0, 0, 393, 814)
+    local landscape = Layout.Rect(0, 0, 850, 329)
+    local centerDrop = Layout.Rect(170.5, 381, 52, 52)
+    local anchor = Layout.BubbleAnchor(centerDrop, portrait)
+    equal(anchor.x, 0.5)
+    equal(anchor.y, 0.5)
+    local rotated = assert(Layout.FreeBubble(landscape, {}, anchor, 52))
+    equal(rotated.x, 399)
+    equal(rotated.y, 138.5)
+    local restored = assert(Layout.FreeBubble(portrait, {}, anchor, 52))
+    equal(restored.x, centerDrop.x)
+    equal(restored.y, centerDrop.y)
+end)
+
+test("free bubbles move the shortest distance around occupied regions", function()
+    local area = Layout.Rect(0, 0, 850, 329)
+    local jump = Layout.Rect(725, 220, 125, 109)
+    local first = assert(Layout.FreeBubble(area, { jump }, { x = 1, y = 1 }, 52))
+    equal(first.x, 798)
+    equal(first.y, 168)
+    local second = assert(Layout.FreeBubble(area, { jump, first }, { x = 1, y = 1 }, 52))
+    contained(second, area)
+    equal(Layout.Intersects(first, second), false)
+    equal(Layout.Intersects(jump, second), false)
+    equal(Layout.FreeBubble(area, { area }, { x = 0.5, y = 0.5 }, 52), nil)
+end)
+
+test("short touch layouts use a rail or bottom bar and keep their layout after input changes", function()
+    local portrait = Layout.Profile(393, 814, "touch")
+    local landscape = Layout.Profile(850, 329, "touch")
+    local hybrid = Layout.Profile(850, 329, "gamepad", nil, true)
+    equal(landscape.compactChrome, true)
+    equal(hybrid.compactChrome, true)
+    equal(Layout.Navigation(landscape, "auto", 500, 240, 48, 4), "left")
+    equal(Layout.Navigation(landscape, "auto", 300, 210, 48, 4), "bottom")
+    equal(Layout.Navigation(landscape, "auto", 200, 120, 48, 1), "hidden")
+    equal(Layout.Navigation(portrait, "auto", 340, 600, 48, 4), "bottom")
+    equal(Layout.Navigation(landscape, "drawer", 500, 240, 48, 4), "drawer")
+end)
+
 test("grid columns and bottom navigation account for spacing", function()
     equal(Layout.Columns(320, 4, 150, 8), 2)
     equal(Layout.Columns(900, 4, 150, 8), 4)
@@ -217,6 +258,7 @@ end)
 test("focus restores a visible descendant and falls back when hidden", function()
     local root, parent = {}, { Visible = true }
     local function isA() return true end
+    root.IsA, root.Visible = isA, true
     parent.Parent = root
     parent.IsA = isA
     local previous = {
@@ -234,6 +276,43 @@ test("focus restores a visible descendant and falls back when hidden", function(
     alternative.Selectable = false
     Focus.Restore(service, root, previous, alternative)
     equal(service.SelectedObject, nil)
+end)
+
+test("gamepad focus stays in its scope and prefers the same row or column", function()
+    local function isA() return true end
+    local root = { Visible = true, IsA = isA }
+    local children = {}
+    root.GetDescendants = function() return children end
+    local function control(x, y, parent, selectable)
+        local object = {
+            AbsolutePosition = { X = x, Y = y }, AbsoluteSize = { X = 44, Y = 44 },
+            IsA = isA, Visible = true, Selectable = selectable, Parent = parent,
+            IsDescendantOf = function()
+                local ancestor = parent
+                while ancestor do
+                    if ancestor == root then return true end
+                    ancestor = ancestor.Parent
+                end
+                return false
+            end,
+        }
+        table.insert(children, object)
+        return object
+    end
+    local initial = control(20, 20, root, true)
+    local right = control(120, 20, root, true)
+    local below = control(20, 120, root, true)
+    local disabled = control(70, 20, root, false)
+    local hidden = control(0, 0, root, false)
+    hidden.Visible = false
+    control(66, 20, hidden, true)
+    equal(Focus.First(root), initial)
+    equal(Focus.InDirection(root, initial, 1, 0), right)
+    equal(Focus.InDirection(root, initial, 0, 1), below)
+    equal(Focus.InDirection(root, initial, -1, 0), nil)
+    equal(Focus.Eligible(disabled, root), false)
+    root.Visible = false
+    equal(Focus.First(root), nil)
 end)
 
 print(string.format("%d window tests passed", count))

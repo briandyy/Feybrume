@@ -67,7 +67,7 @@ end
 
 function Factory.StyleButton(node, theme, profile, states, variant, fontScale)
     local design = StyleResolver.Resolve(theme, {
-        input = if profile.touch then "touch" else "pointer",
+        input = if profile.touchLayout then "touch" else "pointer",
         states = states,
         overrides = { component = { variant = variant or "soft", size = "M" } },
         accessibility = { fontScale = fontScale },

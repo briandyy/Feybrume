@@ -14,9 +14,9 @@ Treat safe height ≤400 as short by default. Breakpoints and navigation are con
 
 A color picker uses a large saturation/value plane, wide hue and alpha rails, numeric formats and draft history. A dropdown holds draft selection, cancels stale search work, virtualizes lists over 100 items and wraps chips. The short-height keyboard layout maintains reachable footer actions and scrolls the focused field into the safe area.
 
-Provide a button alternative to long press. Tab swipes and two-finger hide are opt-in and limited to the UI region. The reopen bubble defaults to size 52, snaps to the edge and allows left- or right-handed use. Keep it clear of navigation and virtual controls. Trap focus in the top modal, close the top overlay with Back or Escape and then restore focus. Use real engine accessibility capabilities. Respect system and manual reduced motion. Haptics require opt-in and a successful device probe. Test text scaling from 80 to 160 percent, plus a 200 percent stress case with readable wrapping or scrolling.
+Provide a button alternative to long press. Tab swipes and two-finger hide are opt-in and limited to the UI region. The reopen bubble defaults to size 52 and accepts free placement inside the safe area. An optional edge mode and a side setting support left- or right-handed placement. Keep it clear of navigation and virtual controls. Trap focus in the top modal, close the top overlay with Back or Escape and then restore focus. Use real engine accessibility capabilities. Respect system and manual reduced motion. Haptics require opt-in and a successful device probe. Test text scaling from 80 to 160 percent, plus a 200 percent stress case with readable wrapping or scrolling.
 
-The rules for advanced controls, gameplay gestures, haptics and performance below are acceptance targets. The current implementation lets authors reserve host-specific regions and applies left- or right-handed placement to the reopen bubble.
+The rules for advanced controls, gameplay gestures, haptics and performance below are acceptance targets. The current implementation lets authors reserve host-specific regions and stores the launcher position relative to the safe area.
 
 ## Device scenarios
 
@@ -40,7 +40,7 @@ The window geometry and capture rules now have CLI coverage. Studio and real-dev
 | MOB-14 | Use a color picker with finger occlusion | Tooltip clears the finger, rails remain usable, Cancel rolls back |
 | MOB-15 | Filter 150 dropdown items quickly | Only the latest results show and rows recycle |
 | MOB-16 | Make several selections and cancel | Draft leaves values intact and chips wrap |
-| MOB-17 | Drag a bubble around a notch | Bubble remains reachable and snaps outside reserved areas |
+| MOB-17 | Drag a bubble around a notch | Bubble stays where dropped unless it overlaps a reserved area or the device safe boundary |
 | MOB-18 | Toggle left- and right-handed layout | Bubble, navigation and actions follow the chosen side |
 | MOB-19 | Long press, then cancel | Context menu leaves underlying actions untouched |
 | MOB-20 | Swipe or use two fingers outside the UI | Camera and gameplay retain input |

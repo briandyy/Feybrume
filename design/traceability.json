@@ -4095,7 +4095,7 @@
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/engine/Layout.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Safe rectangle, responsive navigation and basic bounds",
+    "fallback": "Safe area, rail or bottom navigation on short touch layouts and basic bounds",
     "testCase": "MOB-01/MOB-03/MOB-04",
     "testedEnvironments": [
       "Luau CLI geometry fixtures"
@@ -4143,10 +4143,10 @@
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/engine/Focus.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Visible descendant or the sheet close action",
+    "fallback": "Scoped gamepad entry and visible descendant selection with modal return",
     "testCase": "MOB-21/MOB-22",
     "testedEnvironments": [
-      "Luau CLI injected selectable nodes"
+      "Luau CLI injected-selectable-node fixtures for direction and focus restoration"
     ],
     "status": "PASS_WITH_LIMITATION",
     "robloxStatus": "IMPLEMENTED_UNTESTED",
@@ -4159,7 +4159,7 @@
     "sourceEvidence": "evidence/phase3-checks.json",
     "implementationFile": "src/ui/Workspace.luau",
     "runtimeRequirement": "Roblox client and PlayerGui for GUI integration",
-    "fallback": "Preferred edge and alternative free position for the reopen bubble",
+    "fallback": "Free launcher placement with restricted-region fallback and optional edge snapping",
     "testCase": "MOB-05/MOB-17/MOB-18",
     "testedEnvironments": [
       "Luau CLI bubble geometry model and Studio place source verification"

@@ -56,6 +56,19 @@ function Window.new(workspace, options)
     self._more = newButton(self._nav, "More")
     self._pages = newFrame(body, "Pages", { ClipsDescendants = true })
     self._resize = newButton(body, "Resize")
+    self._resize.Name = "Resize"
+    self._resizeMark = newFrame(self._resize, "ResizeMark", {
+        AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+        Size = UDim2.fromOffset(18, 18), Visible = false,
+    })
+    self._resizeLines = {
+        newFrame(self._resizeMark, "Horizontal", {
+            Position = UDim2.fromOffset(3, 14), Size = UDim2.fromOffset(13, 2), BackgroundTransparency = 0,
+        }),
+        newFrame(self._resizeMark, "Vertical", {
+            Position = UDim2.fromOffset(14, 3), Size = UDim2.fromOffset(2, 13), BackgroundTransparency = 0,
+        }),
+    }
     self._bubble = scope:Give(newButton(workspace._bubblesLayer, options.reopenLabel or "Open"))
     self._bubble.Name = "Reopen" .. shell.Name
     self._bubble.Visible = false
@@ -84,6 +97,8 @@ function Window.new(workspace, options)
         scope:Give(button.SelectionGained:Connect(function() self:_styleChrome() end))
         scope:Give(button.SelectionLost:Connect(function() self:_styleChrome() end))
     end
+    scope:Give(self._bubble.SelectionGained:Connect(function() workspace:_placeBubbles() end))
+    scope:Give(self._bubble.SelectionLost:Connect(function() workspace:_placeBubbles() end))
     self:_bindGestures()
     return self
 end
@@ -136,12 +151,16 @@ function Window:_reflow()
 
     local w, h = rect.width, rect.height
     local target = workspace:_target(theme)
-    local gap, pad = 8, 12
+    local gap, pad = 8, if profile.compactChrome then 6 else 12
     local bar = math.min(h, target + 2 * pad)
     self._max.Text = if self._placement == "floating" then "Max" else "Restore"
+    self._resize.Text = if profile.compactChrome then "" else "Resize"
+    self._resizeMark.Visible = profile.compactChrome
+    for _, line in ipairs(self._resizeLines) do line.BackgroundColor3 = self._heading.TextColor3 end
     self:_styleChrome()
-    local hideW = math.min(w, workspace:_buttonWidth(self._hide, target + 14))
-    local maxW = workspace:_buttonWidth(self._max, target + 14)
+    local minimumWidth = target + (if profile.compactChrome then 2 else 14)
+    local hideW = math.min(w, workspace:_buttonWidth(self._hide, minimumWidth))
+    local maxW = workspace:_buttonWidth(self._max, minimumWidth)
     local maxVisible = not profile.narrow and w >= math.max(280, hideW + maxW + gap + 4 * pad)
     Factory.Rect(self._hide, math.max(0, w - pad - hideW), pad, hideW, target)
     Factory.Rect(self._max, w - pad - hideW - maxW - gap, pad, maxW, target)
@@ -152,15 +171,18 @@ function Window:_reflow()
     self._grip.Visible = self._canDrag and not (profile.narrow and self._options.fillCompact ~= false)
 
     local resizable = self._canResize and self._placement == "floating" and not (profile.narrow and self._options.fillCompact ~= false)
-    local footerH = if resizable then target + pad else 0
+    local useGutter = resizable and profile.compactChrome
+    local footerH = if resizable and not useGutter then target + pad else 0
     self._resize.Visible = resizable
     if resizable then
-        local resizeW = math.min(w, workspace:_buttonWidth(self._resize, target + 16))
+        local resizeW = math.min(w, if useGutter then target else workspace:_buttonWidth(self._resize, target + 16))
         Factory.Rect(self._resize, math.max(0, w - pad - resizeW), h - target - 4, resizeW, target)
     end
     local y = bar
-    local bodyW, bodyH = math.max(0, w - 2 * pad), math.max(0, h - bar - pad - footerH)
-    local mode = if self._navigation == "auto" then profile.navigation else self._navigation
+    local gutter = if useGutter then target + gap else 0
+    local bodyW, bodyH = math.max(0, w - 2 * pad - gutter), math.max(0, h - bar - pad - footerH)
+    local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
+    self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
         self._nav.Visible = false
         Factory.Rect(self._pages, pad, y, bodyW, bodyH)
@@ -168,12 +190,15 @@ function Window:_reflow()
         self._nav.Visible = true
         if mode == "left" or mode == "right" then
             local rail = math.min(136, math.max(target, math.floor(bodyW * 0.29)))
+            table.insert(self._bubbleExclusions,
+                Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
             self:_layoutTabs(mode, rail, target)
             Factory.Rect(self._nav, if mode == "left" then pad else pad + bodyW - rail, y, rail, bodyH)
             Factory.Rect(self._pages, if mode == "left" then pad + rail + gap else pad, y, bodyW - rail - gap, bodyH)
         else
             local navH = target + 2
             local navY = if mode == "bottom" then y + math.max(0, bodyH - navH) else y
+            table.insert(self._bubbleExclusions, Layout.Rect(rect.x + pad, rect.y + navY, bodyW, navH))
             self:_layoutTabs(mode, bodyW, target)
             Factory.Rect(self._nav, pad, navY, bodyW, navH)
             Factory.Rect(self._pages, pad, if mode == "bottom" then y else y + navH + gap, bodyW, bodyH - navH - gap)
@@ -214,12 +239,14 @@ end
 
 function Window:_bindGestures()
     local workspace, input = self._workspace, self._workspace._input
-    input:Bind(self._scope, self._grip, self, function(position)
+    input:Bind(self._scope, self._grip, self, function(position, native)
         if not self:_canInteract() or not self._canDrag or not self._rect then return nil end
         workspace:_raise(self)
         local before = self._rect
         local restorePlacement = self._placement
         local wasDocked = restorePlacement ~= "floating"
+        local snap = self._options.dockable ~= false
+            and (native.UserInputType ~= Enum.UserInputType.Touch or self._options.touchDock == true)
         local changed = false
         return {
             drag = function(dx, dy)
@@ -236,8 +263,10 @@ function Window:_bindGestures()
                 self:_reflow()
             end,
             finish = function(pointer)
-                if self._options.dockable ~= false then
+                if snap then
                     self:Dock(Layout.DockAt(pointer.X - workspace._origin.X, pointer.Y - workspace._origin.Y, workspace._area, 22))
+                else
+                    workspace:_placeBubbles()
                 end
             end,
         }
@@ -249,27 +278,31 @@ function Window:_bindGestures()
         return { drag = function(dx, dy)
             self._requested = Layout.Resize(rect, workspace._area, dx, dy, self._limits)
             self:_reflow()
-        end }
+        end, finish = function() workspace:_placeBubbles() end }
     end)
     input:Bind(self._scope, self._bubble, self, function()
         if self._open or workspace:_hasModal() or not self._bubbleRect then return nil end
         local rect = self._bubbleRect
-        local function snap()
+        local function finish()
+            if self._bubbleDragging then
+                self._bubbleAnchor = Layout.BubbleAnchor(self._bubbleDragging, workspace._bubbleArea)
+                self._side = if self._bubbleAnchor.x < 0.5 then "left" else "right"
+            end
             self._bubbleDragging = nil
             workspace:_placeBubbles()
         end
         return {
             drag = function(dx, dy)
-                local area = workspace._area
-                local nextRect = Layout.Clamp(Layout.Rect(rect.x + dx, rect.y + dy, rect.width, rect.height), area)
-                self._side = if nextRect.x + nextRect.width / 2 < area.x + area.width / 2 then "left" else "right"
-                self._bubbleY = nextRect.y
+                local nextRect = Layout.Clamp(Layout.Rect(rect.x + dx, rect.y + dy, rect.width, rect.height), workspace._bubbleArea)
                 self._bubbleDragging = nextRect
-                workspace:_placeBubbles()
+                Factory.Rect(self._bubble, nextRect.x, nextRect.y, nextRect.width, nextRect.height)
             end,
             tap = function() self:Show() end,
-            finish = snap,
-            cancel = snap,
+            finish = finish,
+            cancel = function()
+                self._bubbleDragging = nil
+                workspace:_placeBubbles()
+            end,
         }
     end)
 end
@@ -418,6 +451,7 @@ function Window:SetNavigation(mode)
     if not navigation[mode] then return false end
     self._navigation = mode
     self:_reflow()
+    self._workspace:_placeBubbles()
     return true
 end
 
@@ -427,6 +461,7 @@ function Window:Dock(mode)
     self._placement = mode
     self._workspace:_raise(self)
     self:_reflow()
+    self._workspace:_placeBubbles()
     return true
 end
 

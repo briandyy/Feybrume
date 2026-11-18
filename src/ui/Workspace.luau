@@ -21,6 +21,8 @@ end
 local function settings(options)
     local side = options.reopenSide or "right"
     assert(side == "left" or side == "right", "Expected left or right reopen side")
+    local reopenMode = options.reopenMode or "free"
+    assert(reopenMode == "free" or reopenMode == "edge", "Expected free or edge reopen mode")
     local scale = options.fontScale or 1
     assert(finite(scale) and scale >= 0.8 and scale <= 2, "Font scale must be 0.8 to 2")
     local count, reserved = 0, {}
@@ -32,7 +34,7 @@ local function settings(options)
         table.insert(reserved, Layout.Rect(rect.x, rect.y, rect.width, rect.height))
     end
     return {
-        side = side, fontScale = scale, reserved = reserved,
+        side = side, reopenMode = reopenMode, fontScale = scale, reserved = reserved,
         avoidMovement = options.avoidMovementControls ~= false,
         breakpoints = Layout.ValidateBreakpoints(options.breakpoints or {}),
     }
@@ -68,6 +70,7 @@ function Workspace.new(options)
         end,
         _area = Layout.Rect(0, 0, 0, 0), _profile = Layout.Profile(0, 0, "pointer", config.breakpoints),
         _actionName = "FeybrumeSheet" .. tostring(workspaceCount),
+        _gamepadAction = "FeybrumeGamepad" .. tostring(workspaceCount),
     }, Workspace)
     local screen = scope:Give(Factory.Create("ScreenGui", parent, {
         Name = options.name or "FeybrumeWorkspace", ResetOnSpawn = false,
@@ -76,6 +79,7 @@ function Workspace.new(options)
         DisplayOrder = options.displayOrder or 10,
     }))
     self._screen = screen
+    self._bubbleArea = self._area
     self._root = Factory.Frame(screen, "SafeArea", { Size = UDim2.fromScale(1, 1) })
     self._windowsLayer = Factory.Frame(self._root, "Windows", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
     self._bubblesLayer = Factory.Frame(self._root, "Reopen", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
@@ -89,6 +93,7 @@ function Workspace.new(options)
         self:_refresh()
     end)
     scope:Give(input.TextBoxFocused:Connect(function() Viewport.RevealFocused(self._root, input) end))
+    scope:Give(guiService:GetPropertyChangedSignal("TouchControlsEnabled"):Connect(function() self:_placeBubbles() end))
     scope:Give(guiService:GetPropertyChangedSignal("PreferredTextSize"):Connect(function() self:_refresh() end))
     scope:Give(guiService:GetPropertyChangedSignal("SelectedObject"):Connect(function()
         local top = self:_top()
@@ -106,12 +111,13 @@ function Workspace.new(options)
             end
         end
     end))
+    if options.gamepadNavigation ~= false then self:_bindGamepad() end
     self:_refresh()
     return self
 end
 
 function Workspace:_target(theme)
-    return if self._profile.touch or self._profile.narrow then
+    return if self._profile.touchLayout or self._profile.narrow then
         math.max(44, theme.touch.minimumHitTarget, math.ceil(16 * self._settings.fontScale) + 12)
         else math.max(36, math.ceil(16 * self._settings.fontScale) + 12)
 end
@@ -131,7 +137,7 @@ end
 
 function Workspace:_refresh()
     if self._destroyed then return end
-    self._area, self._profile, self._origin = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
+    self._area, self._profile, self._origin, self._bubbleArea = Viewport.Read(self._root, self._userInput, self._settings.breakpoints)
     for _, window in ipairs(self._windows) do window:_reflow() end
     for _, sheet in ipairs(self._modal) do sheet:_reflow() end
     self:_placeBubbles()
@@ -140,12 +146,20 @@ end
 
 function Workspace:_placeBubbles()
     if self._destroyed then return end
-    local area = self._area
+    local area = self._bubbleArea
     local reserved = table.clone(self._settings.reserved)
-    if self._profile.touch and self._settings.avoidMovement and not self._userInput.OnScreenKeyboardVisible then
+    if self._userInput.TouchEnabled and self._guiService.TouchControlsEnabled
+        and self._settings.avoidMovement and not self._userInput.OnScreenKeyboardVisible then
         local w, h = math.min(138, area.width / 2), math.min(142, area.height / 2)
         table.insert(reserved, Layout.Rect(area.x, area.y + area.height - h, w, h))
         table.insert(reserved, Layout.Rect(area.x + area.width - w, area.y + area.height - h, w, h))
+    end
+    local visible, chrome = {}, {}
+    for _, window in ipairs(self._windows) do
+        if window._shell.Visible and window._rect then
+            table.insert(visible, window._rect)
+            for _, region in ipairs(window._bubbleExclusions or {}) do table.insert(chrome, region) end
+        end
     end
     for _, window in ipairs(self._windows) do
         local button = window._bubble
@@ -154,9 +168,24 @@ function Workspace:_placeBubbles()
         else
             local theme = window:_theme()
             local size = math.max(52, self:_target(theme))
-            local y = window._bubbleY or (area.y + area.height * 0.55)
-            local rect = window._bubbleDragging or Layout.Bubble(area, reserved, window._side, y, size)
-            if not rect then rect = Layout.Bubble(area, {}, window._side, area.y, size) end
+            local anchor = window._bubbleAnchor or { x = if window._side == "left" then 0 else 1, y = 0.58 }
+            local rect = window._bubbleDragging
+            if not rect and self._settings.reopenMode == "edge" then
+                local y = area.y + math.max(0, area.height - size) * anchor.y
+                rect = Layout.Bubble(area, reserved, window._side, y, size)
+            end
+            if not rect then
+                local avoid = table.clone(reserved)
+                for _, region in ipairs(visible) do table.insert(avoid, region) end
+                rect = Layout.FreeBubble(area, avoid, anchor, size)
+                if not rect then
+                    local controls = table.clone(reserved)
+                    for _, region in ipairs(chrome) do table.insert(controls, region) end
+                    rect = Layout.FreeBubble(area, controls, anchor, size)
+                        or Layout.FreeBubble(area, reserved, anchor, size)
+                        or Layout.FreeBubble(area, {}, anchor, size)
+                end
+            end
             window._bubbleRect = rect
             button.Visible = rect ~= nil
             if rect then
@@ -195,6 +224,7 @@ function Workspace:Window(options)
     table.insert(self._windows, window)
     self:_raise(window)
     window:_reflow()
+    self:_placeBubbles()
     return window
 end
 
@@ -212,7 +242,10 @@ function Workspace:SetReopenSide(side)
     self:_assertLive()
     assert(side == "left" or side == "right", "Expected left or right")
     self._settings.side = side
-    for _, window in ipairs(self._windows) do window._side = side end
+    for _, window in ipairs(self._windows) do
+        window._side = side
+        if window._bubbleAnchor then window._bubbleAnchor.x = if side == "left" then 0 else 1 end
+    end
     self:_placeBubbles()
 end
 
@@ -228,6 +261,83 @@ function Workspace:_hasModal()
     return self:_top() ~= nil
 end
 
+function Workspace:_gamepadEntry(allowHidden)
+    local sheet = self:_top()
+    if sheet then return sheet._card, sheet._close end
+    for index = #self._windows, 1, -1 do
+        local window = self._windows[index]
+        if window._shell.Visible then
+            local root, tab = window._shell, window._activeTab
+            if tab and Focus.Eligible(tab._button, root) then return root, tab._button end
+            if Focus.Eligible(window._more, root) then return root, window._more end
+            if tab then
+                local first = Focus.First(tab._page)
+                if first then return root, first end
+            end
+            return root, window._hide
+        end
+    end
+    if allowHidden then return self._bubblesLayer, Focus.First(self._bubblesLayer) end
+    return nil, nil
+end
+
+function Workspace:_bindGamepad()
+    local key, actions = Enum.KeyCode, self._actions
+    local directions = {
+        [key.DPadUp] = { 0, -1 }, [key.DPadDown] = { 0, 1 },
+        [key.DPadLeft] = { -1, 0 }, [key.DPadRight] = { 1, 0 },
+    }
+    actions:BindActionAtPriority(self._gamepadAction, function(_, state, input)
+        local gui = self._guiService
+        local pass, sink = Enum.ContextActionResult.Pass, Enum.ContextActionResult.Sink
+        if self._destroyed or not self._screen.Enabled or gui.MenuIsOpen
+            or (modalOwner and modalOwner ~= self) or self._userInput:GetFocusedTextBox() then return pass end
+        local selected = gui.SelectedObject
+        if selected and not selected:IsDescendantOf(self._root) then return pass end
+        local code = input.KeyCode
+        local root, first = self:_gamepadEntry(code == key.ButtonSelect or selected ~= nil)
+        if selected and not self:_hasModal() then
+            if selected:IsDescendantOf(self._bubblesLayer) then
+                root = self._bubblesLayer
+            else
+                for _, window in ipairs(self._windows) do
+                    if selected:IsDescendantOf(window._shell) then
+                        root = window._shell
+                        break
+                    end
+                end
+            end
+        end
+        if not root then return pass end
+        if code == key.ButtonSelect then
+            if state == Enum.UserInputState.Begin then
+                gui.SelectedObject = if selected and not self:_hasModal() then nil else first
+            end
+            return if selected or first then sink else pass
+        end
+        if not Focus.Eligible(selected, root) then
+            if state == Enum.UserInputState.Begin and Focus.Eligible(first, root) then
+                gui.SelectedObject = first
+                Viewport.Reveal(first)
+                return sink
+            end
+            return pass
+        end
+        local direction = directions[code]
+        if not direction then return pass end
+        if state == Enum.UserInputState.Begin then
+            local target = Focus.InDirection(root, selected, direction[1], direction[2])
+            if target then
+                gui.SelectedObject = target
+                Viewport.Reveal(target)
+            end
+        end
+        return sink
+    end, false, Enum.ContextActionPriority.High.Value, key.DPadUp, key.DPadDown,
+        key.DPadLeft, key.DPadRight, key.ButtonSelect)
+    self._scope:Give(function() actions:UnbindAction(self._gamepadAction) end)
+end
+
 function Workspace:_setShortcuts(active)
     if self._shortcuts == active then return end
     self._shortcuts = active
@@ -237,7 +347,8 @@ function Workspace:_setShortcuts(active)
     end
     self._actions:BindActionAtPriority(self._actionName, function(_, state, object)
         local sheet = self:_top()
-        if modalOwner ~= self or not sheet or self._userInput:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+        if modalOwner ~= self or not sheet or self._guiService.MenuIsOpen
+            or self._userInput:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
         if state == Enum.UserInputState.Begin then
             if object.KeyCode == Enum.KeyCode.Tab then
                 local backwards = self._userInput:IsKeyDown(Enum.KeyCode.LeftShift)
@@ -317,8 +428,10 @@ function Workspace:_finishSheet(sheet)
         end
     else
         local selected = self._guiService.SelectedObject
-        if sheet._previous or (selected and selected:IsDescendantOf(self._root)) then
-            Focus.Restore(self._guiService, self._root, sheet._previous, nil)
+        if sheet._previous or self._userInput.PreferredInput == Enum.PreferredInput.Gamepad
+            or (selected and selected:IsDescendantOf(self._root)) then
+            local _, fallback = self:_gamepadEntry(true)
+            Focus.Restore(self._guiService, self._root, sheet._previous, fallback)
         end
     end
 end

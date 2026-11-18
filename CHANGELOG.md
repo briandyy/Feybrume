@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.2-window
+
+- Let reopen buttons keep a free position inside the safe area and restore it after rotation. Edge snapping is available as an option.
+- Reduce window chrome on short touch layouts, place navigation alongside or below the content, and skip auto navigation for single-tab windows.
+- Give D-pad and Select/View a focus entry point and directional navigation in windows and sheets.
+- Allow rotation in the Studio preview and open the secondary window on demand.
+
 ## 0.3.1-window
 
 - Fit the full Resize, Restore, Hide and Close labels to Roblox text measurements, including changes to the player's preferred text size.

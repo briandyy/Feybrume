@@ -28,7 +28,9 @@ end))
 
 local function heading(parent, text)
     local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, 0, 0, 30)
+    label.Size = UDim2.new(1, 0, 0, 26)
+    label.AutomaticSize = Enum.AutomaticSize.Y
+    label.TextWrapped = true
     label.BackgroundTransparency = 1
     label.Font = Enum.Font.SourceSansBold
     label.TextSize = 21
@@ -98,21 +100,36 @@ end
 
 local home = window:Tab({ id = "home", title = "Home" })
 heading(home, "Window controls")
-paragraph(home, "Drag the title, resize from the lower right, or drag to a screen edge to dock.")
+paragraph(home, "Drag the title to move. Drag the lower-right handle to resize.")
 local actions = home:Section({ name = "Actions" }):Grid({ columns = 2, minWidth = 145, rowHeight = 52 })
 button(actions, "Open sheet", openSheet)
 button(actions, "Dock left", function() window:Dock("left") end)
 button(actions, "Dock right", function() window:Dock("right") end)
 button(actions, "Floating layout", function() window:Dock("floating") end)
 
+local auxiliary
+local function showSecondWindow()
+    if auxiliary then
+        auxiliary:Show()
+        return
+    end
+    auxiliary = workspace:Window({ id = "secondary", title = "Second Window", theme = "memoir", width = 345, height = 255, reopenLabel = "2" })
+    local auxiliaryTab = auxiliary:Tab({ id = "second", title = "Overview" })
+    local title = heading(auxiliaryTab, "Second window")
+    paint(title, "heading", "memoir")
+    local info = paragraph(auxiliaryTab, "This window has its own theme, position, and navigation state.")
+    paint(info, "body", "memoir")
+end
+
 local preferences = window:Tab({ id = "preferences", title = "Preferences" })
 heading(preferences, "Workspace preferences")
 local hand = "right"
 local settings = preferences:Section():HStack({ columns = 2, minWidth = 145, rowHeight = 52 })
-button(settings, "Move reopen bubble", function()
+button(settings, "Move bubble to side", function()
     hand = if hand == "left" then "right" else "left"
     workspace:SetReopenSide(hand)
 end)
+button(settings, "Open second window", showSecondWindow)
 button(settings, "Cycle theme", function()
     palette = if palette == swatches.dark then swatches.cozy elseif palette == swatches.cozy then swatches.teal else swatches.dark
     workspace:SetTheme(palette)
@@ -132,7 +149,7 @@ demo:Add(card, "Footer")
 
 local help = window:Tab({ id = "help", title = "Help" })
 heading(help, "Controls")
-paragraph(help, "Use Hide in the title bar, then tap the UI bubble to reopen this same tab. Drag the bubble to another edge.")
+paragraph(help, "Use Hide in the title bar, then tap the UI bubble to reopen this same tab. Drag the bubble to a free spot.")
 local menuTarget = heading(help, "Right-click or touch and hold here")
 window:BindContextMenu(menuTarget, {
     { label = "Open sheet", callback = openSheet },
@@ -141,11 +158,3 @@ window:BindContextMenu(menuTarget, {
 button(help, "Open actions", function()
     window:OpenContextMenu({ { label = "Open sheet", callback = openSheet } }, { title = "Window actions" })
 end)
-
-local auxiliary = workspace:Window({ id = "secondary", title = "Second Window", theme = "memoir", width = 345, height = 255, reopenLabel = "2" })
-local auxiliaryTab = auxiliary:Tab({ id = "second", title = "Overview" })
-local title = heading(auxiliaryTab, "Second window")
-paint(title, "heading", "memoir")
-local info = paragraph(auxiliaryTab, "This window has its own theme, position, and navigation state.")
-paint(info, "body", "memoir")
-auxiliary:Hide()
