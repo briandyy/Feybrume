@@ -93,14 +93,7 @@ function Layout.OpenFloating(bounds, area, limits, position)
     return Layout.Rect(bounds.x or x, bounds.y or y, bounds.width, bounds.height)
 end
 
-function Layout.FloatingArea(area, lane, rect)
-    if lane and lane.y < area.y and rect.x >= lane.x and rect.x + rect.width <= lane.x + lane.width then
-        return Layout.Rect(area.x, lane.y, area.width, area.height + area.y - lane.y)
-    end
-    return area
-end
-
-function Layout.Window(rect, area, profile, placement, limits, fillCompact, topbarLane)
+function Layout.Window(rect, area, profile, placement, limits, fillCompact, travel)
     if placement == "fullscreen" or (profile.narrow and fillCompact) then return table.clone(area) end
     if placement == "left" or placement == "right" then
         if area.width < limits.minWidth * 2 + 8 then return table.clone(area) end
@@ -109,10 +102,7 @@ function Layout.Window(rect, area, profile, placement, limits, fillCompact, topb
         return Layout.Rect(x, area.y, half, area.height)
     end
     local fitted = Layout.FloatingLimits(area, limits)
-    local fit = Layout.Clamp(rect, area, fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
-    local travel = Layout.FloatingArea(area, topbarLane, fit)
-    fit.y = math.clamp(rect.y, travel.y, travel.y + travel.height - fit.height)
-    return fit
+    return Layout.Clamp(rect, travel or area, fitted.minWidth, fitted.minHeight, fitted.maxWidth, fitted.maxHeight)
 end
 
 function Layout.Resize(rect, area, dx, dy, limits)
@@ -168,6 +158,27 @@ function Layout.Bubble(area, reserved, side, requestedY, requestedSize)
         end
     end
     return best
+end
+
+function Layout.WindowSurface(rect, playable, device, lane)
+    local top = math.clamp(device.y - rect.y, 0, rect.height)
+    local left = math.clamp(device.x - rect.x, 0, rect.width)
+    local right = math.clamp(device.x + device.width - rect.x, left, rect.width)
+    local bottom = math.clamp(device.y + device.height - rect.y, top, rect.height)
+    local above = math.clamp(playable.y - rect.y, 0, rect.height)
+    local fits = lane and rect.x >= lane.x and rect.x + rect.width <= lane.x + lane.width and rect.y >= lane.y
+    if above == 0 or fits then
+        return Layout.Rect(left, top, right - left, bottom - top), 0, nil
+    end
+
+    -- The outer rectangle keeps travelling. Draw only the free part of the top strip.
+    local body = Layout.Rect(left, above, right - left, bottom - above)
+    if not lane then return body, above, nil end
+    local x1 = math.max(rect.x, lane.x)
+    local x2 = math.min(rect.x + rect.width, lane.x + lane.width)
+    local y = math.max(rect.y, lane.y)
+    if x2 <= x1 or y >= playable.y then return body, above, nil end
+    return body, above, Layout.Rect(x1 - rect.x, y - rect.y, x2 - x1, playable.y - y)
 end
 
 function Layout.HeaderTitle(startX, endX, midpoint, alignment, wanted)

@@ -21,9 +21,12 @@ local function positive(value, default)
 end
 
 local shapes = {
-    max = { { 3, 3, 10, 1 }, { 3, 12, 10, 1 }, { 3, 4, 1, 8 }, { 12, 4, 1, 8 } },
+    max = {
+        { 2, 2, 5, 1.5 }, { 2, 2, 1.5, 5 }, { 9, 2, 5, 1.5 }, { 12.5, 2, 1.5, 5 },
+        { 2, 12.5, 5, 1.5 }, { 2, 9, 1.5, 5 }, { 9, 12.5, 5, 1.5 }, { 12.5, 9, 1.5, 5 },
+    },
     restore = { { 6, 2, 8, 1 }, { 13, 3, 1, 8 }, { 2, 5, 9, 1 }, { 2, 13, 9, 1 }, { 2, 6, 1, 7 }, { 10, 6, 1, 7 } },
-    hide = { { 3, 7, 10, 2 } },
+    hide = { { 3, 5.5, 6, 1.5, 45 }, { 7, 5.5, 6, 1.5, -45 }, { 3, 12.5, 10, 1.25 } },
 }
 local defaultChrome = table.freeze({})
 
@@ -36,6 +39,7 @@ local function chromeMark(parent, name)
         strokes[i] = Factory.Frame(mark, tostring(i), {
             Position = UDim2.fromScale(line[1] / 16, line[2] / 16),
             Size = UDim2.fromScale(line[3] / 16, line[4] / 16), BackgroundTransparency = 0,
+            Rotation = line[5] or 0,
         })
     end
     return { node = mark, lines = strokes }
@@ -81,8 +85,13 @@ function Window.new(workspace, options)
     self._shell = shell
     self._shape = Factory.Create("UICorner", shell)
     self._edge = Factory.Create("UIStroke", shell)
+    self._topExtension = newFrame(shell, "TopExtension", { Visible = false })
+    self._face = newFrame(shell, "WindowFace", { Visible = false })
+    self._faceCorner = Factory.Create("UICorner", self._face)
     self._background = newFrame(shell, "Background", { Size = UDim2.fromScale(1, 1), ZIndex = 1 })
     local body = newFrame(shell, "Chrome", { Size = UDim2.fromScale(1, 1), ZIndex = 2 })
+    body.Active = true
+    self._body = body
     self._overlay = newFrame(shell, "Overlay", { Size = UDim2.fromScale(1, 1), ZIndex = 3 })
     self._titleLogo = nativeImage(body, "TitleLogo")
     self._heading = Factory.Label(body, props.title, props.titleSize)
@@ -98,6 +107,16 @@ function Window.new(workspace, options)
     self._hide.Name = "Hide"
     self._max = newButton(body, "")
     self._max.Name = "Maximize"
+    self._buttonPlates, self._buttonHover = {}, {}
+    for _, button in ipairs({ self._max, self._hide }) do
+        local plate = newFrame(button, "Highlight", {
+            AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+        })
+        Factory.Create("UICorner", plate, { CornerRadius = UDim.new(0, 8) })
+        self._buttonPlates[button] = plate
+        scope:Give(button.MouseEnter:Connect(function() self._buttonHover[button] = true; self:_styleChrome() end))
+        scope:Give(button.MouseLeave:Connect(function() self._buttonHover[button] = nil; self:_styleChrome() end))
+    end
     self._marks = {
         max = chromeMark(self._max, "max"), restore = chromeMark(self._max, "restore"),
         hide = chromeMark(self._hide, "hide"),
@@ -196,14 +215,23 @@ function Window:_styleChrome()
         if image then
             local name = if button == self._hide then "hide" elseif self._placement == "floating" then "max" else "restore"
             local appearance = self._props.chromeButtons[name] or defaultChrome
-            local size = appearance.iconSize or 16
+            local size = appearance.iconSize or 19
             image.Image = appearance.icon or ""
             image.Visible = image.Image ~= "" and image.IsLoaded
             image.Size = UDim2.fromOffset(size, size)
             image.ImageColor3 = if appearance.iconColor then Factory.Hex(appearance.iconColor) else Color3.new(1, 1, 1)
             button.Text = if image.Visible then "" else appearance.text or ""
-            local background = appearance.background or theme.tokens.raised
-            button.BackgroundColor3 = Factory.Hex(background)
+            local hover = self._buttonHover[button] and not profile.touchLayout
+            local tint = if button == self._max then 0.15 else 0.09
+            local background = appearance.background or Color.Mix(theme.palette.surface, theme.palette.accent, if hover or focused then tint + 0.1 else tint)
+            local plate = self._buttonPlates[button]
+            plate.Visible = button.Text == ""
+            plate.BackgroundColor3 = Factory.Hex(background)
+            plate.BackgroundTransparency = 0
+            local surfaceSize = math.clamp(size + 10, 28, workspace:_target(theme))
+            plate.Size = UDim2.fromOffset(surfaceSize, surfaceSize)
+            button.BackgroundColor3 = plate.BackgroundColor3
+            button.BackgroundTransparency = if plate.Visible then 1 else 0
             button.TextColor3 = Factory.Hex(Color.EnsureContrast(theme.tokens.onSurface, background, 4.5))
             button.TextSize = math.round(14 * workspace._settings.fontScale)
             local mark = self._marks[name]
@@ -276,7 +304,7 @@ function Window:_reflow()
     local fillCompact = profile.narrow and self._options.fillCompact == true
     local floating = self._placement == "floating" and not fillCompact
     local rect = Layout.Window(self:_floatingRequest(), if floating then workspace._windowArea else area, profile,
-        self._placement, self._limits, fillCompact, workspace._topbarLane)
+        self._placement, self._limits, fillCompact, if floating then workspace._windowTravel else nil)
     self._rect = rect
     self._shell.Visible = self._open
     if not self._open then return end
@@ -284,10 +312,29 @@ function Window:_reflow()
     local theme, scale = self:_theme(), workspace._settings.fontScale
     Factory.Rect(self._shell, rect.x, rect.y, rect.width, rect.height)
     local props = self._props
-    self._shell.BackgroundColor3 = Factory.Hex(theme.palette.surface)
-    self._shell.BackgroundTransparency = 1 - props.backgroundOpacity
+    local bodyRect, cut, extension = Layout.WindowSurface(rect, workspace._windowArea, workspace._deviceArea, workspace._topbarLane)
+    local color = Factory.Hex(theme.palette.surface)
+    local radius = UDim.new(0, props.cornerRadius or theme.radius)
+    self._shell.BackgroundColor3 = color
+    self._shell.BackgroundTransparency = if cut > 0 then 1 else 1 - props.backgroundOpacity
+    self._shell.Active = cut == 0
+    self._edge.Enabled = cut == 0
     self._edge.Color = Factory.Hex(theme.tokens.essentialStroke)
-    self._shape.CornerRadius = UDim.new(0, props.cornerRadius or theme.radius)
+    self._shape.CornerRadius = radius
+    self._face.Visible = cut > 0
+    self._face.BackgroundColor3 = color
+    self._face.BackgroundTransparency = 1 - props.backgroundOpacity
+    self._faceCorner.CornerRadius = radius
+    Factory.Rect(self._face, 0, cut, rect.width, rect.height - cut)
+    self._topExtension.Visible = extension ~= nil
+    if extension then
+        self._topExtension.BackgroundColor3 = color
+        self._topExtension.BackgroundTransparency = 1 - props.backgroundOpacity
+        Factory.Rect(self._topExtension, extension.x, extension.y, extension.width, extension.height + math.min(radius.Offset, 10))
+    end
+    Factory.Rect(self._body, bodyRect.x, bodyRect.y, bodyRect.width, bodyRect.height)
+    Factory.Rect(self._background, 0, cut, rect.width, rect.height - cut)
+    Factory.Rect(self._overlay, 0, cut, rect.width, rect.height - cut)
     self._heading.Text = props.title
     self._heading.TextColor3 = Factory.Hex(theme.tokens.onSurface)
     self._heading.TextSize = math.round(props.titleSize * scale)
@@ -296,7 +343,7 @@ function Window:_reflow()
     self._subtitle.TextColor3 = Factory.Hex(theme.tokens.textMuted or theme.tokens.onSurface)
     self._subtitle.TextSize = math.round(13 * scale)
 
-    local w, h = rect.width, rect.height
+    local w, h = bodyRect.width, bodyRect.height
     local target = workspace:_target(theme)
     local gap = if profile.compactChrome then 6 else 8
     local pad = math.min(props.padding or (if profile.compactChrome then 6 else 12), w / 2)
@@ -324,7 +371,7 @@ function Window:_reflow()
     end
     local headingWidth = math.max(0, w - 3 * pad - standardButtons)
     local leading, trailing = Layout.HeaderAdornmentWidths(headingWidth, props.topbarLeadingWidth, props.topbarTrailingWidth)
-    local titleStart = pad + (if leading > 0 then leading + gap else math.min(5, pad))
+    local titleStart = pad + (if leading > 0 then leading + gap else 0)
     local titleEnd = pad + headingWidth - (if trailing > 0 then trailing + gap else 0)
     self:_layoutTitle(titleStart, titleEnd, w, bar, titleH, subtitleH, gap)
     local slotHeight = math.max(0, bar - 2 * pad)
@@ -345,7 +392,8 @@ function Window:_reflow()
     Factory.Rect(status, pad, y + remaining - statusH, bodyW, statusH)
     status.Visible = statusH > 0
     local mode = Layout.Navigation(profile, self._navigation, bodyW, bodyH, target, #self._tabs)
-    self._bubbleExclusions = { Layout.Rect(rect.x, rect.y, w, bar) }
+    local contentX, contentY = rect.x + bodyRect.x, rect.y + bodyRect.y
+    self._bubbleExclusions = { Layout.Rect(contentX, contentY, w, bar) }
     if mode == "hidden" or #self._tabs == 0 then
         self._nav.Visible = false
         Factory.Rect(self._pages, pad, y, bodyW, bodyH)
@@ -356,14 +404,14 @@ function Window:_reflow()
             local preferredRail = if props.sidebarWidth > 0 then props.sidebarWidth else math.min(railLimit, math.floor(bodyW * 0.29))
             local rail = math.min(math.max(0, bodyW - gap), math.max(target, preferredRail))
             table.insert(self._bubbleExclusions,
-                Layout.Rect(rect.x + (if mode == "left" then pad else pad + bodyW - rail), rect.y + y, rail, bodyH))
+                Layout.Rect(contentX + (if mode == "left" then pad else pad + bodyW - rail), contentY + y, rail, bodyH))
             self:_layoutTabs(mode, rail, target)
             Factory.Rect(self._nav, if mode == "left" then pad else pad + bodyW - rail, y, rail, bodyH)
             Factory.Rect(self._pages, if mode == "left" then pad + rail + gap else pad, y, bodyW - rail - gap, bodyH)
         else
             local navH = target + 2 * Layout.TabPadding
             local navY = if mode == "bottom" then y + math.max(0, bodyH - navH) else y
-            table.insert(self._bubbleExclusions, Layout.Rect(rect.x + pad, rect.y + navY, bodyW, navH))
+            table.insert(self._bubbleExclusions, Layout.Rect(contentX + pad, contentY + navY, bodyW, navH))
             self:_layoutTabs(mode, bodyW, target)
             Factory.Rect(self._nav, pad, navY, bodyW, navH)
             Factory.Rect(self._pages, pad, if mode == "bottom" then y else y + navH + gap, bodyW, bodyH - navH - gap)
@@ -431,7 +479,7 @@ function Window:_bindGestures()
                 end
                 changed = true
                 self._requested = Layout.Window(Layout.Rect(before.x + dx, before.y + dy, before.width, before.height),
-                    area, workspace._profile, "floating", self._limits, false, workspace._topbarLane)
+                    area, workspace._profile, "floating", self._limits, false, workspace._windowTravel)
                 self:_reflow()
             end,
             finish = function(pointer)
@@ -449,8 +497,7 @@ function Window:_bindGestures()
         local rect = self._rect
         return { drag = function(dx, dy)
             local area = workspace._windowArea
-            local travel = Layout.FloatingArea(area, workspace._topbarLane, rect)
-            self._requested = Layout.Resize(rect, travel, dx, dy, Layout.FloatingLimits(area, self._limits))
+            self._requested = Layout.Resize(rect, workspace._windowTravel, dx, dy, Layout.FloatingLimits(area, self._limits))
             self:_reflow()
         end, finish = function() workspace:_placeBubbles() end }
     end)

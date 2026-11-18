@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Feybrume",
   "phase": 4,
-  "version": "0.4.4-foundation",
+  "version": "0.4.5-foundation",
   "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "previous": "phase3-manifest.json",
@@ -45,12 +45,12 @@
     ],
     "breakingChanges": [],
     "defaultChanges": [
-      "Floating windows reach the playable safe edges and leave travel when oversized.",
+      "Floating windows can move to the physical viewport edges. Oversized windows leave room to drag.",
       "Set dockable = true to snap during a mouse drag, and touchDock = true for touch.",
       "Set fillCompact = true to fill narrow screens automatically.",
       "The opening position defaults to center. Override with initialPosition, x or y.",
       "Max, Restore and Hide default to themed icon buttons.",
-      "A floating panel can enter an unobstructed top-bar lane if the whole window fits beside Roblox controls."
+      "A floating panel paints its top section only in the free part of the Roblox top bar, while its title remains reachable."
     ]
   },
   "documentation": [
@@ -62,9 +62,9 @@
   "runtimeBuild": {
     "status": "PASS_WITH_LIMITATION",
     "preview": {
-      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.4.rbxlx",
-      "sha256": "27fe1b2acf3215451c5897ae0c3907ac30e581f62328d020e769ba6a404bb130",
-      "bytes": 373085,
+      "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.5.rbxlx",
+      "sha256": "e644a5c8a78873774a7fe3fa22adb391018a6e26d81e44a07b673c0b0e02fbd6",
+      "bytes": 377103,
       "moduleScripts": 41,
       "localScripts": 1,
       "serverScripts": 0,
@@ -81,8 +81,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 5380,
-      "sha256": "ec613825ccbccb570c90f1691bb5608f34a2e7f932b6c60fda3039653b1674a2"
+      "bytes": 5657,
+      "sha256": "781d59bc2583390c767166f12e508f6def28aa57cb17e1ea4bd0a256e6000bdc"
     },
     {
       "path": "README.id.md",
@@ -137,7 +137,7 @@
     {
       "path": "docs/components.md",
       "bytes": 7582,
-      "sha256": "70bb01762846057dc1d9bd109fa14c454f49883bfc069605dcec497be425fc27"
+      "sha256": "700ae662564930e1ba962955719fc62c6edbdfa5f08a60c8cbfc543be31f89d8"
     },
     {
       "path": "docs/core.md",
@@ -176,8 +176,8 @@
     },
     {
       "path": "docs/id/window.md",
-      "bytes": 4839,
-      "sha256": "0a15e383f2cff4a5c43cb0e3645a9b9ec1b4d9fcea35e00b8563ae4107a295de"
+      "bytes": 4828,
+      "sha256": "782c37408e60c7d82b12622cb3d372b6ddd9aaecbbd07b11dc9435132745f49f"
     },
     {
       "path": "docs/index.md",
@@ -221,8 +221,8 @@
     },
     {
       "path": "docs/window.md",
-      "bytes": 14172,
-      "sha256": "e0ed92f7dec719c314e8862826629db5c99d600a304bc2e9a8ae02f54f462ea1"
+      "bytes": 14203,
+      "sha256": "cfbdab4d1049dad03dec323f05ba33d45f576df5a317a2d3939afa733951f4d2"
     },
     {
       "path": "docs/zh-CN/core.md",
@@ -276,8 +276,8 @@
     },
     {
       "path": "evidence/phase4-checks.json",
-      "bytes": 9321,
-      "sha256": "a2223ae902b95aaca20374b8df32574ed6e93c133cbcc2598ca7911afe8ebdde"
+      "bytes": 9466,
+      "sha256": "c82c91acac60cca7b5ebba690a741f39207a2b4473d223495a37f224536881fb"
     },
     {
       "path": "examples/foundation-preview.client.luau",
@@ -436,8 +436,8 @@
     },
     {
       "path": "src/engine/Layout.luau",
-      "bytes": 13483,
-      "sha256": "d5a6524445bafd4d6f149e460356bb3ba961f82b445078f9921f0095ee31e146"
+      "bytes": 14211,
+      "sha256": "556c0542d9a7d6feb37d716d85ad0ce2406ca84d465315e00ff1a642867f0f8a"
     },
     {
       "path": "src/engine/Motion.luau",
@@ -476,8 +476,8 @@
     },
     {
       "path": "src/engine/Viewport.luau",
-      "bytes": 4566,
-      "sha256": "826518f838beaf198d7b676c27193dd368e2c746f15223f5cf62e2fb21d9239c"
+      "bytes": 4952,
+      "sha256": "e4f7752e46755239fd20df3c43e50e5c2e60001606a911f69d8d3913feb935d1"
     },
     {
       "path": "src/init.luau",
@@ -521,8 +521,8 @@
     },
     {
       "path": "src/ui/Window.luau",
-      "bytes": 39724,
-      "sha256": "0bc53ed226a997c0e66c2d80d27309f3be994a0336349a6604b394d262b12580"
+      "bytes": 42602,
+      "sha256": "55f280f531aba9a7737de757b5ac37dd7ae3c8a2bbb11fde1f812d992d239eff"
     },
     {
       "path": "src/ui/WindowProps.luau",
@@ -531,8 +531,8 @@
     },
     {
       "path": "src/ui/Workspace.luau",
-      "bytes": 26957,
-      "sha256": "8ed010ad0e5a283f2f16639673bb9be6aafe1e8ea3a27817d5fad8281890d33d"
+      "bytes": 26983,
+      "sha256": "9cc35c9250349921ccdabc92ad3940710bfa882165f1c85629cd7cae6328b1bb"
     },
     {
       "path": "tests/FakeHost.luau",
@@ -556,8 +556,8 @@
     },
     {
       "path": "tests/window.luau",
-      "bytes": 29583,
-      "sha256": "dd53c60dfed7fa51f6edbe3e8186ba053ec071b843ef8b0cb90dcd6b47d202b8"
+      "bytes": 30698,
+      "sha256": "6f83671a74601133a65817fcdb3246711fcba11d10c6b36487af8d55d69b2faf"
     },
     {
       "path": "tooling/generate_themes.py",

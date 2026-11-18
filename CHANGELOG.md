@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.5-foundation
+
+- Use the physical viewport for floating-window travel. Keep the initial size based on the playable viewport and expose only the free part of any top-bar overlap.
+- Restore the desktop title inset and use smaller visible chrome with larger touch targets.
+
 ## 0.4.4-foundation
 
 - Add nine opening anchors and custom coordinates. Keep center as the default.

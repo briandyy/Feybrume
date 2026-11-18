@@ -1,6 +1,6 @@
 {
   "phase": 4,
-  "version": "0.4.4-foundation",
+  "version": "0.4.5-foundation",
   "date": "2026-11-19",
   "timezone": "Asia/Kuala_Lumpur",
   "status": "PASS_WITH_LIMITATION",
@@ -51,7 +51,7 @@
       },
       "window": {
         "file": "tests/window.luau",
-        "passed": 39,
+        "passed": 40,
         "cases": [
           "mobile and desktop breakpoints honor width, height, and input separately",
           "breakpoints reject invalid order and allow overrides",
@@ -71,7 +71,8 @@
           "floating windows reach each playable edge and can always move back",
           "oversized launch requests fit and center below the Roblox top bar with room to drag",
           "opening positions use fitted window sizes, allow coordinates, and default to center",
-          "a floating window enters the top bar only if its full width fits the free lane",
+          "a wide panel reaches the physical corners even when Roblox blocks part of the top strip",
+          "the top trim is skipped when a narrow window fits beside the Roblox controls",
           "a centered brand avoids action buttons, and chrome props merge safely",
           "resize stops before a floating window loses its travel in a short viewport",
           "resize grip adapts to phone, tablet, and desktop while preserving content width",
@@ -115,7 +116,7 @@
         ]
       }
     },
-    "passed": 84,
+    "passed": 85,
     "analysis": {
       "status": "PASS",
       "scope": "First-party source, tests and examples. The existing third-party PNG decoder is compiled separately."
@@ -128,9 +129,9 @@
       "status": "PASS",
       "tool": "Rojo 7.7.1",
       "place": {
-        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.4.rbxlx",
-        "sha256": "27fe1b2acf3215451c5897ae0c3907ac30e581f62328d020e769ba6a404bb130",
-        "bytes": 373085,
+        "name": "Feybrume_Phase_4_Foundation_Preview_v0.4.5.rbxlx",
+        "sha256": "e644a5c8a78873774a7fe3fa22adb391018a6e26d81e44a07b673c0b0e02fbd6",
+        "bytes": 377103,
         "moduleScripts": 41,
         "localScripts": 1,
         "serverScripts": 0,
@@ -154,10 +155,10 @@
     "Reopen bubble and CDN image behavior owner-tested in Phase 3 is recorded separately."
   ],
   "review": {
-    "previousPublishedPreview": "0.4.3",
-    "previousPlaceVersion": 8,
-    "ownerObservation": "The Android layout was accepted. The owner requested configurable opening positions, title branding and clean desktop chrome.",
-    "followup": "Opening anchors, configurable branding, icon controls, and conditional top-bar travel.",
+    "previousPublishedPreview": "0.4.4",
+    "previousPlaceVersion": 9,
+    "ownerObservation": "The frame still stopped before the physical borders, the desktop title shifted, and the buttons were too bulky.",
+    "followup": "Float through the full screen, trim the surface around the top-bar controls, restore desktop title spacing, and use a smaller painted button face.",
     "desktopAndMobileRetest": "IMPLEMENTED_UNTESTED"
   }
 }
