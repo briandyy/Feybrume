@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0-theme
+
+- Load all 40 built-in theme palettes and derive new themes at runtime.
+- Resolve styles for eight variants and ten states, with touch sizing, focus rings and contrast checks.
+- Resolve Roblox native fonts by role and support reduced motion in transitions.
+- Add a Studio theme preview, an English reference, and Indonesian and Simplified Chinese guides.
+
 ## 0.1.0-core
 
 - Add the runtime host adapter, capability probes, and cached service lookup.

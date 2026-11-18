@@ -72,6 +72,8 @@ def catalog_checks(components, themes):
     for row in themes:
         palette, tokens = row["palette"], row["tokens"]
         verify(REQUIRED_TOKENS <= tokens.keys(), f"Missing semantic colors: {row['id']}")
+        verify(row.get("status") == "PASS_WITH_LIMITATION" and row.get("robloxStatus") == "IMPLEMENTED_UNTESTED",
+               f"Incorrect theme evidence status: {row['id']}")
         verify(row["typography"]["nativeFallback"] and row["touch"]["minimumHitTarget"] >= 44,
                f"Missing mobile fallback: {row['id']}")
         surface = palette["surface"]
@@ -111,6 +113,11 @@ def evidence_checks(components, themes):
             verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
                    and entry["status"] == "PASS" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
                    f"Missing core evidence: {entry['featureId']}")
+        elif entry["featureId"].startswith(("theme.", "designSystem.")):
+            path = entry["implementationFile"]
+            verify(path and (ROOT / path).is_file() and entry["testedEnvironments"]
+                   and entry["status"] == "PASS_WITH_LIMITATION" and entry["robloxStatus"] == "IMPLEMENTED_UNTESTED",
+                   f"Missing theme evidence: {entry['featureId']}")
         else:
             verify(entry["implementationFile"] is None and not entry["testedEnvironments"] and
                    entry["status"] in ("NOT_IMPLEMENTED", "BLOCKED"),

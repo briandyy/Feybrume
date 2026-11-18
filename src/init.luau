@@ -6,6 +6,13 @@ local function core(name)
     return require("./src/core/" .. name)
 end
 
+local function engine(name)
+    if script then
+        return require(script.engine[name])
+    end
+    return require("./src/engine/" .. name)
+end
+
 return table.freeze({
     Runtime = core("Runtime"),
     Clock = core("Clock"),
@@ -22,4 +29,11 @@ return table.freeze({
     Flags = core("Flags"),
     Serializer = core("Serializer"),
     Throttle = core("Throttle"),
+    Theme = engine("Theme"),
+    StyleResolver = engine("StyleResolver"),
+    Tokens = engine("Tokens"),
+    Typography = engine("Typography"),
+    Motion = engine("Motion"),
+    Animation = engine("Animation"),
+    Transition = engine("Transition"),
 })

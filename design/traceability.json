@@ -1909,483 +1909,643 @@
   },
   {
     "featureId": "theme.cultivation",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-01",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.memoir",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-02",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.noir",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-03",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.cosmic",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-04",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.feybrume-default",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-05",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.brume",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-06",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.monochrome",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-07",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.porcelain",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-08",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.sumi-e",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-09",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.jade-court",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-10",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.ashen-temple",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-11",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.vermilion-seal",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-12",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.wisteria",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-13",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.moonlit-lake",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-14",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.verdigris",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-15",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.obsidian-vein",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-16",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.ember-archive",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-17",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.saffron-dusk",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-18",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.aurora-borealis",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-19",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.deep-current",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-20",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.coral-bloom",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-21",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.boreal-forest",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-22",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.everglass",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-23",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.vanta",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-24",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.gothic-chapel",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-25",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.royal-amethyst",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-26",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.blood-oath",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-27",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.cobalt-grid",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-28",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.solar-flare",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-29",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.neo-tokyo",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-30",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.terminal-green",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-31",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.circuit-sand",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-32",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.chrome-mist",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-33",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.rosewater",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-34",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.lavender-paper",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-35",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.sepia-film",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-36",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.glacier",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-37",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.clay-studio",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-38",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.midnight-ink",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-39",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "theme.celadon-dawn",
-    "publicAPI": "Fey:SetTheme",
-    "sourceEvidence": "design/themes.json",
-    "implementationFile": null,
+    "publicAPI": "Theme:Get / Theme:Set / StyleResolver.Resolve",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Theme.luau",
     "runtimeRequirement": "Theme engine + Roblox GUI",
     "fallback": "opaque material, no ornament, instant motion",
     "testCase": "THEME-40",
-    "testedEnvironments": [],
-    "status": "NOT_IMPLEMENTED",
-    "issue": "R-01"
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "issue": "R-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "earliestPhase": 2
   },
   {
     "featureId": "inspiration.WindUI",
@@ -3864,5 +4024,69 @@
     "status": "PASS",
     "robloxStatus": "IMPLEMENTED_UNTESTED",
     "earliestPhase": 1
+  },
+  {
+    "featureId": "designSystem.style",
+    "publicAPI": "StyleResolver.Resolve / Diff",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/StyleResolver.luau",
+    "runtimeRequirement": "Luau CLI or Roblox host",
+    "fallback": "Explicit error, solid surface, native fallback, or immediate application as applicable",
+    "testCase": "STYLE-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 2
+  },
+  {
+    "featureId": "designSystem.nativeTypography",
+    "publicAPI": "Typography:Resolve / ResolvePlan / Apply",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Typography.luau",
+    "runtimeRequirement": "Luau CLI or Roblox host",
+    "fallback": "Explicit error, solid surface, native fallback, or immediate application as applicable",
+    "testCase": "FONT-02",
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 2
+  },
+  {
+    "featureId": "designSystem.motion",
+    "publicAPI": "Motion.Resolve / ReadRobloxPreference",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Motion.luau",
+    "runtimeRequirement": "Luau CLI or Roblox host",
+    "fallback": "Explicit error, solid surface, native fallback, or immediate application as applicable",
+    "testCase": "MOTION-01",
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 2
+  },
+  {
+    "featureId": "designSystem.transitions",
+    "publicAPI": "Transition:Apply / Cancel / Destroy",
+    "sourceEvidence": "evidence/phase2-checks.json",
+    "implementationFile": "src/engine/Transition.luau",
+    "runtimeRequirement": "Luau CLI or Roblox host",
+    "fallback": "Explicit error, solid surface, native fallback, or immediate application as applicable",
+    "testCase": "MOTION-02",
+    "testedEnvironments": [
+      "Luau CLI 0.747"
+    ],
+    "status": "PASS_WITH_LIMITATION",
+    "robloxStatus": "IMPLEMENTED_UNTESTED",
+    "issue": "R-01",
+    "earliestPhase": 2
   }
 ]

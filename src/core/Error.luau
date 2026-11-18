@@ -12,6 +12,9 @@ local messages = {
     DUPLICATE_FLAG = "Flag is already bound",
     COMPUTED_CYCLE = "Computed dependency cycle",
     SERIALIZATION_FAILED = "Could not serialize value",
+    THEME_NOT_FOUND = "Theme not found",
+    DUPLICATE_THEME = "Theme ID already registered",
+    FONT_UNAVAILABLE = "No compatible native font could be resolved",
     UNSUPPORTED_VERSION = "Unsupported data version",
 }
 

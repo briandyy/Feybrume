@@ -78,8 +78,9 @@
       "motion": "instant"
     },
     "brief": "Brush/serif titles + readable sans body; jade ink, thin gold seams, cloud/lotus silhouettes, understated mist, 8px corners; slow restrained reveal",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-01"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-01",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "memoir",
@@ -160,8 +161,9 @@
       "motion": "instant"
     },
     "brief": "Literary serif, old book paper, subtle grain, postage-mark accents, warm shadow, 5px corners, typewriter reveal only if enabled",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-02"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-02",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "noir",
@@ -242,8 +244,9 @@
       "motion": "instant"
     },
     "brief": "Elegant condensed sans, editorial hierarchy, crimson only for action, charcoal bevels, dense atmospheric shadows, 3px corners",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-03"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-03",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "cosmic",
@@ -324,8 +327,9 @@
       "motion": "instant"
     },
     "brief": "Wide display/modern sans, violet→teal light, sparse star dots, nebula haze gradients, 12px corners, reduced motion switch",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-04"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-04",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "feybrume-default",
@@ -406,8 +410,9 @@
       "motion": "instant"
     },
     "brief": "Misty green-blue signature brand, subtle layered glass and refined motion, 12px corners",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-05"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-05",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "brume",
@@ -488,8 +493,9 @@
       "motion": "instant"
     },
     "brief": "Cold fog, soft blur simulation, thin outlines, pill accents, calm transitions",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-06"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-06",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "monochrome",
@@ -570,8 +576,9 @@
       "motion": "instant"
     },
     "brief": "Pure neutral sans, maximum clarity, square/pill switch, minimal motion",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-07"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-07",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "porcelain",
@@ -652,8 +659,9 @@
       "motion": "instant"
     },
     "brief": "White ceramics, delicate blue details, airy grid, 16px cards",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-08"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-08",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "sumi-e",
@@ -734,8 +742,9 @@
       "motion": "instant"
     },
     "brief": "Japanese ink-wash feel, imperfect black brush accents, minimal ornament; non-CJK fallback respected",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-09"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-09",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "jade-court",
@@ -816,8 +825,9 @@
       "motion": "instant"
     },
     "brief": "Imperial jade/gold, lattice pattern, hard-cut decorative corners, medium transitions",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-10"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-10",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "ashen-temple",
@@ -898,8 +908,9 @@
       "motion": "instant"
     },
     "brief": "Stone slate, warm smoke, ancient serif, subtle erosion texture",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-11"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-11",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "vermilion-seal",
@@ -980,8 +991,9 @@
       "motion": "instant"
     },
     "brief": "Red seals, calligraphic framing, paper cards, compact stamps",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-12"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-12",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "wisteria",
@@ -1062,8 +1074,9 @@
       "motion": "instant"
     },
     "brief": "Hanging blossoms, lavender fog, rounded modern UI, drifting fade limited",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-13"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-13",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "moonlit-lake",
@@ -1144,8 +1157,9 @@
       "motion": "instant"
     },
     "brief": "Cool moon reflections, horizontal glint, 10px radius, glass surfaces",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-14"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-14",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "verdigris",
@@ -1226,8 +1240,9 @@
       "motion": "instant"
     },
     "brief": "Oxidized copper, architectural grid, warm metal borders, crisp icons",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-15"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-15",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "obsidian-vein",
@@ -1308,8 +1323,9 @@
       "motion": "instant"
     },
     "brief": "Jet-black stone with blue veins, restrained 6px geometry",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-16"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-16",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "ember-archive",
@@ -1390,8 +1406,9 @@
       "motion": "instant"
     },
     "brief": "Burnished copper, library book spines, warm highlights, subtle ember accents",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-17"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-17",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "saffron-dusk",
@@ -1472,8 +1489,9 @@
       "motion": "instant"
     },
     "brief": "Sun-down ochre, softer rounded borders, warm evening ambience",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-18"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-18",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "aurora-borealis",
@@ -1554,8 +1572,9 @@
       "motion": "instant"
     },
     "brief": "Cyan green light ribbons, restrained bloom, curved pills, animated gradient optional",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-19"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-19",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "deep-current",
@@ -1636,8 +1655,9 @@
       "motion": "instant"
     },
     "brief": "Ocean trenches, vertical depth gradients, ripple on confirm, 10px radius",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-20"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-20",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "coral-bloom",
@@ -1718,8 +1738,9 @@
       "motion": "instant"
     },
     "brief": "Warm coral petals, playful sophisticated buttons, light spring effect",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-21"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-21",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "boreal-forest",
@@ -1800,8 +1821,9 @@
       "motion": "instant"
     },
     "brief": "Pines, moss and wood grain illusion, organic rounded cards",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-22"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-22",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "everglass",
@@ -1882,8 +1904,9 @@
       "motion": "instant"
     },
     "brief": "Clean aqua translucent glass, 18px corners, subtle rim light",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-23"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-23",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "vanta",
@@ -1964,8 +1987,9 @@
       "motion": "instant"
     },
     "brief": "Absolute-black editorial, near-zero gradients, strict thin lines",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-24"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-24",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "gothic-chapel",
@@ -2046,8 +2070,9 @@
       "motion": "instant"
     },
     "brief": "Cathedral arches and stained-glass geometry, tall serif display, slow shadow",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-25"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-25",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "royal-amethyst",
@@ -2128,8 +2153,9 @@
       "motion": "instant"
     },
     "brief": "Velvet purple, gold optional, regal 10px edges, controlled glow",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-26"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-26",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "blood-oath",
@@ -2210,8 +2236,9 @@
       "motion": "instant"
     },
     "brief": "Crimson lacquer, angular cards, deliberate press interaction",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-27"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-27",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "cobalt-grid",
@@ -2292,8 +2319,9 @@
       "motion": "instant"
     },
     "brief": "Technical instrument panel, grid hints, square corners and snap",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-28"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-28",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "solar-flare",
@@ -2374,8 +2402,9 @@
       "motion": "instant"
     },
     "brief": "Warm luminous gold/orange, radiant control focus, respect reduced motion",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-29"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-29",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "neo-tokyo",
@@ -2456,8 +2485,9 @@
       "motion": "instant"
     },
     "brief": "Magenta electric signage, angular digital typography, sharp border light",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-30"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-30",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "terminal-green",
@@ -2538,8 +2568,9 @@
       "motion": "instant"
     },
     "brief": "Retro terminal, monospace UI, pixel-ish outline, instant transitions",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-31"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-31",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "circuit-sand",
@@ -2620,8 +2651,9 @@
       "motion": "instant"
     },
     "brief": "Beige technology diagram aesthetic, geometric green, 5px radius",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-32"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-32",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "chrome-mist",
@@ -2702,8 +2734,9 @@
       "motion": "instant"
     },
     "brief": "Brushed chrome, cool metallic reflection, high-clarity controls",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-33"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-33",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "rosewater",
@@ -2784,8 +2817,9 @@
       "motion": "instant"
     },
     "brief": "Pale rose, gentle editorial, soft rounded elevation, non-intrusive motion",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-34"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-34",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "lavender-paper",
@@ -2866,8 +2900,9 @@
       "motion": "instant"
     },
     "brief": "Notebook lilac, ruled headers, refined sans/serif mix",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-35"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-35",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "sepia-film",
@@ -2948,8 +2983,9 @@
       "motion": "instant"
     },
     "brief": "Vintage film, fine grain, cinematic vignette, type and frames",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-36"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-36",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "glacier",
@@ -3030,8 +3066,9 @@
       "motion": "instant"
     },
     "brief": "Ice-clear forms, blue clean outline, near-flat elevation",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-37"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-37",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "clay-studio",
@@ -3112,8 +3149,9 @@
       "motion": "instant"
     },
     "brief": "Handmade ceramics, tactile rounded clay buttons, calm spring",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-38"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-38",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "midnight-ink",
@@ -3194,8 +3232,9 @@
       "motion": "instant"
     },
     "brief": "Blue-black writing desk, precise divider and literary typography",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-39"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-39",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   },
   {
     "id": "celadon-dawn",
@@ -3276,7 +3315,8 @@
       "motion": "instant"
     },
     "brief": "Pale jade morning, organic rounded input states, low-noise visual system",
-    "status": "NOT_IMPLEMENTED",
-    "testCase": "THEME-40"
+    "status": "PASS_WITH_LIMITATION",
+    "testCase": "THEME-40",
+    "robloxStatus": "IMPLEMENTED_UNTESTED"
   }
 ]

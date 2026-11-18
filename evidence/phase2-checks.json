@@ -1,0 +1,84 @@
+{
+  "phase": 2,
+  "version": "0.2.0-theme",
+  "testedAt": "2026-11-18",
+  "environment": {
+    "toolchain": "Official Luau CLI 0.747",
+    "system": "Linux",
+    "arch": "x86_64",
+    "nativeAdapters": "Injected fixtures"
+  },
+  "results": [
+    {
+      "command": "luau tests/core.luau",
+      "status": "PASS",
+      "passed": 20,
+      "cases": [
+        "services cache misses and retry after invalidation",
+        "capability changes only fire on transition",
+        "scope cleanup is reverse order, exactly once and isolated",
+        "removing a key or closing a child detaches it from the parent",
+        "signal dispatch handles once, disconnect, recursion and errors",
+        "signal wait preserves nil arguments and clears timers",
+        "promise cancellation propagates and discards a late result",
+        "pending descendants are cancelled with their parent",
+        "promise await timeout leaves the task pending",
+        "diagnostic ring redacts before storing and sending to subscribers",
+        "schema defaults, nested normalization and patch rejection",
+        "store rolls back failed writes, yielded callbacks and thrown errors",
+        "observers see one revision per batch and writes are queued",
+        "computed values are atomic, topological and cycle checked",
+        "flags use namespaces, shared schema identity and explicit persistence",
+        "serializer is stable, bounds output and sanitizes migrations",
+        "debounce and throttle honor scope disposal and trailing values",
+        "explicit cleanup repeatedly returns owned counts to baseline",
+        "waits from synchronous callbacks are rejected without scheduling a timer",
+        "redaction does not invoke properties on thrown objects"
+      ]
+    },
+    {
+      "command": "luau tests/theme.luau",
+      "status": "PASS",
+      "passed": 9,
+      "cases": [
+        "all 40 presets load with frozen tokens and distinct geometry",
+        "registry changes publish token deltas and skip identical selections",
+        "custom themes derive new colors and preserve base presets",
+        "override precedence, focus and mobile target minimum",
+        "all presets, variants and states meet contrast over solid surfaces",
+        "transparent fills use their real backdrop and contrast can warn",
+        "native font resolver tries preferred face, theme family and fallback",
+        "reduced motion is honored for every profile",
+        "transition cancels old work, skips no-op and releases scope resources"
+      ]
+    },
+    {
+      "command": "luau-analyze src tests examples",
+      "status": "PASS",
+      "diagnostics": 0
+    },
+    {
+      "command": "luau-compile --null src tests examples",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 tooling/generate_themes.py --check",
+      "status": "PASS",
+      "presets": 40
+    }
+  ],
+  "styleMatrix": {
+    "presets": 40,
+    "variants": 8,
+    "states": 10,
+    "combinations": 3200,
+    "background": "Solid preset surface, including composited control fills"
+  },
+  "roblox": {
+    "studio": "IMPLEMENTED_UNTESTED",
+    "desktopClient": "IMPLEMENTED_UNTESTED",
+    "mobileClient": "IMPLEMENTED_UNTESTED",
+    "verifiedFontFamilies": 0,
+    "smokeTest": "examples/theme-preview.client.luau"
+  }
+}

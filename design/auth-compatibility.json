@@ -62,7 +62,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "B"
       },
-      "notes": "[Work.ink key flow](https://blog.work.ink/using-the-key-system-to-make-money-with-your-software/), providerManaged / customBackend setelah bukti.",
+      "notes": "Provider-managed. A custom backend requires a verified completion contract. [Work.ink key flow](https://blog.work.ink/using-the-key-system-to-make-money-with-your-software/)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -80,7 +80,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "B"
       },
-      "notes": "[Postback](https://help.lootlabs.gg/en/article/postback-api-1ndz3i2/), providerManaged / customBackend; periksa bukti dan schema.",
+      "notes": "Provider-managed. Verify the postback contract and schema for custom backends. [Postback](https://help.lootlabs.gg/en/article/postback-api-1ndz3i2/)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -98,7 +98,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Rewards dan provider monetization di atas; providerManaged.",
+      "notes": "Provider-managed through documented Rewards and monetization support.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -116,7 +116,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "E"
       },
-      "notes": "[Portal Plato](https://auth.platoboost.app/); identitas layanan key-link terpisah, belum ada pasangan vendor atau completion contract terbukti.",
+      "notes": "External key link. No verified provider pairing or completion contract. [Plato portal](https://auth.platoboost.app/)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -134,7 +134,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "B"
       },
-      "notes": "[Content locker API](https://publishers-help.ad-maven.com/en/article/admaven-content-locker-api-documentation-11q0a5r/); cek callback terpisah dari link creation.",
+      "notes": "Verify the completion callback independently from link creation. [Content locker API](https://publishers-help.ad-maven.com/en/article/admaven-content-locker-api-documentation-11q0a5r/)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -152,7 +152,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Panda Revenue Mode mencantumkan, sidebar menandai Soon. Gerbang disabled sampai dashboard/test resmi.",
+      "notes": "Panda lists Revenue Mode and also marks the integration as Soon. Verify in an authorized sandbox.",
       "status": "BLOCKED"
     },
     {
@@ -170,7 +170,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Keadaan dokumentasi Panda serupa Boostelar.",
+      "notes": "Panda documentation lists it and marks it as Soon. Verify in an authorized sandbox.",
       "status": "BLOCKED"
     },
     {
@@ -188,7 +188,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "notes": "Provider-managed in Panda documentation.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -206,7 +206,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "notes": "Provider-managed in Panda documentation.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -224,7 +224,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "notes": "Provider-managed in Panda documentation.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -242,7 +242,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "notes": "Provider-managed in Panda documentation.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -260,7 +260,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Katalog dan subdoc Panda; providerManaged.",
+      "notes": "Provider-managed in Panda documentation.",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -278,7 +278,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "E"
       },
-      "notes": "[Release links](https://rekonise.com/features/release-links); externalLink. Klaim validasi internal tidak memberi Feybrume receipt API.",
+      "notes": "External link only. The published flow does not establish a receipt API. [Release links](https://rekonise.com/features/release-links)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -296,7 +296,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "B"
       },
-      "notes": "[Key system guide](https://docs.mboost.me/keysystem/guide/) mendokumentasikan polling status. Backend perlu bukti binding subject/session dan idempotency sebelum dapat memberi entitlement.",
+      "notes": "Status polling is documented. Verify subject binding and idempotency before granting access. [Key system guide](https://docs.mboost.me/keysystem/guide/)",
       "status": "NOT_IMPLEMENTED"
     },
     {
@@ -314,7 +314,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Identitas dan API belum terverifikasi.",
+      "notes": "Identity and API remain unverified.",
       "status": "BLOCKED"
     },
     {
@@ -332,7 +332,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "U"
       },
-      "notes": "Jangan diasumsikan sama dengan Boostelar atau Work.ink.",
+      "notes": "Identity and API remain unverified. Treat it as a separate service.",
       "status": "BLOCKED"
     },
     {
@@ -350,7 +350,7 @@
         "LuaProtect": "U",
         "CustomEndpoint": "B"
       },
-      "notes": "[Universal Link Panda](https://ads.pandauth.com/docs/for-developers/provider-universal-link) didokumentasikan sebagai URL shortener manual per step; completion assurance untuk pasangan arbitrer memerlukan bukti tersendiri. CustomBackend membutuhkan adapter yang bisa membuktikan receipt dan shared authority.",
+      "notes": "Panda Universal Link configures a shortener per step. Verify each pairing and require proof of completion for a custom backend. [Universal Link Panda](https://ads.pandauth.com/docs/for-developers/provider-universal-link)",
       "status": "NOT_IMPLEMENTED"
     }
   ],

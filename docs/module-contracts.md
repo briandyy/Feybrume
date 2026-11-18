@@ -1,16 +1,16 @@
-# Kontrak modul dan dependensi
+# Module contracts and dependencies
 
-Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core.md). Bagian setelah core menjelaskan rancangan modul berikutnya. Import path sesuai `src/<group>/<module>.luau`. Core dilarang mengimpor engine, UI atau vendor. Engine dan backend berkomunikasi melalui registri/facade yang diinjeksi pada composition root; contoh `engine/Media` dan `media/SourceResolver` dipisah antara lifecycle UI dan klasifikasi sumber. Desain API publik ada di [Architecture](architecture.md).
+The core and theme engine are implemented. See the [core](core.md) and [theme](design-system.md) guides for their current API. The remaining rows describe planned modules. Paths follow `src/<group>/<module>.luau`. Core modules depend on neither GUI code nor vendors. The composition root injects registries and backends. For example, the media binding owns GUI resources while SourceResolver chooses a compatible backend.
 
-## core (fase 1)
+## core (phase 1)
 
-| Modul | Kontrak | Dependensi / invariant |
+| Module | Contract | Dependencies and invariants |
 |---|---|---|
-| Runtime | `Create(host, options)`, `GetCapabilities()`, `Refresh(id)`, `Dispose()` | Services, Clock, Signal, Logger; injected host; capability berubah event. Roblox memakai host bawaan. CLI memakai host injeksi. |
-| Services | `Get(name)`, `TryGet(name)` | Host; cache sukses/failure transient dengan invalidasi. Players, TweenService, UserInputService, GuiService, RunService, HttpService, TextService, ContentProvider, SoundService, ContextActionService, HapticService jika ada. |
-| Signal | `Connect`, `Once`, `Wait(timeout?)`, `DisconnectAll`, internal emit | Clock, scoped connection; disconnect saat emit deterministik dan once de-register sebelum callback. |
-| Janitor | `Give(resource, cleanup?)`, `Remove(key)`, `Fork`, `Destroy`, `GetCounts` | Resource scope; cleanup terbalik, laporkan kegagalan per-resource, tutup resource yang masuk setelah destroy. |
-| Promise | `Promise.Spawn(clock, work, parentToken?)` atau `Runtime:Spawn(work, parentToken?)`, `Cancel`, `Await`, `OnSettled` | Clock, Signal, Result, Janitor; sekali terminal, generation guards. |
+| Runtime | `Create(host, options)`, `GetCapabilities()`, `Refresh(id)`, `Dispose()` | Services, Clock, Signal, Logger; injected host; Publishes capability changes. Roblox uses its default host. CLI runs with an injected host. |
+| Services | `Get(name)`, `TryGet(name)` | Host with cached successes and failures until invalidated. Players, TweenService, UserInputService, GuiService, RunService, HttpService, TextService, ContentProvider, SoundService, ContextActionService, HapticService jika ada. |
+| Signal | `Connect`, `Once`, `Wait(timeout?)`, `DisconnectAll`, internal emit | Clock, scoped connection; Disconnect is deterministic during dispatch, and once removes the listener before invoking it. |
+| Janitor | `Give(resource, cleanup?)`, `Remove(key)`, `Fork`, `Destroy`, `GetCounts` | Resource scope; Cleans up in reverse order, reports failures per resource, and closes resources added after disposal. |
+| Promise | `Promise.Spawn(clock, work, parentToken?)` atau `Runtime:Spawn(work, parentToken?)`, `Cancel`, `Await`, `OnSettled` | Clock, Signal, Result, Janitor; settles once, generation guards. |
 | Result | `Ok(value)`, `Err(error)`, `Map` | Error type; no implicit success on nil. |
 | Error | `Create(code,metadata)`, `Redact`, `Is` | Registry error codes, localizable public message. |
 | Logger | `Push`, `List`, `Subscribe`, `Export` | Error, Signal; bounded ring, opt-in sink, redacted before publish. |
@@ -22,9 +22,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | Schema | `Normalize(input)`, `NormalizePatch(base,patch)` | Result, Error; type/range/default/finite, copies and explicit unknown handling. |
 | Serializer | `Encode`, `Decode`, `Migrate` | Schema, Result; canonical, bounded, excludes secret and cyclic refs. |
 
-## engine (fase 2–3, integrasi 7–8)
+## engine (phase 2–3, integration 7–8)
 
-| Modul | Kontrak dan ownership |
+| Module | Contract and ownership |
 |---|---|
 | Factory | Instance create/update, mounts by scope, applies validated props and rejects unauthorized parent/class. |
 | StyleResolver | Resolve/Invalidate token into node variant/state selectors, accessibility, per-token diff. Theme/Viewport input snapshots. |
@@ -44,9 +44,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | Media | Mount and own Media Handle and slot, pass to media backend, generation cancellation. |
 | Audio | Mount buses/SFX controller interface, scope ducking, route events, disposal. |
 
-## ui (fase 3–12)
+## ui (phase 3–12)
 
-| Modul | Kontrak dan ownership |
+| Module | Contract and ownership |
 |---|---|
 | Root | Compose core/engine/backends for host parent, root scopes and idempotency registry. |
 | Window | Public Window handle, options and navigation state; engine controller owns geometry. |
@@ -60,9 +60,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | Overlays | Modal/sheet/tooltip/toast UI output using engine Overlay contract. |
 | AuthScreens | AuthController public snapshot only, slot/UI locale/media, keyboard mode, zero-dependency keyless. |
 
-## systems (fase 6, 9, 11)
+## systems (phase 6, 9, 11)
 
-| Modul | Kontrak | Dependensi utama |
+| Module | Contract | Primary dependencies |
 |---|---|---|
 | Search | Upsert/Remove/Query nodes by IDs, permissions and fuzzy index. | Store/Clock, cancellable revision |
 | CommandPalette | Register/Remove/Invoke with scope and entitlement guard, mobile open. | Search, Focus, Auth snapshots |
@@ -78,9 +78,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | Inspector | Snapshot node/flag/style/scopes/media/diag and sanitized stream. | Store/Logger/Runtime |
 | Localization | T(key, params), register locale, set and subscribe. | Schema/Signal, EN/ID and fallback |
 
-## fonts + media (fase 7–8)
+## fonts + media (phase 7–8)
 
-| Modul | Kontrak dan dependensi |
+| Module | Contract and dependencies |
 |---|---|
 | fonts/Catalog | Register/List/Get/Compare immutable manifests and status, Catalog alias normalization, Validation. |
 | fonts/NativeResolver | Resolve/probe NativeFontFace on allowed target, Services + Capability. |
@@ -98,9 +98,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | media/Background | Resolve fallback and pause policy while preserving layer ordering and gameplay input. |
 | media/Cache | Acquire/Pin/Release/Evict + retry/negative TTL; ref-count and measured byte limits. |
 
-## auth (fase 10)
+## auth (phase 10)
 
-| Modul | Kontrak |
+| Module | Contract |
 |---|---|
 | AuthController | Select route, begin validation/checkpoints, cancel, logout, publish redacted snapshot. |
 | Session | Revise/CheckExpiry/Revoke, no client renewal/grant, TTL and stale invalidation. |
@@ -113,9 +113,9 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 | providers/`Luarmor,Panda,Vampauth,KeyVortex,KeyAuth,AuthGG,OpenAuth,Pelinda,SVAL,LuaProtect,Custom` | Each uses the shared Provider interface in [Auth](auth.md); ID remains reserved/blocked until official endpoint and fixture gates, no empty runtime stub. |
 | gateways/`WorkInk,LootLabs,Platoboost,Linkvertise,AdMaven,Boostelar,Rekonise,MBoost,Custom` | Named adapter contracts as in [Auth](auth.md), equivalent registry extension IDs for Fly Inc/Rinku, Lockr, Short-Jambo, Cuty, ShrinkEarn, ShrtFly, Paster, BoostInk. No claim of vendor compatibility by name. |
 
-## extensions (fase 9–11)
+## extensions (phase 9–11)
 
-| Modul | Kontrak |
+| Module | Contract |
 |---|---|
 | Nexus | Use/Remove/List/Get/HasCapability/RequestPermission. Always scope requests and approved dependencies. |
 | PluginHost | Init/Mount/Suspend/Resume/Dispose, own subscriptions/lifetime, publish sanitized errors. |
@@ -126,7 +126,3 @@ Modul core tersedia di `src/core` dan didokumentasikan dalam [panduan core](core
 ## Data contracts and I/O
 
 Adapters have `Probe(context)`, declared capability IDs, `Init(config,scope)`, one or more operation methods and `Destroy()`. `Probe` distinguishes unknown, unavailable and available. Network adapter accepts allowlisted endpoint IDs or host-owned URLs, bounded request payload/time and cancellation token. Storage adapter `Get/Put/Remove/List` advertises `atomicReplace` and durability. Media adapter `CanResolve/Resolve/Load` returns owned handle and provenance. ProviderResult and AuthResult schemas stay server-versioned with minimal public snapshots. Capability changes invalidate pending operations via generation; capability state alone never grants entitlement. Docs examples must compile and use the same registry in CI.
-
-## English handoff
-
-Module responsibilities define import direction, lifecycle and ownership. The core is reusable and host-independent through injection. Engine services handle GUI behavior. Specialized backends expose typed capabilities to registries. Higher-level UI and extensions use these interfaces and own disposable scopes.

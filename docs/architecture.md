@@ -1,18 +1,18 @@
-# Arsitektur dan kontrak publik
+# Architecture and public contracts
 
-Target utama ialah Roblox Studio dan experience berizin. Client memakai `LocalScript` yang melakukan `require(ModuleScript)` dan memasang UI pada `PlayerGui`. Server menangani akses istimewa, HTTP yang dikonfigurasi, dan penyimpanan server. Studio plugin membutuhkan host dan parent yang berbeda sehingga menjadi profil tersendiri. Pemuatan dari URL hanya ditawarkan pada host sah yang telah membuktikan akses HTTP dan kemampuan kompilasi; `ServerScriptService.LoadStringEnabled` berlaku di server. Mode remote bukan jalur UI standar Studio.
+Roblox Studio and authorized experiences are the primary targets. A client LocalScript requires the ModuleScript and mounts UI in PlayerGui. The server owns privileged operations, configured HTTP, and storage. Studio plugins use a separate host and parent. URL loading requires a permitted host with confirmed HTTP and compilation capability. Roblox's LoadStringEnabled is a server setting. [Runtime setup](core.md)
 
 ```mermaid
 flowchart TD
-  API["Fey dan handle publik"] --> UI["Window, Container, ControlBase"]
-  SYS["Systems dan ekstensi"] --> APIS["Registri dan layanan publik"]
+  API["Fey and public handles"] --> UI["Window, Container, ControlBase"]
+  SYS["Systems and extensions"] --> APIS["Registries and services"]
   API --> APIS
   APIS --> CORE["Core: Result, Scope, Store, Runtime"]
-  UI --> ENGINE["Engine: layout, input, fokus, tema"]
+  UI --> ENGINE["Engine: layout, input, focus, theme"]
   ENGINE --> CORE
   APIS --> BACK["Font, Media, Audio, Auth"]
   BACK --> CORE
-  BACK --> HOST["Roblox atau adapter terdaftar"]
+  BACK --> HOST["Roblox or registered adapter"]
 ```
 
 ```mermaid
@@ -54,47 +54,43 @@ classDiagram
   ControlHandle *-- Scope
 ```
 
-Root → workspace (implisit untuk `Fey:Window`) → window → tab/section/container → node. Resource didaftarkan pada scope saat dibuat. Mount persiapan → validasi → commit node → `OnMounted`. Saat destroy, tandai subtree terminal dan batalkan pekerjaan dulu, lepas input/overlay/focus dan kembalikan fokus hanya ke target hidup, tutup anak lalu instance milik scope dari urutan terbalik, kirim `OnDestroyed` sekali dan putuskan signal. Hasil async membawa nomor generasi; panggilan engine yang sudah yield bisa selesai kemudian tetapi hasil usangnya dibuang. `Destroy()` idempoten. `MoveTo` memakai reparent transaksi: tolak root lain, siklus, dan target scope mati; batalkan pointer capture, pertahankan ID, flag dan nilai, lalu hitung ulang layout/style/fokus. Source root punya ID dan host-owned registry untuk reuse/replace/separate. Kebijakan lintas evaluasi bundle membutuhkan host registry eksplisit; tanpa itu jaminan hanya per instance/modul, dengan diagnostik yang menjelaskan batasnya.
+Ownership runs from root to workspace, window, tab or section, then component. Register each resource at creation. Mount prepares and validates a node before committing and emitting OnMounted. Destroy marks the subtree terminal, cancels pending work, releases input and overlays, restores focus to a live target, then closes owned instances in reverse order and emits OnDestroyed once. Generation checks discard asynchronous results that arrive late. MoveTo rejects cross-root moves, cycles, and disposed destinations. It releases pointer capture, preserves the ID and flag, and recomputes layout, style, and focus. Reuse or replacement across separate evaluations requires a host-owned registry.
 
-## Tipe dan hasil
+## Types and results
 
-| Tipe kontrak | Bentuk dan aturan |
+| Contract | Shape and behavior |
 |---|---|
-| `Result<T>` | Union diskriminan `{ok:true,value:T}` atau `{ok:false,error: FeyError}`. |
-| `FeyError` | `{code, publicMessage, context, recoverable, retryable?, suggestedFix?, developerDetail?}`. context/detail sudah disanitasi. |
-| `Connection` | `Disconnect()` idempoten, `Connected` read-only. Listener ditangkap sesuai urutan registrasi dan lepas sewaktu scope mati. |
-| `Task<T>` | `Cancel(reason?)`, `Await(timeoutSeconds?) -> Result<T>`, `OnSettled(callback) -> Connection`. Tepat satu hasil terminal. |
-| `SourceTag` | `"user" \| "programmatic" \| "restore" \| "remote"`. Event menyertakan `{previous, source, revision, controlId}`. |
-| `SetOptions` | `{source?, silent?, animate?, persist?, validate?}`. `silent` menahan callback publik. Validasi invariants selalu berlaku, `validate=false` melewati validator kustom yang diizinkan. |
-| `NodeProps` | `{id?,name?,description?,tooltip?,icon?,flag?,default?,size?,variant?,style?,theme?,slots?,visibleIf?,enabledIf?,lockedIf?,requires?,premiumOnly?,dependsOn?,tags?}`. Inferensi `id` hanya untuk penggunaan nonpersisten. |
-| `Capability` | `{id, state: "available" \| "unavailable" \| "unknown", reason?, checkedAt?}`. Bukti per host dan aset. |
-| `JSONValue` | Nilai finite dan serializable, warna sebagai string kanonik atau objek skema, tanpa function, instance, metatable, siklus. |
+| `Result<T>` | Discriminated union `{ok:true,value:T}` or `{ok:false,error: FeyError}`. |
+| `FeyError` | `{code, publicMessage, context, recoverable, retryable?, suggestedFix?, developerDetail?}`. Context and details are sanitized. |
+| `Connection` | `Disconnect()` is idempotent and `Connected` is read-only. Listeners dispatch in registration order and release with their scope. |
+| `Task<T>` | `Cancel(reason?)`, `Await(timeoutSeconds?) -> Result<T>`, `OnSettled(callback) -> Connection`. Settles once. |
+| `SourceTag` | `"user" \| "programmatic" \| "restore" \| "remote"`. The event includes `{previous, source, revision, controlId}`. |
+| `SetOptions` | `{source?, silent?, animate?, persist?, validate?}`. `silent` suppresses public callbacks. Required schema checks always apply. `validate=false` skips eligible custom validators. |
+| `NodeProps` | `{id?,name?,description?,tooltip?,icon?,flag?,default?,size?,variant?,style?,theme?,slots?,visibleIf?,enabledIf?,lockedIf?,requires?,premiumOnly?,dependsOn?,tags?}`. Infer an ID only for nonpersisted use. |
+| `Capability` | `{id, state: "available" \| "unavailable" \| "unknown", reason?, checkedAt?}`. Evidence is scoped to the host or asset. |
+| `JSONValue` | Finite, serializable values and canonical color strings or schema objects. Functions, instances, metatables and cycles are excluded. |
 
-Constructor sinkron (`Window`, `CreateWorkspace`, `Tab`, `Section`, named component, `Add`, `Auth`) mengembalikan handle langsung agar chaining sesuai §26. Konfigurasi fatal melempar pesan berkode di luar callback; kegagalan recoverable via `TryAdd`, pemeriksa skema, metode mutasi atau task. Callback publik selalu dilindungi boundary dan error dibukukan. Registry case-sensitive PascalCase; opsi alias huruf kecil dapat dihasilkan secara konsisten. Metode domain seperti `Media:Resolve` mengembalikan verdict bahkan ketika perlu fallback. Getter snapshot hanya mengembalikan salinan/read-only; akses handle mati mengembalikan `COMPONENT_DESTROYED` pada operasi bernilai, event destroy tetap satu kali.
+Constructors such as Window, CreateWorkspace, Tab, Section, Add, and Auth return handles for chaining. Fatal configuration raises a coded error. TryAdd, validators, mutations, and tasks report recoverable failures as results. Protect public callbacks and record sanitized errors. Registry names use consistent PascalCase. Media:Resolve supplies a verdict when a fallback is necessary. Snapshots are read-only, and methods on disposed components return COMPONENT_DESTROYED where a result is expected.
 
-| Pemilik | Permukaan publik yang dibekukan sebagai desain Fase 0 |
+| Owner | Planned public API |
 |---|---|
-| `Fey` | `Configure`, `Window`, `Auth`, `SetTheme`, `RegisterTheme`, `RegisterFont`, `RegisterMediaAdapter`, `RegisterSound`, `Use`, `Notify`, `CreateWorkspace`, `GetDiagnostics`, `GetCapabilities`, `RegisterComponent`, `Devtools`, `Destroy`. Registrasi dan mutasi memberi Result. |
-| Workspace/Window | `Window`, `Tab`, `Media`, `Show/Hide`, `SetTheme`, `SetTypography`, `SetNavigation`, `Minimize/Restore`, `Dock/Undock`, `Destroy`; pilihan yang relevan per handle. Workspace memiliki fokus dan docking. |
-| Tab/Section/Container | `SubTab`, `Section`, `HStack`, `VStack`, `Grid`, `Add(name, props)`, `TryAdd`, `Media`, `SetTypography`, registry konstruktor yang kompatibel dengan parent. |
-| Component handle | `Set/Get/Reset`, `Enable/Disable/SetDisabled`, `Show/Hide/SetVisible`, `Lock/Unlock`, `SetProps/SetStyle/SetThemeOverride`, `SetFont/SetIcon/SetTooltip/SetDescription`, `SetOrder/MoveTo/MoveUp/MoveDown`, `Focus/Blur/Refresh/Serialize/Destroy`, `OnChanged/OnMounted/OnDestroyed/OnInteract/OnFocus/OnBlur/OnValidate/OnError` sesuai model di katalog. |
+| `Fey` | `Configure`, `Window`, `Auth`, `SetTheme`, `RegisterTheme`, `RegisterFont`, `RegisterMediaAdapter`, `RegisterSound`, `Use`, `Notify`, `CreateWorkspace`, `GetDiagnostics`, `GetCapabilities`, `RegisterComponent`, `Devtools`, `Destroy`. Registration and mutation return a Result. |
+| Workspace/Window | `Window`, `Tab`, `Media`, `Show/Hide`, `SetTheme`, `SetTypography`, `SetNavigation`, `Minimize/Restore`, `Dock/Undock`, `Destroy`; Each handle exposes relevant operations. Workspace owns focus and docking. |
+| Tab/Section/Container | `SubTab`, `Section`, `HStack`, `VStack`, `Grid`, `Add(name, props)`, `TryAdd`, `Media`, `SetTypography`, Registry constructors must support the parent. |
+| Component handle | `Set/Get/Reset`, `Enable/Disable/SetDisabled`, `Show/Hide/SetVisible`, `Lock/Unlock`, `SetProps/SetStyle/SetThemeOverride`, `SetFont/SetIcon/SetTooltip/SetDescription`, `SetOrder/MoveTo/MoveUp/MoveDown`, `Focus/Blur/Refresh/Serialize/Destroy`, `OnChanged/OnMounted/OnDestroyed/OnInteract/OnFocus/OnBlur/OnValidate/OnError` See the catalog for which operations each handle supports. |
 | Registri | `Fey.Theme:Derive(base, overrides)`; `Fey.Fonts:Preload/Resolve/GetStatus/Register/List/Compare/UnloadUnused`; `Fey.Media:Resolve`; `Fey.Audio:Play/Stop/FadeTo/SetScene/SetBusVolume/RegisterSound/RegisterSoundPack/RegisterPlaylist/BindSFX/Mute/Unmute/Destroy`. |
-| Ekstensi | `Fey.Nexus:Use/Remove/List/Get/HasCapability/RequestPermission`; `Fey.Hub:RegisterExperience`; `Fey:Use` meneruskan ke Nexus; callback plugin menerima scope yang dapat dicabut dan registry APIs yang disetujui. |
+| Ekstensi | `Fey.Nexus:Use/Remove/List/Get/HasCapability/RequestPermission`; `Fey.Hub:RegisterExperience`; `Fey:Use` delegates to Nexus. Plugins receive a revocable scope and approved registry APIs. |
 
-`SetProps` menormalisasi dan memvalidasi seluruh patch sebelum commit; subscriber melihat snapshot lengkap. `Set` read-only bisa mengganti konten sesuai kontrak komponennya. Aksi stateless/scope struktural mengembalikan `UNSUPPORTED_OPERATION` dari `Set/Get/Reset`. `Focus` gagal eksplisit pada kontrol tanpa focus target; `Serialize` membuang kredensial dan data transien. `Lock` melarang perubahan dari interaksi pengguna. `disabled` menonaktifkan interaksi; mutation programmatik tetap tunduk schema, izin dan entitlement. Restore flag dalam transaksi (defaults → persisted → developer → user secara bawaan); computed disortir topologis dan siklus ditolak. Flag bertabrakan kecuali memiliki binding bersama eksplisit dengan tipe, namespace dan strategi merge yang sama. Auto-dependency via snapshot pembaca read-only, atau `dependsOn` eksplisit. Re-evaluasi event-driven dalam batch.
+SetProps validates and commits the entire patch atomically. A read-only control may update visible content through Set if its contract allows it. Stateless actions return UNSUPPORTED_OPERATION for Set, Get or Reset. Focus reports an error when no target exists. Serialize excludes credentials and transient state. Lock prevents user changes. Disabled state blocks interaction. Programmatic changes still follow schema and permissions. Default restoration order is defaults, persisted values, developer values, then user changes. The store sorts computed keys by dependency and rejects cycles. Flags may share a key only with a matching schema, namespace and merge policy. Dependencies come from explicit keys or read tracking on a read-only snapshot.
 
-## Jendela, kustomisasi, dan layout
+## Windows, layout, and customization
 
-Jenis standard/compact/fullscreen/split/dashboard/modal/overlay/floating/widget/sheet/sidebar/tray/auth/workspace adalah preset komposisi. Workspace menentukan z-order, top modal dan keaktifan audio. Navigation kiri/kanan/top/bottom/hidden, rail/drawer/segmented/dock/nested/breadcrumb/command mode memakai satu node model dan tab ID yang sama. Overlay root menangani popover di luar clipping window, tab order, Back/Escape, focus restore dan dimming per scope. Layout memakai constraints/min/max, flex columns 1–4 dengan breakpoint collapse, list/grid serta viewport clamp; efek dan frame dekoratif tidak ikut hit testing. Auto-dock/resize dapat dibatalkan dan menghormati safe bounds. Judul, header/footer, avatar, watermark, topbar/control order, dimensi, drag, docking, persisten dan art slot mengikuti window options. Mini-mode/PiP punya return action dan optional mini-player. Slots `Leading/Main/Trailing/Footer/Overlay/Background` dan slot bernama seperti `topbar.leading` menerima child/renderer kustom yang tidak menelan input dari aksi inti.
+Window compositions include standard, compact, fullscreen, split, dashboard, modal, overlay, floating, widget, sheet, sidebar, tray, auth, and workspace. A workspace owns window stacking, the active modal and audio focus. Navigation can move between rail, drawer, tabs, dock and breadcrumb modes while preserving the tab ID. The overlay root owns popovers, traversal, Escape or Back, focus restoration and dimming. Layout uses size constraints, one to four columns, breakpoint collapse and viewport clamping. Decorative frames do not receive input. Windows configure title, headers and footers, avatars, watermarks, dimensions, docking and persistence. Mini mode can provide a return action and media control. Leading, Main, Trailing, Footer, Overlay, and Background slots keep primary actions accessible.
 
-Precedence state/variant → component → container → window → framework → named theme → safety defaults. Patch runtime menulis level yang dituju. Accessibility layer menerapkan min target, contrast dan motion pada final resolved tokens kecuali opt-out eksplisit dengan diagnostik. Status visual punya affordance selain warna. Token diff invalidasi berdasarkan dependency map; batching dengan satu viewport subscription, gesture capture per pointer, dan cache terukur per scope. UI model independen dari instance GUI sehingga reflow mempertahankan state, fokus dan nilai aktif.
+Style precedence runs from safety defaults and named theme through framework, window, container, component, then state overrides. Accessibility applies minimum target size, contrast, and motion to the resolved style. State also has an affordance beyond color. Token diffs target dependent nodes. A root owns viewport observation and captures each active pointer separately. Reflow retains stable IDs, values and focus. [Implemented style resolver](design-system.md)
 
-## Distribusi dan batas layanan
+## Distribution and service boundaries
 
-Target pohon `src/core, engine, ui, systems, fonts, media, auth, extensions`, manifests `assets/`, `examples/`, `tests/`, `tooling/`, `docs/` dan `dist/Feybrume.lua`. Bundler fase 14: resolve path internal dari entry, cek cycle/missing module sebelum build, topological sort dengan tie-break path byte-order, pertahankan semantics require cache dan diagnostic path, normalisasi UTF-8/LF, pin toolchain, versi dan SHA-256. Uji byte-for-byte dua clean builds. Output Studio/ModuleScript dan bundle runtime satu file berasal dari modul yang sama; fixture memeriksa parity. Opsional transpile type annotation dengan parser, setelah bukti host dan parity. Asset/media/font packs dan layanan auth versioned eksternal, keyless tanpa dependensi. Dokumen instalasi akan menunjukkan require dan URL rilis immutable dengan checksum, fail-safe dan rollback. Publikasi kode/asset memerlukan lisensi proyek pilihan pemilik dan bukti lisensi aset. Fase 0 mencatat manifest desain, belum menghasilkan bundle.
+The source tree covers core, engine, UI, systems, fonts, media, auth, and extensions. The final bundler resolves internal imports, rejects cycles or missing modules, sorts paths deterministically, preserves require caching and diagnostics, and pins the toolchain and SHA-256. Studio and the single-file release share sources and parity fixtures. Repeated clean builds must match byte for byte. Font and media packs and hosted auth are versioned separately. The keyless path has no service dependency. Releases will document pinned URLs, checksums and rollback.
 
-`SaveManager`/ThemeManager/FontManager/MediaManager/AuthSessionStore punya namespace terpisah. Penyimpanan memori sebagai baseline; file hanya adapter eksplisit dengan atomic replace bila tersedia, backup/migration dan quarantine corrupt. Penyimpanan Roblox lintas sesi memerlukan server authority, DataStore dan rate limits. Config export bersih dari auth credential. JSON remote schema-versioned dibatasi ukuran, domain, timeout, max panjang dan umur cache. Check update opt-in. Nexus menjalankan plugin developer tepercaya dan terpin dengan izin bagi API framework, bukan sandbox keamanan Luau; tidak memuat script dari manifest PlaceId atau label command. Hub memilih page dari IDs dan hak yang lolos validasi server. Tidak ada fingerprint perangkat default; telemetry opt-in dan diagnostics redacted.
-
-## English handoff
-
-The first supported entry point is a Roblox client ModuleScript mounted under PlayerGui. Platform-sensitive work is delegated to capability adapters. Scope ownership, cancellation generations, transactional props and stable component IDs are shared contracts across phases. A privileged action must revalidate entitlements at the server. The build will produce a deterministic versioned bundle plus independently versioned asset packs. This document defines the API baseline for design review.
+SaveManager, ThemeManager, FontManager, MediaManager, and AuthSessionStore use separate namespaces. Memory is the baseline. An explicit file adapter may provide atomic replacement, backup, migration and corrupt-file quarantine. Roblox cross-session storage uses server authority and rate limits. Config exports exclude auth credentials. Remote versioned JSON has bounded size, allowed domains, timeouts, length and cache lifetime. Update checks are opt-in. Nexus loads trusted, pinned developer plugins with scoped framework capabilities. A scope limits available APIs but cannot sandbox arbitrary Luau. The hub uses known place IDs and server-validated entitlements. Telemetry is opt-in and diagnostics are redacted.

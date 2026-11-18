@@ -1,8 +1,8 @@
-# Peta dokumentasi rilis
+# Release documentation map
 
-Daftar di bawah mengikat nama/isi rilis dari brief. Halaman yang bertaut ke dokumen fase 0 memiliki desain awal. Semua halaman rilis, screenshots dan contoh runnable merupakan target Fase 14, dengan contoh diuji sejak fase pemilik API.
+This map assigns release pages and examples to the phases that provide their APIs and evidence. The release includes runnable examples, actual screenshots, and tested fallback paths.
 
-| Dokumen rilis | Isi dan fase bukti awal |
+| Release page | Contents and evidence phase |
 |---|---|
 | 00-READ-ME-FIRST.md | Summary, actual screenshots, performance scope, 13–14. |
 | 01-INSTALL-AND-LOADSTRING.md | Studio require, permissioned hosts, version pins, errors, 1/14. |
@@ -36,10 +36,6 @@ Daftar di bawah mengikat nama/isi rilis dari brief. Halaman yang bertaut ke doku
 | 29-EXAMPLES-GALLERY.md | At least 25 tested projects, 14. |
 | 30-RELEASE-CHECKLIST.md | [Acceptance](qa-and-backlog.md), provenance/bundle and triage, 14. |
 
-Setiap halaman rilis mencakup tujuan, executable sample, prop table type/default/range/required, handle/callback, desktop/touch behavior, capability/error/fallback, cleanup/migration/link ke halaman lain. EN dan ID. Docs site, bila dibangun, membutuhkan search-index JSON yang konsisten dan TOC. CI membandingkan method/params dengan exported API dan eksekusi minimal smoke; dependencies contoh jelas. ID aset `0` dan URL ilustrasi di brief tidak dipakai quickstart.
+Each release page covers purpose, a runnable example, property types and defaults, callbacks, desktop and touch behavior, capabilities, errors, fallbacks, cleanup and migration. English is the canonical reference. Indonesian and Simplified Chinese guides live in their own directories. CI checks example dependencies, exported signatures and smoke execution. A quickstart uses valid assets and URLs.
 
-Galeri kontrak: barebones one-tab, mobile 3-tab, control showcase, left-handed mode, 40 theme gallery, native custom typography, font browser/compare, theme studio, image asset card, converted GIF, native video, YouTube fallback/on permitted host, R2 pipeline, login→main audio, explosion SFX, control variants, local demo auth, Luarmor, Panda, approved gateway choice, 3-step supported checkpoints, free/premium tiers, multiple window dock, slots, custom component, custom extension, config import/export, scope destroy, integrated ultimate-showcase. Contoh vendor bersyarat perlu sandbox nyata dan user-provided configuration. Todo yang belum bisa dijalankan ditandai sebagai desain di dokumen fase, tanpa tautan palsu ke halaman yang belum ada.
-
-## English handoff
-
-This map assigns every requested release chapter and example to its owning phase. Runnable examples, screenshots and tested fallback instructions ship with verified functionality.
+Example coverage: barebones one-tab, mobile 3-tab, control showcase, left-handed mode, 40 theme gallery, native custom typography, font browser/compare, theme studio, image asset card, converted GIF, native video, YouTube fallback/on permitted host, R2 pipeline, login→main audio, explosion SFX, control variants, local demo auth, Luarmor, Panda, approved gateway choice, 3-step supported checkpoints, free/premium tiers, multiple window dock, slots, custom component, custom extension, config import/export, scope destroy, integrated ultimate-showcase. Vendor examples require a verified sandbox and operator configuration. The phase documents mark examples pending runnable APIs.
